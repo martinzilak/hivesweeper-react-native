@@ -8,6 +8,7 @@ import * as R from 'ramda';
 import Hive from './components/Hive';
 import { HIVE_SIZE } from './constants/constants';
 import { useHexGridFactory } from './hooks/useHexGridFactory';
+import HexagonButton from "./components/HexagonButton";
 
 const revealCell = R.curry((setGrid, generateGrid, hex) => {
   const { index, isBee, isRevealed, isFlagged, neighbors } = hex;
@@ -69,6 +70,10 @@ const App = () => {
             revealCell={revealCell(setGrid, generateGrid)}
             flagCell={flagCell(setGrid)}
         />
+
+        <HexagonButton
+            onPress={() => Alert.alert('test', null, 'Ok')}
+        />
       </SafeAreaView>
     </>
   );
@@ -77,7 +82,7 @@ const App = () => {
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 });

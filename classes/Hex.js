@@ -1,15 +1,12 @@
-import * as R from 'ramda';
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
+import { getPointsStringFromPrimitiveHex } from '../utils/getPointsStringFromPrimitiveHex';
 
 export class Hex {
     constructor(hex, index = 0) {
         this.primitiveHex = hex;
         this.id = getPrimitiveHexId(hex);
         this.index = index;
-        this.pointsString = R.o(
-            R.join(' '),
-            R.map(({ x, y }) => `${x},${y}`),
-        )(hex.corners());
+        this.pointsString = getPointsStringFromPrimitiveHex(hex);
         const { x, y } = hex.toPoint();
         this.x = x;
         this.y = y;
