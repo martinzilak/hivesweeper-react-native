@@ -51,9 +51,9 @@ HexagonButton.propTypes = {
 };
 
 const polygonStyles = {
-    fill: 'yellow',
+    fill: 'gold',
     stroke: 'orange',
-    strokeWidth: 3,
+    strokeWidth: 2,
 };
 
 const getTextStyles = (buttonHeight) => ({

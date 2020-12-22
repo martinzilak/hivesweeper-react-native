@@ -1,7 +1,7 @@
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
 import { getPointsStringFromPrimitiveHex } from '../utils/getPointsStringFromPrimitiveHex';
 
-export class Hex {
+export class HiveCellHex {
     constructor(hex, index = 0) {
         this.primitiveHex = hex;
 

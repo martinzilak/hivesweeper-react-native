@@ -2,59 +2,59 @@ import { useMemo, useCallback } from 'react';
 import { defineGrid, extendHex } from 'honeycomb-grid';
 import * as R from 'ramda';
 import { BEE_PROBABILITY, HIVE_DIMENSION } from '../constants/constants';
-import { Hex } from '../classes/Hex';
+import { HiveCellHex } from '../classes/HiveCellHex';
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
 import { mapIndexed } from '../utils/mapIndexed';
 
 const getCellSize = (hiveSize) => HIVE_DIMENSION.WIDTH / (1.5 * hiveSize + 2);
 
-export const useHexGridFactory = (size) => {
+export const useHiveGridFactory = (hiveSize) => {
     const HexFactory = useMemo(() => extendHex({
-        size: getCellSize(size),
+        size: getCellSize(hiveSize),
         orientation: 'flat',
-    }), [size]);
+    }), [hiveSize]);
     
     const generateGrid = useCallback(() => {
         const GridFactory = defineGrid(HexFactory);
 
         const grid = GridFactory.hexagon({
-            radius: size / 2,
-            center: [size / 2, size / 2],
+            radius: hiveSize / 2,
+            center: [hiveSize / 2, hiveSize / 2],
         });
 
-        const hexesById = R.o(
-            R.reduce((accumulatedHexesById, hex) => ({
-                ...accumulatedHexesById,
-                [hex.id]: hex,
+        const hiveCellsById = R.o(
+            R.reduce((accumulatedHiveCellsById, cell) => ({
+                ...accumulatedHiveCellsById,
+                [cell.id]: cell,
             }), {}),
             mapIndexed((primitiveHex, index) => {
-                const hex = new Hex(primitiveHex, index);
+                const cell = new HiveCellHex(primitiveHex, index);
 
-                hex.setIsBee(Math.random() <= BEE_PROBABILITY);
-                hex.setCellSize(getCellSize(size));
+                cell.setIsBee(Math.random() <= BEE_PROBABILITY);
+                cell.setCellSize(getCellSize(hiveSize));
 
-                return hex;
+                return cell;
             }),
         )(grid);
 
         return R.o(
-            R.map((hex) => {
+            R.map((cell) => {
                 const neighbors = R.o(
-                    R.map((neighbor) => hexesById[getPrimitiveHexId(neighbor)]),
+                    R.map((neighbor) => hiveCellsById[getPrimitiveHexId(neighbor)]),
                     R.filter((neighbor) => !R.isNil(neighbor)),
-                )(grid.neighborsOf(hex.primitiveHex));
+                )(grid.neighborsOf(cell.primitiveHex));
 
-                hex.setNeighbors(neighbors);
-                hex.setNeighboringBees(R.o(
+                cell.setNeighbors(neighbors);
+                cell.setNeighboringBees(R.o(
                     R.length,
                     R.filter(R.prop('isBee')),
                 )(neighbors));
 
-                return hex;
+                return cell;
             }),
             R.values,
-        )(hexesById);
-    }, [HexFactory, size]);
+        )(hiveCellsById);
+    }, [HexFactory, hiveSize]);
     
-    return { HexFactory, generateGrid };
+    return { generateGrid };
 };

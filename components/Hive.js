@@ -34,8 +34,11 @@ Hive.propTypes = {
 
 const styles = StyleSheet.create({
     view: {
+        paddingLeft: 10,
+        paddingRight: 10,
         borderWidth: 1,
-        borderColor: 'red',
+        borderColor: 'orange',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
 });
 

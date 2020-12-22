@@ -11,13 +11,13 @@ const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
         <G
             x={x}
             y={y}
+            onPress={() => revealCell(hex)}
+            onLongPress={() => flagCell(hex)}
         >
             <Polygon
                 points={pointsString}
                 fill={getFillColor(isBee, isRevealed, isFlagged)}
                 {...polygonStyles}
-                onPress={() => revealCell(hex)}
-                onLongPress={() => flagCell(hex)}
             />
             {isRevealed && (
                 isBee ? (
@@ -55,7 +55,7 @@ HiveCell.propTypes = {
 
 const polygonStyles = {
     stroke: 'orange',
-    strokeWidth: 1,
+    strokeWidth: 2,
 };
 
 const getImageStyles = (gameSize, cellSize) => ({
@@ -74,7 +74,7 @@ const getTextStyles = (cellSize) => ({
 const fillColors = {
     normal: 'yellow',
     revealed: 'gold',
-    bee: 'tomato',
+    bee: 'firebrick',
     flagged: 'goldenrod',
 };
 

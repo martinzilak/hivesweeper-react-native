@@ -1,10 +1,17 @@
 import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import * as R from 'ramda';
-import { useHexGridFactory } from './useHexGridFactory';
+import { useHiveGridFactory } from './useHiveGridFactory';
 import { SCORE } from '../constants/constants';
 
-const handleRevealCell = (hiveCell, setIsFirstRevealed, setScore, setGrid) => {
+const checkWinCondition = (grid, setIsPlaying) => {
+    if (R.all((cell) => cell.isRevealed || cell.isBee)(grid)) {
+        setIsPlaying(false);
+        Alert.alert('You won!', null, 'Ok');
+    }
+};
+
+const handleRevealCell = (hiveCell, setIsFirstRevealed, setScore, grid, setGrid, setIsPlaying) => {
     const { index, neighboringBees, neighbors } = hiveCell;
 
     hiveCell.setIsRevealed(true);
@@ -42,15 +49,17 @@ const handleRevealCell = (hiveCell, setIsFirstRevealed, setScore, setGrid) => {
             }
         }
     }
+
+    checkWinCondition(grid, setIsPlaying);
 };
 
 export const useGameStateControl = (gameSize) => {
-    const { generateGrid } = useHexGridFactory(gameSize);
+    const { generateGrid } = useHiveGridFactory(gameSize);
 
     const [grid, setGrid] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFirstRevealed, setIsFirstRevealed] = useState(false);
-    const [beesRemaining, setBeesRemaining] = useState(0);
+    const [flagsRemaining, setFlagsRemaining] = useState(0);
     const [score, setScore] = useState(0);
 
     const resetGame = useCallback(() => {
@@ -59,9 +68,9 @@ export const useGameStateControl = (gameSize) => {
         setGrid(newGrid);
         setIsPlaying(true);
         setIsFirstRevealed(false);
-        setBeesRemaining(R.o(
+        setFlagsRemaining(R.o(
             R.length,
-            R.reject(R.prop('isBee')),
+            R.filter(R.prop('isBee')),
         )(newGrid));
         setScore(0);
     }, [generateGrid]);
@@ -79,15 +88,20 @@ export const useGameStateControl = (gameSize) => {
 
         if (isFlagged) {
             hiveCell.setIsFlagged(false);
+            setFlagsRemaining(R.add(1));
             setScore(R.add(-SCORE.FLAG));
         } else {
-            hiveCell.setIsFlagged(true);
-            setScore(R.add(SCORE.FLAG));
-            setBeesRemaining(R.add(-1));
+            if (flagsRemaining > 0) {
+                hiveCell.setIsFlagged(true);
+                setFlagsRemaining(R.add(-1));
+                setScore(R.add(SCORE.FLAG));
+            }
         }
         
         setGrid(R.update(index, hiveCell));
-    }, [isPlaying]);
+
+        checkWinCondition(grid, setIsPlaying);
+    }, [isPlaying, flagsRemaining, grid]);
 
     const revealCell = useCallback((hiveCell) => {
         if (!isPlaying) {
@@ -95,6 +109,14 @@ export const useGameStateControl = (gameSize) => {
         }
 
         const { index, isBee, isRevealed, isFlagged, neighbors } = hiveCell;
+
+        if (isFlagged) {
+            hiveCell.setIsFlagged(false);
+            setFlagsRemaining(R.add(1));
+            setScore(R.add(-SCORE.FLAG));
+            setGrid(R.update(index, hiveCell));
+            return;
+        }
 
         if (isBee) {
             if (!isFirstRevealed) {
@@ -110,7 +132,9 @@ export const useGameStateControl = (gameSize) => {
                 }), {})([hiveCell, ...neighbors]);
                 setGrid(R.map((cell) => updatedCells[cell.index] ?? cell));
 
-                handleRevealCell(hiveCell, setIsFirstRevealed, setScore, setGrid);
+                setFlagsRemaining(R.add(-1));
+
+                handleRevealCell(hiveCell, setIsFirstRevealed, setScore, grid, setGrid, setIsPlaying);
                 return;
             } else {
                 setGrid(R.forEach((cell) => {
@@ -131,15 +155,8 @@ export const useGameStateControl = (gameSize) => {
             return;
         }
 
-        if (isFlagged) {
-            hiveCell.setIsFlagged(false);
-            setScore(R.add(-SCORE.FLAG));
-            setGrid(R.update(index, hiveCell));
-            return;
-        }
-
-        handleRevealCell(hiveCell, setIsFirstRevealed, setScore, setGrid);
-    }, [isPlaying, isFirstRevealed]);
+        handleRevealCell(hiveCell, setIsFirstRevealed, setScore, grid, setGrid, setIsPlaying);
+    }, [isPlaying, isFirstRevealed, grid]);
     
-    return { grid, beesRemaining, score, resetGame, flagCell, revealCell };
+    return { grid, flagsRemaining, score, resetGame, flagCell, revealCell };
 };
