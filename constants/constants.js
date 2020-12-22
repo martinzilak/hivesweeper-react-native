@@ -11,9 +11,21 @@ export const HIVE_DIMENSION = {
 };
 
 export const HIVE_SIZE = {
-    SMALL: 8,
-    MEDIUM: 10,
-    LARGE: 12,
+    SMALL: 6,
+    MEDIUM: 8,
+    LARGE: 10,
 };
 
-export const BEE_PROBABILITY = 0.2;
+export const BEE_X_OFFSET = {
+    [HIVE_SIZE.SMALL]: 2.5,
+    [HIVE_SIZE.MEDIUM]: 2,
+    [HIVE_SIZE.LARGE]: 1.5,
+};
+
+export const BEE_PROBABILITY = 0.33;
+
+export const SCORE = {
+    REVEAL_PLAYER: 3,
+    REVEAL_AUTOMATIC: 1,
+    FLAG: 2,
+};

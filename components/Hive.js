@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import Svg from 'react-native-svg';
 import * as R from 'ramda';
-import HiveCell from './HiveCell';
 import { HIVE_DIMENSION } from '../constants/constants';
+import HiveCell from './HiveCell';
 
-const Hive = ({ grid, revealCell, flagCell }) => (
+const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
     <View style={styles.view}>
         <Svg
             width={HIVE_DIMENSION.WIDTH}
@@ -14,6 +15,7 @@ const Hive = ({ grid, revealCell, flagCell }) => (
             {R.map((hex) => (
                 <HiveCell
                     key={hex.id}
+                    gameSize={gameSize}
                     hex={hex}
                     revealCell={revealCell}
                     flagCell={flagCell}
@@ -22,6 +24,13 @@ const Hive = ({ grid, revealCell, flagCell }) => (
         </Svg>
     </View>
 );
+
+Hive.propTypes = {
+    grid: PropTypes.arrayOf(PropTypes.object),
+    gameSize: PropTypes.number,
+    revealCell: PropTypes.func,
+    flagCell: PropTypes.func,
+};
 
 const styles = StyleSheet.create({
     view: {

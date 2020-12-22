@@ -1,78 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
+  View,
+  Text,
   StyleSheet,
-  Alert,
 } from 'react-native';
-import * as R from 'ramda';
 import Hive from './components/Hive';
 import { HIVE_SIZE } from './constants/constants';
-import { useHexGridFactory } from './hooks/useHexGridFactory';
-import HexagonButton from "./components/HexagonButton";
-
-const revealCell = R.curry((setGrid, generateGrid, hex) => {
-  const { index, isBee, isRevealed, isFlagged, neighbors } = hex;
-
-  if (isBee) {
-    Alert.alert('YOU LOSE', null, 'Ok');
-    setGrid(generateGrid());
-    return;
-  }
-
-  if (isRevealed) {
-    return;
-  }
-
-  if (isFlagged) {
-    hex.setIsFlagged(false);
-    setGrid(R.update(index, hex));
-    return;
-  }
-
-  hex.setIsRevealed(true);
-  setGrid(R.update(index, hex));
-
-  neighbors.forEach((neighbor) => {
-    const {
-      index: neighborIndex,
-      isRevealed: neighborRevealed,
-      isBee: neighborBee,
-      isFlagged: neighborFlagged,
-      neighboringBees: neighborNeighboringBees,
-    } = neighbor;
-    if (!neighborRevealed && !neighborBee && ! neighborFlagged && neighborNeighboringBees === 0) {
-      neighbor.setIsRevealed(true);
-      setGrid(R.update(neighborIndex, neighbor));
-    }
-  });
-});
-
-const flagCell = R.curry((setGrid, hex) => {
-  const { index, isRevealed, isFlagged } = hex;
-
-  if (isRevealed) {
-    return;
-  }
-
-  hex.setIsFlagged(!isFlagged);
-  setGrid(R.update(index, hex));
-});
+import HexagonButton from './components/HexagonButton';
+import { useGameStateControl } from './hooks/useGameStateControl';
 
 const App = () => {
-  const { generateGrid } = useHexGridFactory(HIVE_SIZE.SMALL);
-  const [grid, setGrid] = useState(generateGrid());
+  const gameSize = HIVE_SIZE.SMALL;
+
+  const {
+    grid,
+    beesRemaining,
+    score,
+    resetGame,
+    flagCell,
+    revealCell,
+  } = useGameStateControl(gameSize);
+
+  useEffect(() => {
+    resetGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [/* component did mount */]);
 
   return (
     <>
       <SafeAreaView style={styles.safeAreaView}>
+        <View style={styles.scoreView}>
+          <Text style={styles.scoreText}>
+            {`SCORE ${score}`}
+          </Text>
+
+          <Text style={styles.scoreText}>
+            {`BEES ${beesRemaining}`}
+          </Text>
+        </View>
+        
         <Hive
             grid={grid}
-            revealCell={revealCell(setGrid, generateGrid)}
-            flagCell={flagCell(setGrid)}
+            gameSize={gameSize}
+            revealCell={revealCell}
+            flagCell={flagCell}
         />
 
         <HexagonButton
-            onPress={() => Alert.alert('test', null, 'Ok')}
+            onPress={() => resetGame()}
+            text={'reset'}
         />
       </SafeAreaView>
     </>
@@ -84,6 +61,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  scoreView: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  scoreText: {
+    borderWidth: 1,
+    borderColor: 'red',
+    color: 'brown',
+    fontSize: 28,
+    fontWeight: '600',
   },
 });
 
