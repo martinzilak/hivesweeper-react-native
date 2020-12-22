@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import Hive from '../components/Hive';
 import HexagonButton from '../components/HexagonButton';
 import { useGameStateControl } from '../hooks/useGameStateControl';
-import { GameSizeContext } from '../contexts/GameSizeContext';
+import GameSettingsContext from '../contexts/GameSettingsContext';
+import { SCREEN } from '../constants/constants';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
-const GameScreen = () => {
-    const gameSize = useContext(GameSizeContext);
+const GameScreen = ({ navigation }) => {
+    const { gameSize } = useContext(GameSettingsContext);
 
     const {
         grid,
@@ -35,27 +37,42 @@ const GameScreen = () => {
                 </Text>
             </View>
 
-            <Hive
-                grid={grid}
-                gameSize={gameSize}
-                revealCell={revealCell}
-                flagCell={flagCell}
-            />
+            <View style={styles.hiveWrapper}>
+                <Hive
+                    grid={grid}
+                    gameSize={gameSize}
+                    revealCell={revealCell}
+                    flagCell={flagCell}
+                />
+            </View>
 
-            <HexagonButton
-                onPress={() => resetGame()}
-                text={'reset'}
-            />
+            <View style={styles.buttonsWrapper}>
+                <HexagonButton
+                    onPress={() => resetGame()}
+                    text={'RESET'}
+                />
+
+                <HexagonButton
+                    onPress={() => navigation.navigate(SCREEN.MAIN_MENU)}
+                    text={'MAIN MENU'}
+                />
+            </View>
         </BackgroundScreenWrapper>
     );
 };
 
+GameScreen.propTypes = {
+    navigation: PropTypes.object,
+};
+
 const styles = StyleSheet.create({
     scoreWrapper: {
+        flex: 1,
         width: '95%',
+        paddingTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     scoreText: {
         padding: 5,
@@ -65,6 +82,15 @@ const styles = StyleSheet.create({
         color: 'brown',
         fontSize: 28,
         fontWeight: '600',
+    },
+    hiveWrapper: {
+        flex: 4,
+        justifyContent: 'flex-start',
+    },
+    buttonsWrapper: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 });
 
