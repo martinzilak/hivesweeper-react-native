@@ -1,40 +1,91 @@
 import React from 'react';
-import { Polygon } from 'react-native-svg';
+import PropTypes from 'prop-types';
+import { G, Polygon, Image, Text } from 'react-native-svg';
+import { BEE, FLAG } from '../assets/images/Images';
+import { BEE_X_OFFSET } from '../constants/constants';
 
-const HiveCell = ({ hex, revealCell, flagCell }) => {
-    const { x, y, pointsString, isBee, isFlagged, isRevealed } = hex;
+const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
+    const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = hex;
 
     return (
-        <Polygon
+        <G
             x={x}
             y={y}
-            points={pointsString}
-            fill={getFillColor(isBee, isRevealed, isFlagged)}
-            stroke={styles.stroke}
-            strokeWidth={styles.strokeWidth}
-            onPress={() => revealCell(hex)}
-            onLongPress={() => flagCell(hex)}
-        />
+        >
+            <Polygon
+                points={pointsString}
+                fill={getFillColor(isBee, isRevealed, isFlagged)}
+                {...polygonStyles}
+                onPress={() => revealCell(hex)}
+                onLongPress={() => flagCell(hex)}
+            />
+            {isRevealed && (
+                isBee ? (
+                    <Image
+                        {...getImageStyles(gameSize, cellSize)}
+                        href={BEE}
+                    />
+                ) : (
+                    <Text
+                        x={cellSize}
+                        y={1.2 * cellSize}
+                        textAnchor="middle"
+                        {...getTextStyles(cellSize)}
+                    >
+                        {neighboringBees}
+                    </Text>
+                )
+            )}
+            {isFlagged && (
+                <Image
+                    {...getImageStyles(gameSize, cellSize)}
+                    href={FLAG}
+                />
+            )}
+        </G>
     );
 };
 
-const styles = {
-    fill: 'yellow',
-    revealedFill: 'blue',
-    beeFill: 'black',
-    flaggedFill: 'green',
+HiveCell.propTypes = {
+    gameSize: PropTypes.number,
+    hex: PropTypes.object,
+    revealCell: PropTypes.func,
+    flagCell: PropTypes.func,
+};
+
+const polygonStyles = {
     stroke: 'orange',
     strokeWidth: 1,
 };
 
+const getImageStyles = (gameSize, cellSize) => ({
+    x: `${BEE_X_OFFSET[gameSize]}%`,
+    y: '1%',
+    width: 1.5 * cellSize,
+    height: 1.5 * cellSize,
+});
+
+const getTextStyles = (cellSize) => ({
+    fill: 'brown',
+    fontSize: cellSize,
+    fontWeight: 'bold',
+});
+
+const fillColors = {
+    normal: 'yellow',
+    revealed: 'gold',
+    bee: 'tomato',
+    flagged: 'goldenrod',
+};
+
 const getFillColor = (isBee, isRevealed, isFlagged) => {
     if (isRevealed) {
-        return isBee ? styles.beeFill : styles.revealedFill;
+        return isBee ? fillColors.bee : fillColors.revealed;
     }
     if (isFlagged) {
-        return styles.flaggedFill;
+        return fillColors.flagged;
     }
-    return styles.fill;
+    return fillColors.normal;
 };
 
 export default HiveCell;
