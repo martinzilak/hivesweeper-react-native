@@ -1,6 +1,3 @@
-import * as R from 'ramda';
+import { getPointsStringFromCorners } from './getPointsStringFromCorners';
 
-export const getPointsStringFromPrimitiveHex = (hex) => R.o(
-    R.join(' '),
-    R.map(({ x, y }) => `${x},${y}`),
-)(hex.corners());
+export const getPointsStringFromPrimitiveHex = (hex) => getPointsStringFromCorners(hex.corners());
