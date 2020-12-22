@@ -29,3 +29,10 @@ export const SCORE = {
     REVEAL_AUTOMATIC: 1,
     FLAG: 2,
 };
+
+export const SCREEN = {
+    MAIN_MENU: 'MainMenuScreen',
+    NEW_GAME_SIZE: 'NewGameSizeScreen',
+    GAME: 'GameScreen',
+    PAUSE_MENU: 'PauseMenuScreen',
+};

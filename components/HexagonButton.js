@@ -2,12 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Svg, { Polygon, Text } from 'react-native-svg';
-import * as R from 'ramda';
 import { HIVE_DIMENSION } from '../constants/constants';
 import { getFlatHexagonPoints } from '../utils/getFlatHexagonPoints';
 import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners';
 
-const HexagonButton = ({ width = HIVE_DIMENSION.WIDTH, height = 60, text, onPress, onLongPress }) => {
+const HexagonButton = ({
+    width = HIVE_DIMENSION.WIDTH,
+    height = 60,
+    text,
+    onPress,
+    onLongPress,
+    polygonFill = 'gold',
+    polygonStroke = 'orange',
+    textFill = 'brown',
+}) => {
     const pointsString = getPointsStringFromCorners(getFlatHexagonPoints(width, height));
 
     return (
@@ -24,16 +32,16 @@ const HexagonButton = ({ width = HIVE_DIMENSION.WIDTH, height = 60, text, onPres
                         x={0}
                         y={0}
                         points={pointsString}
-                        {...polygonStyles}
+                        {...getPolygonStyles(polygonFill, polygonStroke)}
                     />
                     {text && (
                         <Text
                             x={width / 2}
                             y={0.75 * height}
                             textAnchor="middle"
-                            {...getTextStyles(height)}
+                            {...getTextStyles(textFill, height)}
                         >
-                            {R.toUpper(text)}
+                            {text}
                         </Text>
                     )}
                 </Svg>
@@ -50,14 +58,14 @@ HexagonButton.propTypes = {
     onLongPress: PropTypes.func,
 };
 
-const polygonStyles = {
-    fill: 'gold',
-    stroke: 'orange',
+const getPolygonStyles = (polygonFill, polygonStroke) => ({
+    fill: polygonFill,
+    stroke: polygonStroke,
     strokeWidth: 2,
-};
+});
 
-const getTextStyles = (buttonHeight) => ({
-    fill: 'brown',
+const getTextStyles = (textFill, buttonHeight) => ({
+    fill: textFill,
     fontSize: Math.ceil (0.66 * buttonHeight),
     fontWeight: '600',
 });

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
-import Svg from 'react-native-svg';
+import Svg, { G } from 'react-native-svg';
 import * as R from 'ramda';
-import { HIVE_DIMENSION } from '../constants/constants';
+import { HIVE_DIMENSION, HIVE_SIZE } from '../constants/constants';
 import HiveCell from './HiveCell';
 
 const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
@@ -12,15 +12,19 @@ const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
             width={HIVE_DIMENSION.WIDTH}
             height={HIVE_DIMENSION.HEIGHT}
         >
-            {R.map((hex) => (
-                <HiveCell
-                    key={hex.id}
-                    gameSize={gameSize}
-                    hex={hex}
-                    revealCell={revealCell}
-                    flagCell={flagCell}
-                />
-            ))(grid)}
+            <G
+                y={gameSize === HIVE_SIZE.MEDIUM ? 20 : 0}
+            >
+                {R.map((hex) => (
+                    <HiveCell
+                        key={hex.id}
+                        gameSize={gameSize}
+                        hex={hex}
+                        revealCell={revealCell}
+                        flagCell={flagCell}
+                    />
+                ))(grid)}
+            </G>
         </Svg>
     </View>
 );
