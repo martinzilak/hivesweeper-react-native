@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import * as R from 'ramda';
 import { useHiveGridFactory } from './useHiveGridFactory';
-import { SCORE } from '../constants/constants';
+import { SCORE } from '../constants/Constants';
 
 const checkWinCondition = (grid, setIsPlaying) => {
     if (R.all((cell) => cell.isRevealed || cell.isBee)(grid)) {
