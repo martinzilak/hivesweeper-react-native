@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Svg, { Polygon, Text } from 'react-native-svg';
-import { HIVE_DIMENSION } from '../constants/constants';
+import { HIVE_DIMENSION } from '../constants/Constants';
 import { getFlatHexagonPoints } from '../utils/getFlatHexagonPoints';
 import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners';
 
 const HexagonButton = ({
+    styles,
     width = HIVE_DIMENSION.WIDTH,
     height = 60,
     text,
@@ -19,7 +20,7 @@ const HexagonButton = ({
     const pointsString = getPointsStringFromCorners(getFlatHexagonPoints(width, height));
 
     return (
-        <View style={styles.view}>
+        <View style={styles}>
             <TouchableOpacity
                 onPress={onPress}
                 onLongPress={onLongPress}
@@ -51,6 +52,7 @@ const HexagonButton = ({
 };
 
 HexagonButton.propTypes = {
+    styles: PropTypes.object,
     width: PropTypes.number,
     height: PropTypes.number,
     text: PropTypes.string,
@@ -68,10 +70,6 @@ const getTextStyles = (textFill, buttonHeight) => ({
     fill: textFill,
     fontSize: Math.ceil (0.66 * buttonHeight),
     fontWeight: '600',
-});
-
-const styles = StyleSheet.create({
-    view: {},
 });
 
 export default HexagonButton;
