@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { GameSettingsProvider } from './contexts/GameSettingsContext';
-import { SCREEN } from './constants/constants';
+import { SCREEN } from './constants/Constants';
 import MainMenuScreen from './screens/MainMenuScreen';
 import NewGameSizeScreen from './screens/NewGameSizeScreen';
 import GameScreen from './screens/GameScreen';
@@ -21,7 +21,6 @@ const App = () => (
                 <Stack.Screen name={SCREEN.MAIN_MENU} component={MainMenuScreen} />
                 <Stack.Screen name={SCREEN.NEW_GAME_SIZE} component={NewGameSizeScreen} />
                 <Stack.Screen name={SCREEN.GAME} component={GameScreen} />
-                {/*<Stack.Screen name={SCREEN.PAUSE_MENU} component={PauseMenuScreen} />*/}
             </Stack.Navigator>
         </GameSettingsProvider>
     </NavigationContainer>
