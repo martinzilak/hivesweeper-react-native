@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import HexagonButton from '../components/HexagonButton';
+import Logo from '../components/Logo';
 import { useGameSettings } from '../hooks/useGameSettings';
-import { HIVE_SIZE, SCREEN } from '../constants/constants';
+import { HIVE_SIZE, SCREEN } from '../constants/Constants';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
 const NewGameSizeScreen = ({ navigation }) => {
@@ -16,10 +17,8 @@ const NewGameSizeScreen = ({ navigation }) => {
 
     return (
         <BackgroundScreenWrapper>
-            <View style={styles.titleWrapper}>
-                <Text style={styles.titleText}>
-                    SIZE
-                </Text>
+            <View style={styles.logoWrapper}>
+                <Logo />
             </View>
 
             <View style={styles.sizesWrapper}>
@@ -44,7 +43,6 @@ const NewGameSizeScreen = ({ navigation }) => {
 
             <View style={styles.backWrapper}>
                 <HexagonButton
-                    styles={styles.backButton}
                     text="BACK"
                     onPress={() => navigation.navigate(SCREEN.MAIN_MENU)}
                 />
@@ -58,36 +56,27 @@ NewGameSizeScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-    titleWrapper: {
+    logoWrapper: {
+        width: '100%',
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingTop: 10,
-    },
-    titleText: {
-        padding: 5,
-        borderWidth: 1,
-        borderColor: 'orange',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        color: 'brown',
-        fontSize: 40,
-        fontWeight: '600',
+        paddingBottom: 40,
     },
     sizesWrapper: {
         flex: 1,
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
     sizeButton: {
+        paddingTop: 10,
         paddingBottom: 10,
     },
     backWrapper: {
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
-    },
-    backButton: {
-        marginBottom: 10,
     },
 });
 
