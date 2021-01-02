@@ -5,7 +5,7 @@ import Hive from '../components/Hive';
 import HexagonButton from '../components/HexagonButton';
 import { useGameStateControl } from '../hooks/useGameStateControl';
 import GameSettingsContext from '../contexts/GameSettingsContext';
-import { SCREEN } from '../constants/constants';
+import { SCREEN } from '../constants/Constants';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
 const GameScreen = ({ navigation }) => {

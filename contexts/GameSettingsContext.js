@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {HIVE_SIZE} from "../constants/constants";
+import {HIVE_SIZE} from "../constants/Constants";
 
 const GameSettingsContext = React.createContext();
 
 const defaultSettings = {
     gameSize: HIVE_SIZE.SMALL,
     isSoundEnabled: true,
+    isMusicEnabled: true,
 };
 
 export const GameSettingsProvider = ({ settings, children }) => {
@@ -25,6 +26,13 @@ export const GameSettingsProvider = ({ settings, children }) => {
         }));
     };
 
+    const setIsMusicEnabled = (isMusicEnabled) => {
+        setGameSettings((previousSettings) => ({
+            ...previousSettings,
+            isMusicEnabled,
+        }));
+    };
+
     return (
         <GameSettingsContext.Provider
             value={{
@@ -32,6 +40,8 @@ export const GameSettingsProvider = ({ settings, children }) => {
                 setGameSize,
                 isSoundEnabled: gameSettings.isSoundEnabled,
                 setIsSoundEnabled,
+                isMusicEnabled: gameSettings.isMusicEnabled,
+                setIsMusicEnabled,
             }}
         >
             {children}

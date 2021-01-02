@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
-import { BACKGROUND } from '../assets/images/Images';
+import PropTypes from 'prop-types';
+import { BACKGROUND } from '../assets/Images';
 
 const BackgroundScreenWrapper = ({ children }) => (
     <ImageBackground
