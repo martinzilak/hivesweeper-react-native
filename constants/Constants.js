@@ -11,18 +11,24 @@ export const HIVE_DIMENSION = {
 };
 
 export const HIVE_SIZE = {
-    SMALL: 6,
-    MEDIUM: 8,
-    LARGE: 10,
+    SMALL: 4,
+    MEDIUM: 6,
+    LARGE: 8,
 };
 
 export const BEE_X_OFFSET = {
-    [HIVE_SIZE.SMALL]: 2.5,
-    [HIVE_SIZE.MEDIUM]: 2,
-    [HIVE_SIZE.LARGE]: 1.5,
+    [HIVE_SIZE.SMALL]: 3.5,
+    [HIVE_SIZE.MEDIUM]: 2.5,
+    [HIVE_SIZE.LARGE]: 2,
 };
 
-export const BEE_PROBABILITY = 0.33;
+export const HIVE_Y_OFFSET = {
+    [HIVE_SIZE.SMALL]: 25,
+    [HIVE_SIZE.MEDIUM]: -5,
+    [HIVE_SIZE.LARGE]: 20,
+};
+
+export const BEE_PROBABILITY = 0.3;
 
 export const SCORE = {
     REVEAL_PLAYER: 3,
@@ -34,5 +40,8 @@ export const SCREEN = {
     MAIN_MENU: 'MainMenuScreen',
     NEW_GAME_SIZE: 'NewGameSizeScreen',
     GAME: 'GameScreen',
-    PAUSE_MENU: 'PauseMenuScreen',
 };
+
+export const MINIMUM_BEE_COUNT = 2;
+
+export const MAXIMUM_NEIGHBORING_BEE_COUNT = 3;
