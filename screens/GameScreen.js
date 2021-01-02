@@ -27,12 +27,12 @@ const GameScreen = ({ navigation }) => {
 
     return (
         <BackgroundScreenWrapper>
-            <View style={styles.scoreWrapper}>
-                <Text style={styles.scoreText}>
+            <View style={styles.statsWrapper}>
+                <Text style={styles.statsText}>
                     {`SCORE ${score}`}
                 </Text>
 
-                <Text style={styles.scoreText}>
+                <Text style={styles.statsText}>
                     {`FLAGS ${flagsRemaining}`}
                 </Text>
             </View>
@@ -66,7 +66,7 @@ GameScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-    scoreWrapper: {
+    statsWrapper: {
         flex: 1,
         width: '95%',
         paddingTop: 10,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
     },
-    scoreText: {
+    statsText: {
         padding: 5,
         borderWidth: 1,
         borderColor: 'orange',

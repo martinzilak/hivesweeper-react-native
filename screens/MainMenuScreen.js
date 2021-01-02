@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import { useGameSettings } from '../hooks/useGameSettings';
 import { SCREEN } from '../constants/Constants';
@@ -37,13 +37,6 @@ const MainMenuScreen = ({ navigation }) => {
                     {...getExtraOptionButtonStyles(isSoundEnabled)}
                 />
             </View>
-
-            <View style={styles.quitWrapper}>
-                <HexagonButton
-                    text="QUIT"
-                    onPress={() => {}}
-                />
-            </View>
         </BackgroundScreenWrapper>
     );
 };
@@ -73,18 +66,13 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
     },
     optionsWrapper: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
     optionButton: {
         paddingTop: 10,
         paddingBottom: 10,
-    },
-    quitWrapper: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
     },
 });
 
