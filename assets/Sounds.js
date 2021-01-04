@@ -29,6 +29,6 @@ WIN.setNumberOfLoops(0);
 
 const MUSIC_LOOP = new Sound(require('./sounds/music_loop.mp3'));
 MUSIC_LOOP.setVolume(1);
-MUSIC_LOOP.setNumberOfLoops(-1);
+MUSIC_LOOP.setNumberOfLoops(0);
 
 export { BEE, CLICK, FLAG, LOSE, REVEAL, WIN, MUSIC_LOOP };

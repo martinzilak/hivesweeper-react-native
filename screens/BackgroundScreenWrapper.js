@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BACKGROUND } from '../assets/Images';
 import { MUSIC_LOOP } from '../assets/Sounds';
+import { playMusicLoop } from '../utils/playMusicLoop';
 import { useGameSettings } from '../hooks/useGameSettings';
 
 const BackgroundScreenWrapper = ({ children }) => {
@@ -11,11 +12,11 @@ const BackgroundScreenWrapper = ({ children }) => {
     useEffect(() => {
         if (isMusicEnabled) {
             if (!MUSIC_LOOP.isPlaying()) {
-                MUSIC_LOOP.play();
+                playMusicLoop();
             }
         } else {
             if (MUSIC_LOOP.isPlaying()) {
-                MUSIC_LOOP.pause();
+                MUSIC_LOOP.stop();
             }
         }
     }, [isMusicEnabled]);

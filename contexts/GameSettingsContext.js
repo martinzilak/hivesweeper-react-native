@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {HIVE_SIZE} from "../constants/Constants";
+import React, { useState } from 'react';
+import { HIVE_SIZE } from '../constants/Constants';
 
 const GameSettingsContext = React.createContext();
 
