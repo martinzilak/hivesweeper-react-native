@@ -1,25 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BACKGROUND } from '../assets/Images';
-import { MUSIC_LOOP } from '../assets/Sounds';
-import { playMusicLoop } from '../utils/playMusicLoop';
-import { useGameSettings } from '../hooks/useGameSettings';
+import { useMusicLoopHandler } from '../hooks/useMusicLoopHandler';
 
 const BackgroundScreenWrapper = ({ children }) => {
-    const { isMusicEnabled } = useGameSettings();
-
-    useEffect(() => {
-        if (isMusicEnabled) {
-            if (!MUSIC_LOOP.isPlaying()) {
-                playMusicLoop();
-            }
-        } else {
-            if (MUSIC_LOOP.isPlaying()) {
-                MUSIC_LOOP.stop();
-            }
-        }
-    }, [isMusicEnabled]);
+    useMusicLoopHandler();
 
     return (
         <ImageBackground
