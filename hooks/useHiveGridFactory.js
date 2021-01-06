@@ -1,18 +1,16 @@
 import { useMemo, useCallback } from 'react';
 import { defineGrid, extendHex } from 'honeycomb-grid';
 import * as R from 'ramda';
-import {
-    HIVE_DIMENSION,
-    MINIMUM_BEE_COUNT,
-    BEE_PROBABILITY,
-    MAXIMUM_NEIGHBORING_BEE_COUNT,
-} from '../constants/Constants';
 import { HiveCellHex } from '../classes/HiveCellHex';
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
 import { mapIndexed } from '../utils/mapIndexed';
 import randomSubset from '../utils/randomSubset';
+import { HiveDimension } from '../constants/HiveDimension';
+import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
+import { BeeCount } from '../constants/BeeCount';
+import { NeighboringBeeCountUpperBound } from '../constants/NeighboringBeeCountUpperBound';
 
-const getCellSize = (hiveSize) => HIVE_DIMENSION.WIDTH / (1.5 * hiveSize + 2);
+const getCellSize = (hiveSize) => HiveDimension.WIDTH / (1.5 * hiveSize + 2);
 
 export const useHiveGridFactory = (hiveSize) => {
     const HexFactory = useMemo(() => extendHex({
@@ -30,7 +28,7 @@ export const useHiveGridFactory = (hiveSize) => {
 
         let beeCount = 0;
 
-        const hiveCellsById = R.o(
+        const hiveCellsById = R.compose(
             // map by hex ID to allow neighbor mapping
             R.reduce((accumulatedHiveCellsById, cell) => ({
                 ...accumulatedHiveCellsById,
@@ -40,9 +38,8 @@ export const useHiveGridFactory = (hiveSize) => {
             mapIndexed((primitiveHex, index) => {
                 const cell = new HiveCellHex(primitiveHex, index);
 
-                const isBee = beeCount < MINIMUM_BEE_COUNT || Math.random() <= BEE_PROBABILITY;
-                cell.setIsBee(isBee);
-                if (isBee) {
+                if (beeCount < BeeCount[hiveSize] || Math.random() <= ExtraBeeProbability[hiveSize]) {
+                    cell.setIsBee(true);
                     beeCount += 1;
                 }
 
@@ -50,16 +47,18 @@ export const useHiveGridFactory = (hiveSize) => {
 
                 return cell;
             }),
+            // shuffle the grid
+            randomSubset(grid.length),
         )(grid);
 
         return R.compose(
             // limit maximum neighboring bee count
             R.forEach((cell) => {
-                if (cell.neighboringBees <= MAXIMUM_NEIGHBORING_BEE_COUNT) {
+                if (cell.neighboringBees <= NeighboringBeeCountUpperBound[hiveSize]) {
                     return;
                 }
 
-                const limitExceededBy = cell.neighboringBees - MAXIMUM_NEIGHBORING_BEE_COUNT;
+                const limitExceededBy = cell.neighboringBees - NeighboringBeeCountUpperBound[hiveSize];
 
                 R.compose(
                     R.forEach((neighbor) => {
