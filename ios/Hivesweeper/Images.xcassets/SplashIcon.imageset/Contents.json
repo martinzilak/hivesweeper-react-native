@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "splash_440.png",
+      "filename" : "splash_300.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "splash_660.png",
+      "filename" : "splash_600.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "splash_880.png",
+      "filename" : "splash_900.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
