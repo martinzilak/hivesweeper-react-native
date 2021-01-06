@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     hiveWrapper: {
-        flex: 4,
-        justifyContent: 'flex-start',
+        flex: 9,
+        justifyContent: 'center',
     },
     buttonsWrapper: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'space-between',
         alignItems: 'center',
     },
