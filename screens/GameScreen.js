@@ -7,6 +7,7 @@ import { useGameStateControl } from '../hooks/useGameStateControl';
 import GameSettingsContext from '../contexts/GameSettingsContext';
 import { Screen } from '../constants/Screen';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
+import {HiveDimension} from "../constants/HiveDimension";
 
 const GameScreen = ({ navigation }) => {
     const { gameSize } = useContext(GameSettingsContext);
@@ -49,12 +50,14 @@ const GameScreen = ({ navigation }) => {
             <View style={styles.buttonsWrapper}>
                 <HexagonButton
                     onPress={() => resetGame()}
+                    width={Math.ceil(0.45 * HiveDimension.WIDTH)}
                     text={'RESET'}
                 />
 
                 <HexagonButton
                     onPress={() => navigation.navigate(Screen.MAIN_MENU)}
-                    text={'MAIN MENU'}
+                    width={Math.ceil(0.45 * HiveDimension.WIDTH)}
+                    text={'MENU'}
                 />
             </View>
         </BackgroundScreenWrapper>
@@ -84,13 +87,16 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     hiveWrapper: {
-        flex: 9,
+        flex: 10,
         justifyContent: 'center',
     },
     buttonsWrapper: {
-        flex: 2,
+        flex: 1,
+        width: '95%',
+        paddingBottom: 10,
+        flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
 });
 
