@@ -6,7 +6,7 @@ import { ActionScore } from '../constants/ActionScore';
 import { useHiveGridFactory } from './useHiveGridFactory';
 import { useGameSettings } from './useGameSettings';
 
-const checkWinCondition = (grid, setIsPlaying, isSoundEnabled) => {
+const checkWinCondition = (grid, setIsPlaying, isSoundEnabled, resetGame) => {
     if (R.all((cell) => cell.isRevealed || cell.isBee)(grid)) {
         setIsPlaying(false);
 
@@ -18,11 +18,12 @@ const checkWinCondition = (grid, setIsPlaying, isSoundEnabled) => {
             'You won!',
             null,
             [{
-                text: 'Ok',
+                text: 'Play again',
                 onPress: () => {
                     if (isSoundEnabled) {
                         CLICK.play();
                     }
+                    resetGame();
                 },
             }],
         );
@@ -37,6 +38,7 @@ const handleRevealCell = (
     setGrid,
     setIsPlaying,
     isSoundEnabled,
+    resetGame,
 ) => {
     const { index, neighboringBees, neighbors } = hiveCell;
 
@@ -81,7 +83,7 @@ const handleRevealCell = (
         }
     }
 
-    checkWinCondition(grid, setIsPlaying, isSoundEnabled);
+    checkWinCondition(grid, setIsPlaying, isSoundEnabled, resetGame);
 };
 
 export const useGameStateControl = (gameSize) => {
@@ -118,17 +120,19 @@ export const useGameStateControl = (gameSize) => {
             return;
         }
 
-        if (isSoundEnabled) {
-            FLAG.play();
-        }
-
         if (isFlagged) {
             hiveCell.setIsFlagged(false);
+            if (isSoundEnabled) {
+                FLAG.play();
+            }
             setFlagsRemaining(R.add(1));
             setScore(R.add(-ActionScore.FLAG));
         } else {
             if (flagsRemaining > 0) {
                 hiveCell.setIsFlagged(true);
+                if (isSoundEnabled) {
+                    FLAG.play();
+                }
                 setFlagsRemaining(R.add(-1));
                 setScore(R.add(ActionScore.FLAG));
             }
@@ -136,8 +140,8 @@ export const useGameStateControl = (gameSize) => {
         
         setGrid(R.update(index, hiveCell));
 
-        checkWinCondition(grid, setIsPlaying, isSoundEnabled);
-    }, [isPlaying, isSoundEnabled, flagsRemaining, grid]);
+        checkWinCondition(grid, setIsPlaying, isSoundEnabled, resetGame);
+    }, [isPlaying, isSoundEnabled, flagsRemaining, grid, resetGame]);
 
     const revealCell = useCallback((hiveCell) => {
         if (!isPlaying) {
@@ -183,6 +187,7 @@ export const useGameStateControl = (gameSize) => {
                     setGrid,
                     setIsPlaying,
                     isSoundEnabled,
+                    resetGame,
                 );
 
                 return;
@@ -206,13 +211,14 @@ export const useGameStateControl = (gameSize) => {
 
                 Alert.alert(
                     'You lost!',
-                    'Hint: Using a long press, flag a cell as a possible bee.',
+                    'Hint: Long press to flag cells you suspect are hiding a bee inside.',
                     [{
-                        text: 'Ok',
+                        text: 'Try again',
                         onPress: () => {
                             if (isSoundEnabled) {
                                 CLICK.play();
                             }
+                            resetGame();
                         },
                     }],
                 );
@@ -225,8 +231,17 @@ export const useGameStateControl = (gameSize) => {
             return;
         }
 
-        handleRevealCell(hiveCell, setHasFirstCellBeenRevealed, setScore, grid, setGrid, setIsPlaying, isSoundEnabled);
-    }, [isPlaying, isSoundEnabled, hasFirstCellBeenRevealed, grid]);
+        handleRevealCell(
+            hiveCell,
+            setHasFirstCellBeenRevealed,
+            setScore,
+            grid,
+            setGrid,
+            setIsPlaying,
+            isSoundEnabled,
+            resetGame,
+        );
+    }, [isPlaying, isSoundEnabled, hasFirstCellBeenRevealed, grid, resetGame]);
     
     return { grid, flagsRemaining, score, resetGame, flagCell, revealCell };
 };
