@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity } from 'react-native';
 import Svg, { Polygon, Text } from 'react-native-svg';
-import { HIVE_DIMENSION } from '../constants/Constants';
 import { getFlatHexagonPoints } from '../utils/getFlatHexagonPoints';
 import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners';
 import { useGameSettings } from '../hooks/useGameSettings';
 import { CLICK } from '../assets/Sounds';
+import { HiveDimension } from '../constants/HiveDimension';
 
 const HexagonButton = ({
     styles,
-    width = HIVE_DIMENSION.WIDTH,
+    width = HiveDimension.WIDTH,
     height = 60,
     text,
     onPress,

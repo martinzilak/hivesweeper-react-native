@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { HIVE_SIZE } from '../constants/Constants';
+import { HiveSize } from '../constants/HiveSize';
 
 const GameSettingsContext = React.createContext();
 
 const defaultSettings = {
-    gameSize: HIVE_SIZE.SMALL,
+    gameSize: HiveSize.SMALL,
     isSoundEnabled: true,
     isMusicEnabled: true,
 };

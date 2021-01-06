@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import Hive from '../components/Hive';
 import HexagonButton from '../components/HexagonButton';
 import { useGameStateControl } from '../hooks/useGameStateControl';
 import GameSettingsContext from '../contexts/GameSettingsContext';
-import { SCREEN } from '../constants/Constants';
+import { Screen } from '../constants/Screen';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
 const GameScreen = ({ navigation }) => {
@@ -53,7 +53,7 @@ const GameScreen = ({ navigation }) => {
                 />
 
                 <HexagonButton
-                    onPress={() => navigation.navigate(SCREEN.MAIN_MENU)}
+                    onPress={() => navigation.navigate(Screen.MAIN_MENU)}
                     text={'MAIN MENU'}
                 />
             </View>

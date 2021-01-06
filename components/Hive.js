@@ -1,19 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import Svg, { G } from 'react-native-svg';
+import PropTypes from 'prop-types';
 import * as R from 'ramda';
-import { HIVE_DIMENSION, HIVE_Y_OFFSET } from '../constants/Constants';
 import HiveCell from './HiveCell';
+import { HiveDimension } from '../constants/HiveDimension';
+import { HiveVerticalOffset } from '../constants/HiveVerticalOffset';
 
 const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
     <View style={styles.view}>
         <Svg
-            width={HIVE_DIMENSION.WIDTH}
-            height={HIVE_DIMENSION.HEIGHT}
+            width={HiveDimension.WIDTH}
+            height={HiveDimension.HEIGHT}
         >
             <G
-                y={HIVE_Y_OFFSET[gameSize]}
+                y={HiveVerticalOffset[gameSize]}
             >
                 {R.map((hex) => (
                     <HiveCell

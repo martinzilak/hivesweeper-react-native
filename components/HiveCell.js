@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { G, Polygon, Image, Text } from 'react-native-svg';
 import { BEE, FLAG } from '../assets/Images';
-import { BEE_X_OFFSET } from '../constants/Constants';
+import { BeeHorizontalOffset } from '../constants/BeeHorizontalOffset';
 
 const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
     const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = hex;
@@ -59,7 +59,7 @@ const polygonStyles = {
 };
 
 const getImageStyles = (gameSize, cellSize) => ({
-    x: `${BEE_X_OFFSET[gameSize]}%`,
+    x: `${BeeHorizontalOffset[gameSize]}%`,
     y: '1%',
     width: 1.5 * cellSize,
     height: 1.5 * cellSize,

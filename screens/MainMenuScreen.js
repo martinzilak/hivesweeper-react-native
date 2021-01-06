@@ -3,8 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import { useGameSettings } from '../hooks/useGameSettings';
-import { SCREEN } from '../constants/Constants';
 import Logo from '../components/Logo';
+import { Screen } from '../constants/Screen';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
 const MainMenuScreen = ({ navigation }) => {
@@ -20,7 +20,7 @@ const MainMenuScreen = ({ navigation }) => {
                 <HexagonButton
                     styles={styles.optionButton}
                     text="NEW GAME"
-                    onPress={() => navigation.navigate(SCREEN.NEW_GAME_SIZE)}
+                    onPress={() => navigation.navigate(Screen.NEW_GAME_SIZE)}
                 />
 
                 <HexagonButton

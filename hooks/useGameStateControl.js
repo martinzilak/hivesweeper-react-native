@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import * as R from 'ramda';
-import { useHiveGridFactory } from './useHiveGridFactory';
-import { SCORE } from '../constants/Constants';
 import { BEE, CLICK, FLAG, LOSE, REVEAL, WIN } from '../assets/Sounds';
+import { ActionScore } from '../constants/ActionScore';
+import { useHiveGridFactory } from './useHiveGridFactory';
 import { useGameSettings } from './useGameSettings';
 
 const checkWinCondition = (grid, setIsPlaying, isSoundEnabled) => {
@@ -47,7 +47,7 @@ const handleRevealCell = (
     }
 
     setHasFirstCellBeenRevealed(true);
-    setScore(R.add(SCORE.REVEAL_PLAYER));
+    setScore(R.add(ActionScore.REVEAL_PLAYER));
     setGrid(R.update(index, hiveCell));
 
     if (neighboringBees === 0) {
@@ -69,7 +69,7 @@ const handleRevealCell = (
             if (!neighborIsRevealed && !neighborIsBee && !neighborIsFlagged) {
                 neighbor.setIsRevealed(true);
                 setGrid(R.update(neighborIndex, neighbor));
-                setScore(R.add(SCORE.REVEAL_AUTOMATIC));
+                setScore(R.add(ActionScore.REVEAL_AUTOMATIC));
 
                 if (neighborNeighboringBees === 0) {
                     allNeighbors = [
@@ -125,12 +125,12 @@ export const useGameStateControl = (gameSize) => {
         if (isFlagged) {
             hiveCell.setIsFlagged(false);
             setFlagsRemaining(R.add(1));
-            setScore(R.add(-SCORE.FLAG));
+            setScore(R.add(-ActionScore.FLAG));
         } else {
             if (flagsRemaining > 0) {
                 hiveCell.setIsFlagged(true);
                 setFlagsRemaining(R.add(-1));
-                setScore(R.add(SCORE.FLAG));
+                setScore(R.add(ActionScore.FLAG));
             }
         }
         
@@ -154,7 +154,7 @@ export const useGameStateControl = (gameSize) => {
             }
 
             setFlagsRemaining(R.add(1));
-            setScore(R.add(-SCORE.FLAG));
+            setScore(R.add(-ActionScore.FLAG));
             setGrid(R.update(index, hiveCell));
             return;
         }
@@ -206,7 +206,7 @@ export const useGameStateControl = (gameSize) => {
 
                 Alert.alert(
                     'You lost!',
-                    null,
+                    'Hint: Using a long press, flag a cell as a possible bee.',
                     [{
                         text: 'Ok',
                         onPress: () => {
