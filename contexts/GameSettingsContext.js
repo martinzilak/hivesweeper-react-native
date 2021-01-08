@@ -1,37 +1,18 @@
-import React, { useState } from 'react';
-import { HiveSize } from '../constants/HiveSize';
+import React from 'react';
+import { usePersistentGameSettings } from '../hooks/usePersistentGameSettings';
 
 const GameSettingsContext = React.createContext();
 
-const defaultSettings = {
-    gameSize: HiveSize.SMALL,
-    isSoundEnabled: true,
-    isMusicEnabled: true,
-};
+export const GameSettingsProvider = ({ children }) => {
+    const { settings: gameSettings, writeSingleSetting: setGameSetting } = usePersistentGameSettings();
 
-export const GameSettingsProvider = ({ settings, children }) => {
-    const [gameSettings, setGameSettings] = useState(settings ?? defaultSettings);
+    const setGameSize = (gameSize) => setGameSetting({ gameSize });
 
-    const setGameSize = (gameSize) => {
-        setGameSettings((previousSettings) => ({
-            ...previousSettings,
-            gameSize,
-        }));
-    };
+    const setIsSoundEnabled = (isSoundEnabled) => setGameSetting({ isSoundEnabled });
 
-    const setIsSoundEnabled = (isSoundEnabled) => {
-        setGameSettings((previousSettings) => ({
-            ...previousSettings,
-            isSoundEnabled,
-        }));
-    };
+    const setIsMusicEnabled = (isMusicEnabled) => setGameSetting({ isMusicEnabled });
 
-    const setIsMusicEnabled = (isMusicEnabled) => {
-        setGameSettings((previousSettings) => ({
-            ...previousSettings,
-            isMusicEnabled,
-        }));
-    };
+    const setIsVibrationEnabled = (isVibrationEnabled) => setGameSetting({ isVibrationEnabled });
 
     return (
         <GameSettingsContext.Provider
@@ -42,6 +23,8 @@ export const GameSettingsProvider = ({ settings, children }) => {
                 setIsSoundEnabled,
                 isMusicEnabled: gameSettings.isMusicEnabled,
                 setIsMusicEnabled,
+                isVibrationEnabled: gameSettings.isVibrationEnabled,
+                setIsVibrationEnabled,
             }}
         >
             {children}
