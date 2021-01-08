@@ -1,10 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, TouchableOpacity } from 'react-native';
 import Svg, { Polygon, Text } from 'react-native-svg';
+import PropTypes from 'prop-types';
+import { usePlaySound } from '../hooks/usePlaySound';
+import { useVibrate } from '../hooks/useVibrate';
 import { getFlatHexagonPoints } from '../utils/getFlatHexagonPoints';
 import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners';
-import { useGameSettings } from '../hooks/useGameSettings';
 import { CLICK } from '../assets/Sounds';
 import { HiveDimension } from '../constants/HiveDimension';
 
@@ -15,28 +16,27 @@ const HexagonButton = ({
     text,
     onPress,
     onPressSound = CLICK,
-    onLongPress,
+    onLongPress = () => {},
     onLongPressSound,
     polygonFill = 'gold',
     polygonStroke = 'orange',
     textFill = 'brown',
 }) => {
     const pointsString = getPointsStringFromCorners(getFlatHexagonPoints(width, height));
-    const { isSoundEnabled } = useGameSettings();
+    const { playSound } = usePlaySound();
+    const { vibrate } = useVibrate();
 
     return (
         <View style={styles}>
             <TouchableOpacity
                 onPress={() => {
-                    if (onPressSound && isSoundEnabled) {
-                        onPressSound.play();
-                    }
+                    playSound(onPressSound);
+                    vibrate();
                     onPress();
                 }}
                 onLongPress={() => {
-                    if (onLongPressSound && isSoundEnabled) {
-                        onLongPressSound.play();
-                    }
+                    playSound(onLongPressSound);
+                    vibrate();
                     onLongPress();
                 }}
             >

@@ -4,11 +4,11 @@ import { MUSIC_LOOP } from '../assets/Sounds';
 import { playMusicLoop } from '../utils/playMusicLoop';
 import { useGameSettings } from './useGameSettings';
 
-export const useMusicLoopHandler = () => {
+export const usePlayMusicLoop = () => {
     const { isMusicEnabled } = useGameSettings();
     const isMusicEnabledRef = useRef(isMusicEnabled);
 
-    const _handleAppStateChange = useCallback((nextAppState) => {
+    const handleAppStateChange = useCallback((nextAppState) => {
         if (nextAppState === 'active') {
             if (isMusicEnabledRef.current && !MUSIC_LOOP.isPlaying()) {
                 playMusicLoop();
@@ -21,12 +21,12 @@ export const useMusicLoopHandler = () => {
     }, []);
 
     useEffect(() => {
-        AppState.addEventListener('change', _handleAppStateChange);
+        AppState.addEventListener('change', handleAppStateChange);
 
         return () => {
-            AppState.removeEventListener('change', _handleAppStateChange);
+            AppState.removeEventListener('change', handleAppStateChange);
         };
-    }, [_handleAppStateChange]);
+    }, [handleAppStateChange]);
 
     useEffect(() => {
         isMusicEnabledRef.current = isMusicEnabled;

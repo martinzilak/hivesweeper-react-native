@@ -3,16 +3,24 @@ import PropTypes from 'prop-types';
 import { G, Polygon, Image, Text } from 'react-native-svg';
 import { BEE, FLAG } from '../assets/Images';
 import { BeeHorizontalOffset } from '../constants/BeeHorizontalOffset';
+import { useVibrate } from '../hooks/useVibrate';
 
 const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
     const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = hex;
+    const { vibrate } = useVibrate();
 
     return (
         <G
             x={x}
             y={y}
-            onPress={() => revealCell(hex)}
-            onLongPress={() => flagCell(hex)}
+            onPress={() => {
+                revealCell(hex);
+                vibrate();
+            }}
+            onLongPress={() => {
+                flagCell(hex);
+                vibrate();
+            }}
         >
             <Polygon
                 points={pointsString}

@@ -4,15 +4,12 @@ import * as R from 'ramda';
 import { BEE, CLICK, FLAG, LOSE, REVEAL, WIN } from '../assets/Sounds';
 import { ActionScore } from '../constants/ActionScore';
 import { useHiveGridFactory } from './useHiveGridFactory';
-import { useGameSettings } from './useGameSettings';
+import { usePlaySound } from './usePlaySound';
 
-const checkWinCondition = (grid, setIsPlaying, isSoundEnabled, resetGame) => {
+const checkWinCondition = (grid, setIsPlaying, playSound, resetGame) => {
     if (R.all((cell) => cell.isRevealed || cell.isBee)(grid)) {
         setIsPlaying(false);
-
-        if (isSoundEnabled) {
-            WIN.play();
-        }
+        playSound(WIN);
 
         Alert.alert(
             'You won!',
@@ -20,9 +17,7 @@ const checkWinCondition = (grid, setIsPlaying, isSoundEnabled, resetGame) => {
             [{
                 text: 'Play again',
                 onPress: () => {
-                    if (isSoundEnabled) {
-                        CLICK.play();
-                    }
+                    playSound(CLICK);
                     resetGame();
                 },
             }],
@@ -37,16 +32,13 @@ const handleRevealCell = (
     grid,
     setGrid,
     setIsPlaying,
-    isSoundEnabled,
+    playSound,
     resetGame,
 ) => {
     const { index, neighboringBees, neighbors } = hiveCell;
 
     hiveCell.setIsRevealed(true);
-
-    if (isSoundEnabled) {
-        REVEAL.play();
-    }
+    playSound(REVEAL);
 
     setHasFirstCellBeenRevealed(true);
     setScore(R.add(ActionScore.REVEAL_PLAYER));
@@ -83,12 +75,12 @@ const handleRevealCell = (
         }
     }
 
-    checkWinCondition(grid, setIsPlaying, isSoundEnabled, resetGame);
+    checkWinCondition(grid, setIsPlaying, playSound, resetGame);
 };
 
 export const useGameStateControl = (gameSize) => {
     const { generateGrid } = useHiveGridFactory(gameSize);
-    const { isSoundEnabled } = useGameSettings();
+    const { playSound } = usePlaySound();
 
     const [grid, setGrid] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -122,17 +114,13 @@ export const useGameStateControl = (gameSize) => {
 
         if (isFlagged) {
             hiveCell.setIsFlagged(false);
-            if (isSoundEnabled) {
-                FLAG.play();
-            }
+            playSound(FLAG);
             setFlagsRemaining(R.add(1));
             setScore(R.add(-ActionScore.FLAG));
         } else {
             if (flagsRemaining > 0) {
                 hiveCell.setIsFlagged(true);
-                if (isSoundEnabled) {
-                    FLAG.play();
-                }
+                playSound(FLAG);
                 setFlagsRemaining(R.add(-1));
                 setScore(R.add(ActionScore.FLAG));
             }
@@ -140,8 +128,8 @@ export const useGameStateControl = (gameSize) => {
         
         setGrid(R.update(index, hiveCell));
 
-        checkWinCondition(grid, setIsPlaying, isSoundEnabled, resetGame);
-    }, [isPlaying, isSoundEnabled, flagsRemaining, grid, resetGame]);
+        checkWinCondition(grid, setIsPlaying, playSound, resetGame);
+    }, [isPlaying, playSound, flagsRemaining, grid, resetGame]);
 
     const revealCell = useCallback((hiveCell) => {
         if (!isPlaying) {
@@ -152,10 +140,7 @@ export const useGameStateControl = (gameSize) => {
 
         if (isFlagged) {
             hiveCell.setIsFlagged(false);
-
-            if (isSoundEnabled) {
-                FLAG.play();
-            }
+            playSound(FLAG);
 
             setFlagsRemaining(R.add(1));
             setScore(R.add(-ActionScore.FLAG));
@@ -186,15 +171,13 @@ export const useGameStateControl = (gameSize) => {
                     grid,
                     setGrid,
                     setIsPlaying,
-                    isSoundEnabled,
+                    playSound,
                     resetGame,
                 );
 
                 return;
             } else {
-                if (isSoundEnabled) {
-                    BEE.play();
-                }
+                playSound(BEE);
 
                 setGrid(R.forEach((cell) => {
                     if (cell.isBee) {
@@ -204,10 +187,7 @@ export const useGameStateControl = (gameSize) => {
                 }));
 
                 setIsPlaying(false);
-
-                if (isSoundEnabled) {
-                    LOSE.play();
-                }
+                playSound(LOSE);
 
                 Alert.alert(
                     'You lost!',
@@ -215,9 +195,7 @@ export const useGameStateControl = (gameSize) => {
                     [{
                         text: 'Try again',
                         onPress: () => {
-                            if (isSoundEnabled) {
-                                CLICK.play();
-                            }
+                            playSound(CLICK);
                             resetGame();
                         },
                     }],
@@ -238,10 +216,10 @@ export const useGameStateControl = (gameSize) => {
             grid,
             setGrid,
             setIsPlaying,
-            isSoundEnabled,
+            playSound,
             resetGame,
         );
-    }, [isPlaying, isSoundEnabled, hasFirstCellBeenRevealed, grid, resetGame]);
+    }, [isPlaying, playSound, hasFirstCellBeenRevealed, grid, resetGame]);
     
     return { grid, flagsRemaining, score, resetGame, flagCell, revealCell };
 };
