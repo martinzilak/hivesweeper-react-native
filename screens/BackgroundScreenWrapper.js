@@ -2,10 +2,10 @@ import React from 'react';
 import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BACKGROUND } from '../assets/Images';
-import { useMusicLoopHandler } from '../hooks/useMusicLoopHandler';
+import { usePlayMusicLoop } from '../hooks/usePlayMusicLoop';
 
 const BackgroundScreenWrapper = ({ children }) => {
-    useMusicLoopHandler();
+    usePlayMusicLoop();
 
     return (
         <ImageBackground

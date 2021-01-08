@@ -24,7 +24,7 @@ const GameScreen = ({ navigation }) => {
     useEffect(() => {
         resetGame();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [/* component did mount */]);
+    }, []);
 
     return (
         <BackgroundScreenWrapper>
@@ -93,10 +93,9 @@ const styles = StyleSheet.create({
     buttonsWrapper: {
         flex: 1,
         width: '95%',
-        paddingBottom: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
     },
 });
 
