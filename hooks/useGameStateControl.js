@@ -14,13 +14,13 @@ const checkWinCondition = (
     resetGame,
     gameSize,
     scoreRef,
-    handleGameScore,
+    updateStats,
 ) => {
     if (R.all((cell) => cell.isRevealed || cell.isBee)(grid)) {
         setIsPlaying(false);
         playSound(WIN);
 
-        handleGameScore(gameSize, true, scoreRef.current).then((isNewBest) => {
+        updateStats(gameSize, true, scoreRef.current).then((isNewBest) => {
             Alert.alert(
                 'You won!',
                 isNewBest ? 'New best score, congratulations!' : null,
@@ -53,7 +53,7 @@ const handleRevealCell = (
     resetGame,
     gameSize,
     scoreRef,
-    handleGameScore,
+    updateStats,
 ) => {
     const { index, neighboringBees, neighbors } = hiveCell;
 
@@ -95,13 +95,13 @@ const handleRevealCell = (
         }
     }
 
-    checkWinCondition(grid, setIsPlaying, playSound, resetGame, gameSize, scoreRef, handleGameScore);
+    checkWinCondition(grid, setIsPlaying, playSound, resetGame, gameSize, scoreRef, updateStats);
 };
 
 export const useGameStateControl = (gameSize) => {
     const { generateGrid } = useHiveGridFactory(gameSize);
     const { playSound } = usePlaySound();
-    const { handleGameScore } = useStats();
+    const { updateStats } = useStats();
 
     const gameSizeRef = useRef(gameSize);
     useEffect(() => {
@@ -192,7 +192,7 @@ export const useGameStateControl = (gameSize) => {
                     resetGame,
                     gameSizeRef.current,
                     scoreRef,
-                    handleGameScore,
+                    updateStats,
                 );
 
                 return;
@@ -209,7 +209,7 @@ export const useGameStateControl = (gameSize) => {
                 setIsPlaying(false);
                 playSound(LOSE);
                 
-                handleGameScore(gameSizeRef.current, false, scoreRef.current).then(() => {
+                updateStats(gameSizeRef.current, false, scoreRef.current).then(() => {
                     Alert.alert(
                         'You lost!',
                         'Hint: Long press to flag cells you suspect are hiding a bee inside.',
@@ -241,9 +241,9 @@ export const useGameStateControl = (gameSize) => {
             resetGame,
             gameSizeRef.current,
             scoreRef,
-            handleGameScore,
+            updateStats,
         );
-    }, [isPlaying, playSound, hasFirstCellBeenRevealed, flagsRemaining, grid, resetGame, handleGameScore]);
+    }, [isPlaying, playSound, hasFirstCellBeenRevealed, flagsRemaining, grid, resetGame, updateStats]);
     
     return { grid, flagsRemaining, score: scoreRef.current, resetGame, flagCell, revealCell };
 };

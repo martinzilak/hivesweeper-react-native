@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { G } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import * as R from 'ramda';
+import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
 import HiveCell from './HiveCell';
 import { HiveDimension } from '../constants/HiveDimension';
 import { HiveVerticalOffset } from '../constants/HiveVerticalOffset';
@@ -41,9 +42,7 @@ const styles = StyleSheet.create({
     view: {
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth: 1.5,
-        borderColor: 'orange',
-        backgroundColor: 'rgba(255, 255, 255, 0.65)',
+        ...BorderedBoxWithBackgroundStyle,
     },
 });
 

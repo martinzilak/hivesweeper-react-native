@@ -5,8 +5,9 @@ import * as R from 'ramda';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
 import StatRow from '../components/StatRow';
+import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
 import { Screen } from '../constants/Screen';
-import { Stats } from '../constants/Stats';
+import { Stat } from '../constants/Stat';
 import { useStats } from '../hooks/useStats';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
@@ -31,7 +32,7 @@ const StatsScreen = ({ navigation }) => {
                             label={stat.label}
                             value={stats[stat.key]}
                         />
-                    ))(R.values(Stats))}
+                    ))(R.values(Stat))}
                 </ScrollView>
             </View>
 
@@ -62,11 +63,8 @@ const styles = StyleSheet.create({
         flex: 4,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width: '90%',
-        padding: 5,
-        borderWidth: 1,
-        borderColor: 'orange',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        width: '95%',
+        ...BorderedBoxWithBackgroundStyle,
     },
     scrollView: {
         width: '100%',

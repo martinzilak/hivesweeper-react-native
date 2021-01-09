@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Hive from '../components/Hive';
 import HexagonButton from '../components/HexagonButton';
+import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
 import { useGameStateControl } from '../hooks/useGameStateControl';
 import GameSettingsContext from '../contexts/GameSettingsContext';
 import { Screen } from '../constants/Screen';
@@ -78,13 +79,10 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     statsText: {
-        padding: 5,
-        borderWidth: 1,
-        borderColor: 'orange',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        ...BorderedBoxWithBackgroundStyle,
         color: 'brown',
         fontSize: 28,
-        fontWeight: '600',
+        fontWeight: '500',
     },
     hiveWrapper: {
         flex: 10,

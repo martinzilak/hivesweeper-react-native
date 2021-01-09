@@ -48,17 +48,17 @@ export const useStats = () => {
 
     const buildBestScorePartialUpdate = useCallback((gameSize, score) => ({
         ...(isNewBestScore(gameSize, score) ?
-            buildIncreasedGameStatPartialUpdate(BestScoreStatByGameSize[gameSize], score) :
+            buildGameStatPartialUpdate(BestScoreStatByGameSize[gameSize], score) :
             {}
         ),
-    }), [isNewBestScore, buildIncreasedGameStatPartialUpdate]);
+    }), [isNewBestScore, buildGameStatPartialUpdate]);
 
     const buildGameScorePartialUpdate = useCallback((gameSize, score) => ({
         ...buildIncreasedGameStatPartialUpdate(TotalScoreStatByGameSize[gameSize], score),
         ...buildBestScorePartialUpdate(gameSize, score),
     }), [buildIncreasedGameStatPartialUpdate, buildBestScorePartialUpdate]);
 
-    const handleGameScore = useCallback(async (gameSize, didWin, score) => {
+    const updateStats = useCallback(async (gameSize, didWin, score) => {
         const isNewBest = isNewBestScore(gameSize, score);
 
         await writeStats({
@@ -74,5 +74,5 @@ export const useStats = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { stats, handleGameScore };
+    return { stats, updateStats };
 };
