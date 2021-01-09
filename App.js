@@ -26,11 +26,31 @@ const App = () => {
                         headerShown: false,
                     }}
                 >
-                    <Stack.Screen name={Screen.MAIN_MENU} component={MainMenuScreen} />
-                    <Stack.Screen name={Screen.NEW_GAME_SIZE} component={NewGameSizeScreen} />
-                    <Stack.Screen name={Screen.GAME} component={GameScreen} />
-                    <Stack.Screen name={Screen.SETTINGS} component={SettingsScreen} />
-                    <Stack.Screen name={Screen.STATS} component={StatsScreen} />
+                    <Stack.Screen
+                        name={Screen.MAIN_MENU}
+                        component={MainMenuScreen}
+                        gestureEnabled={false}
+                    />
+                    <Stack.Screen
+                        name={Screen.NEW_GAME_SIZE}
+                        component={NewGameSizeScreen}
+                        gestureEnabled={false}
+                    />
+                    <Stack.Screen
+                        name={Screen.GAME}
+                        component={GameScreen}
+                        gestureEnabled={false}
+                    />
+                    <Stack.Screen
+                        name={Screen.SETTINGS}
+                        component={SettingsScreen}
+                        gestureEnabled={false}
+                    />
+                    <Stack.Screen
+                        name={Screen.STATS}
+                        component={StatsScreen}
+                        gestureEnabled={false}
+                    />
                 </Stack.Navigator>
             </GameSettingsProvider>
         </NavigationContainer>
