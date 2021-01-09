@@ -1,39 +1,52 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import * as R from 'ramda';
 import { BEE, CLICK, FLAG, LOSE, REVEAL, WIN } from '../assets/Sounds';
 import { ActionScore } from '../constants/ActionScore';
 import { useHiveGridFactory } from './useHiveGridFactory';
 import { usePlaySound } from './usePlaySound';
+import { useStats } from './useStats';
 
-const checkWinCondition = (grid, setIsPlaying, playSound, resetGame) => {
+const checkWinCondition = (
+    grid,
+    setIsPlaying,
+    playSound,
+    resetGame,
+    gameSize,
+    scoreRef,
+    handleGameScore,
+) => {
     if (R.all((cell) => cell.isRevealed || cell.isBee)(grid)) {
         setIsPlaying(false);
         playSound(WIN);
 
-        Alert.alert(
-            'You won!',
-            null,
-            [{
-                text: 'Play again',
-                onPress: () => {
-                    playSound(CLICK);
-                    resetGame();
-                },
-            }],
-        );
+        handleGameScore(gameSize, true, scoreRef.current).then((isNewBest) => {
+            Alert.alert(
+                'You won!',
+                isNewBest ? 'New best score, congratulations!' : null,
+                [{
+                    text: 'Play again',
+                    onPress: () => {
+                        playSound(CLICK);
+                        resetGame();
+                    },
+                }],
+            );
+        });
     }
 };
 
 const handleRevealCell = (
     hiveCell,
     setHasFirstCellBeenRevealed,
-    setScore,
     grid,
     setGrid,
     setIsPlaying,
     playSound,
     resetGame,
+    gameSize,
+    scoreRef,
+    handleGameScore,
 ) => {
     const { index, neighboringBees, neighbors } = hiveCell;
 
@@ -41,7 +54,7 @@ const handleRevealCell = (
     playSound(REVEAL);
 
     setHasFirstCellBeenRevealed(true);
-    setScore(R.add(ActionScore.REVEAL_PLAYER));
+    scoreRef.current = scoreRef.current + ActionScore.REVEAL_PLAYER;
     setGrid(R.update(index, hiveCell));
 
     if (neighboringBees === 0) {
@@ -63,7 +76,7 @@ const handleRevealCell = (
             if (!neighborIsRevealed && !neighborIsBee && !neighborIsFlagged) {
                 neighbor.setIsRevealed(true);
                 setGrid(R.update(neighborIndex, neighbor));
-                setScore(R.add(ActionScore.REVEAL_AUTOMATIC));
+                scoreRef.current = scoreRef.current + ActionScore.REVEAL_AUTOMATIC;
 
                 if (neighborNeighboringBees === 0) {
                     allNeighbors = [
@@ -75,18 +88,25 @@ const handleRevealCell = (
         }
     }
 
-    checkWinCondition(grid, setIsPlaying, playSound, resetGame);
+    checkWinCondition(grid, setIsPlaying, playSound, resetGame, gameSize, scoreRef, handleGameScore);
 };
 
 export const useGameStateControl = (gameSize) => {
     const { generateGrid } = useHiveGridFactory(gameSize);
     const { playSound } = usePlaySound();
+    const { handleGameScore } = useStats();
+
+    const gameSizeRef = useRef(gameSize);
+    useEffect(() => {
+        gameSizeRef.current = gameSize;
+    }, [gameSize]);
 
     const [grid, setGrid] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [hasFirstCellBeenRevealed, setHasFirstCellBeenRevealed] = useState(false);
     const [flagsRemaining, setFlagsRemaining] = useState(0);
-    const [score, setScore] = useState(0);
+
+    const scoreRef = useRef(0);
 
     const resetGame = useCallback(() => {
         const newGrid = generateGrid();
@@ -98,7 +118,7 @@ export const useGameStateControl = (gameSize) => {
             R.length,
             R.filter(R.prop('isBee')),
         )(newGrid));
-        setScore(0);
+        scoreRef.current = 0;
     }, [generateGrid]);
 
     const flagCell = useCallback((hiveCell) => {
@@ -116,20 +136,28 @@ export const useGameStateControl = (gameSize) => {
             hiveCell.setIsFlagged(false);
             playSound(FLAG);
             setFlagsRemaining(R.add(1));
-            setScore(R.add(-ActionScore.FLAG));
+            scoreRef.current = scoreRef.current - ActionScore.FLAG;
         } else {
             if (flagsRemaining > 0) {
                 hiveCell.setIsFlagged(true);
                 playSound(FLAG);
                 setFlagsRemaining(R.add(-1));
-                setScore(R.add(ActionScore.FLAG));
+                scoreRef.current = scoreRef.current + ActionScore.FLAG;
             }
         }
         
         setGrid(R.update(index, hiveCell));
 
-        checkWinCondition(grid, setIsPlaying, playSound, resetGame);
-    }, [isPlaying, playSound, flagsRemaining, grid, resetGame]);
+        checkWinCondition(
+            grid,
+            setIsPlaying,
+            playSound,
+            resetGame,
+            gameSizeRef.current,
+            scoreRef,
+            handleGameScore,
+        );
+    }, [isPlaying, playSound, flagsRemaining, grid, resetGame, handleGameScore]);
 
     const revealCell = useCallback((hiveCell) => {
         if (!isPlaying) {
@@ -141,9 +169,8 @@ export const useGameStateControl = (gameSize) => {
         if (isFlagged) {
             hiveCell.setIsFlagged(false);
             playSound(FLAG);
-
             setFlagsRemaining(R.add(1));
-            setScore(R.add(-ActionScore.FLAG));
+            scoreRef.current = scoreRef.current - ActionScore.FLAG;
             setGrid(R.update(index, hiveCell));
             return;
         }
@@ -152,8 +179,8 @@ export const useGameStateControl = (gameSize) => {
             if (!hasFirstCellBeenRevealed) {
                 hiveCell.setIsBee(false);
                 
-                R.forEach((n) => {
-                    n.setNeighboringBees(n.neighboringBees - 1);
+                R.forEach((neighbor) => {
+                    neighbor.setNeighboringBees(neighbor.neighboringBees - 1);
                 })(neighbors);
 
                 const updatedCells = R.reduce((accumulatedCells, cell) => ({
@@ -167,12 +194,14 @@ export const useGameStateControl = (gameSize) => {
                 handleRevealCell(
                     hiveCell,
                     setHasFirstCellBeenRevealed,
-                    setScore,
                     grid,
                     setGrid,
                     setIsPlaying,
                     playSound,
                     resetGame,
+                    gameSizeRef.current,
+                    scoreRef,
+                    handleGameScore,
                 );
 
                 return;
@@ -188,18 +217,20 @@ export const useGameStateControl = (gameSize) => {
 
                 setIsPlaying(false);
                 playSound(LOSE);
-
-                Alert.alert(
-                    'You lost!',
-                    'Hint: Long press to flag cells you suspect are hiding a bee inside.',
-                    [{
-                        text: 'Try again',
-                        onPress: () => {
-                            playSound(CLICK);
-                            resetGame();
-                        },
-                    }],
-                );
+                
+                handleGameScore(gameSizeRef.current, false, scoreRef.current).then(() => {
+                    Alert.alert(
+                        'You lost!',
+                        'Hint: Long press to flag cells you suspect are hiding a bee inside.',
+                        [{
+                            text: 'Try again',
+                            onPress: () => {
+                                playSound(CLICK);
+                                resetGame();
+                            },
+                        }],
+                    );
+                });
 
                 return;
             }
@@ -212,14 +243,16 @@ export const useGameStateControl = (gameSize) => {
         handleRevealCell(
             hiveCell,
             setHasFirstCellBeenRevealed,
-            setScore,
             grid,
             setGrid,
             setIsPlaying,
             playSound,
             resetGame,
+            gameSizeRef.current,
+            scoreRef,
+            handleGameScore,
         );
-    }, [isPlaying, playSound, hasFirstCellBeenRevealed, grid, resetGame]);
+    }, [isPlaying, playSound, hasFirstCellBeenRevealed, grid, resetGame, handleGameScore]);
     
-    return { grid, flagsRemaining, score, resetGame, flagCell, revealCell };
+    return { grid, flagsRemaining, score: scoreRef.current, resetGame, flagCell, revealCell };
 };

@@ -11,7 +11,7 @@ import { useStats } from '../hooks/useStats';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
 const StatsScreen = ({ navigation }) => {
-    const { stats, resetStats } = useStats();
+    const { stats } = useStats();
 
     return (
         <BackgroundScreenWrapper>
@@ -20,14 +20,18 @@ const StatsScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.statsWrapper}>
-                <ScrollView horizontal={false}>
+                <ScrollView
+                    style={styles.scrollView}
+                    horizontal={false}
+                    alwaysBounceVertical={false}
+                >
                     {R.map((stat) => (
                         <StatRow
                             key={stat.key}
                             label={stat.label}
                             value={stats[stat.key]}
                         />
-                    ))(Stats)}
+                    ))(R.values(Stats))}
                 </ScrollView>
             </View>
 
@@ -48,14 +52,14 @@ StatsScreen.propTypes = {
 const styles = StyleSheet.create({
     logoWrapper: {
         width: '100%',
-        flex: 1,
+        flex: 3,
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 40,
     },
     statsWrapper: {
-        flex: 1,
+        flex: 4,
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '90%',
@@ -64,8 +68,11 @@ const styles = StyleSheet.create({
         borderColor: 'orange',
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
+    scrollView: {
+        width: '100%',
+    },
     backWrapper: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
