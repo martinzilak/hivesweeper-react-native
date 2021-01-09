@@ -1,29 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { DefaultVolatileSettings } from '../constants/DefaultVolatileSettings';
 import { usePersistentGameSettings } from '../hooks/usePersistentGameSettings';
 
 const GameSettingsContext = React.createContext();
 
 export const GameSettingsProvider = ({ children }) => {
-    const { settings: gameSettings, writeSingleSetting: setGameSetting } = usePersistentGameSettings();
+    const {
+        settings: persistentGameSettings,
+        writeSingleSetting: setPersistentGameSetting,
+    } = usePersistentGameSettings();
 
-    const setGameSize = (gameSize) => setGameSetting({ gameSize });
+    const [volatileGameSettings, setVolatileGameSettings] = useState(DefaultVolatileSettings);
 
-    const setIsSoundEnabled = (isSoundEnabled) => setGameSetting({ isSoundEnabled });
+    const setGameSize = (gameSize) => setVolatileGameSettings((previousSettings) => ({
+        ...previousSettings,
+        gameSize,
+    }));
 
-    const setIsMusicEnabled = (isMusicEnabled) => setGameSetting({ isMusicEnabled });
+    const setIsSoundEnabled = (isSoundEnabled) => setPersistentGameSetting({ isSoundEnabled });
 
-    const setIsVibrationEnabled = (isVibrationEnabled) => setGameSetting({ isVibrationEnabled });
+    const setIsMusicEnabled = (isMusicEnabled) => setPersistentGameSetting({ isMusicEnabled });
+
+    const setIsVibrationEnabled = (isVibrationEnabled) => setPersistentGameSetting({ isVibrationEnabled });
 
     return (
         <GameSettingsContext.Provider
             value={{
-                gameSize: gameSettings.gameSize,
+                gameSize: volatileGameSettings.gameSize,
                 setGameSize,
-                isSoundEnabled: gameSettings.isSoundEnabled,
+                isSoundEnabled: persistentGameSettings.isSoundEnabled,
                 setIsSoundEnabled,
-                isMusicEnabled: gameSettings.isMusicEnabled,
+                isMusicEnabled: persistentGameSettings.isMusicEnabled,
                 setIsMusicEnabled,
-                isVibrationEnabled: gameSettings.isVibrationEnabled,
+                isVibrationEnabled: persistentGameSettings.isVibrationEnabled,
                 setIsVibrationEnabled,
             }}
         >

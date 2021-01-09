@@ -1,10 +1,10 @@
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { DefaultSettings } from '../constants/DefaultSettings';
+import { DefaultPersistentSettings } from '../constants/DefaultPersistentSettings';
 import { StorageKey } from '../constants/StorageKey';
 
 export const usePersistentGameSettings = () => {
-    const [settings, setSettings] = useState(DefaultSettings);
+    const [settings, setSettings] = useState(DefaultPersistentSettings);
     const { getItem, setItem } = useAsyncStorage(StorageKey.SETTINGS);
 
     const readSettings = async () => {
