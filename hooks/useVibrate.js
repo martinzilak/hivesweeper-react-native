@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Vibration } from 'react-native';
+import { VibrationDurationMs } from '../constants/VibrationDurationMs';
 import { useGameSettings } from './useGameSettings';
 
 export const useVibrate = () => {
@@ -7,7 +8,7 @@ export const useVibrate = () => {
 
     const vibrate = useCallback(() => {
         if (isVibrationEnabled) {
-            Vibration.vibrate();
+            Vibration.vibrate(VibrationDurationMs);
         }
     }, [isVibrationEnabled]);
 
