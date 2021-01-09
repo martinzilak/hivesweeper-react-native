@@ -1,1 +1,1 @@
-export const VibrationDurationMs = 400;
+export const VibrationDurationMs = 100;
