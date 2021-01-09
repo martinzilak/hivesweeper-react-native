@@ -2,19 +2,17 @@ import { useMemo, useCallback } from 'react';
 import { defineGrid, extendHex } from 'honeycomb-grid';
 import * as R from 'ramda';
 import { HiveCellHex } from '../classes/HiveCellHex';
+import { getHexSize } from '../utils/getHexSize';
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
 import { mapIndexed } from '../utils/mapIndexed';
 import randomSubset from '../utils/randomSubset';
-import { HiveDimension } from '../constants/HiveDimension';
 import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
 import { BeeCount } from '../constants/BeeCount';
 import { NeighboringBeeCountUpperBound } from '../constants/NeighboringBeeCountUpperBound';
 
-const getCellSize = (gameSize) => HiveDimension.WIDTH / (1.5 * gameSize + 2);
-
 export const useHiveGridFactory = (gameSize) => {
     const HexFactory = useMemo(() => extendHex({
-        size: getCellSize(gameSize),
+        size: getHexSize(gameSize),
         orientation: 'flat',
     }), [gameSize]);
     
@@ -43,7 +41,7 @@ export const useHiveGridFactory = (gameSize) => {
                     beeCount += 1;
                 }
 
-                cell.setCellSize(getCellSize(gameSize));
+                cell.setCellSize(getHexSize(gameSize));
 
                 return cell;
             }),

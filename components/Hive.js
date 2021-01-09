@@ -4,9 +4,9 @@ import Svg, { G } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import * as R from 'ramda';
 import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
-import HiveCell from './HiveCell';
 import { HiveDimension } from '../constants/HiveDimension';
-import { HiveVerticalOffset } from '../constants/HiveVerticalOffset';
+import { getHiveVerticalOffset } from '../utils/getHiveVerticalOffset';
+import HiveCell from './HiveCell';
 
 const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
     <View style={styles.view}>
@@ -15,7 +15,7 @@ const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
             height={HiveDimension.HEIGHT}
         >
             <G
-                y={HiveVerticalOffset[gameSize]}
+                y={getHiveVerticalOffset(gameSize)}
             >
                 {R.map((hex) => (
                     <HiveCell
