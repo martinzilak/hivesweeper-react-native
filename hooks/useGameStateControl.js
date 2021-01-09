@@ -110,6 +110,7 @@ export const useGameStateControl = (gameSize) => {
 
     const resetGame = useCallback(() => {
         const newGrid = generateGrid();
+        scoreRef.current = 0;
 
         setGrid(newGrid);
         setIsPlaying(true);
@@ -118,7 +119,6 @@ export const useGameStateControl = (gameSize) => {
             R.length,
             R.filter(R.prop('isBee')),
         )(newGrid));
-        scoreRef.current = 0;
     }, [generateGrid]);
 
     const flagCell = useCallback((hiveCell) => {
@@ -176,7 +176,7 @@ export const useGameStateControl = (gameSize) => {
         }
 
         if (isBee) {
-            if (!hasFirstCellBeenRevealed) {
+            if (!hasFirstCellBeenRevealed && flagsRemaining > 0) {
                 hiveCell.setIsBee(false);
                 
                 R.forEach((neighbor) => {
@@ -252,7 +252,7 @@ export const useGameStateControl = (gameSize) => {
             scoreRef,
             handleGameScore,
         );
-    }, [isPlaying, playSound, hasFirstCellBeenRevealed, grid, resetGame, handleGameScore]);
+    }, [isPlaying, playSound, hasFirstCellBeenRevealed, flagsRemaining, grid, resetGame, handleGameScore]);
     
     return { grid, flagsRemaining, score: scoreRef.current, resetGame, flagCell, revealCell };
 };
