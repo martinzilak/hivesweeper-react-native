@@ -1,7 +1,7 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
 export const BeeHorizontalOffset = {
-    [HiveSize.SMALL]: 3.5,
-    [HiveSize.MEDIUM]: 2.5,
-    [HiveSize.LARGE]: 2,
+    [GameSize.SMALL]: 3.5,
+    [GameSize.MEDIUM]: 2.5,
+    [GameSize.LARGE]: 2,
 };

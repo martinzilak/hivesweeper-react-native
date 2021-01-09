@@ -1,7 +1,7 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
 export const NeighboringBeeCountUpperBound = {
-    [HiveSize.SMALL]: 2,
-    [HiveSize.MEDIUM]: 3,
-    [HiveSize.LARGE]: 4,
+    [GameSize.SMALL]: 2,
+    [GameSize.MEDIUM]: 3,
+    [GameSize.LARGE]: 4,
 };

@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     view: {
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderColor: 'orange',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.65)',
     },
 });
 

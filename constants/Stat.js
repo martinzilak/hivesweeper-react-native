@@ -1,6 +1,6 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
-export const Stats = {
+export const Stat = {
     TOTAL_GAMES: { key: 'totalGames', label: 'TOTAL GAMES PLAYED' },
     GAMES_WON: { key: 'gamesWon', label: 'GAMES WON' },
     GAMES_LOST: { key: 'gamesLost', label: 'GAMES LOST' },
@@ -12,14 +12,14 @@ export const Stats = {
     TOTAL_SCORE_HARD: { key: 'totalScoreHard', label: 'TOTAL SCORE (HARD)' },
 };
 
-export const BestScoreByGameSize = {
-    [HiveSize.SMALL]: Stats.BEST_SCORE_EASY,
-    [HiveSize.MEDIUM]: Stats.BEST_SCORE_MEDIUM,
-    [HiveSize.LARGE]: Stats.BEST_SCORE_HARD,
+export const BestScoreStatByGameSize = {
+    [GameSize.SMALL]: Stat.BEST_SCORE_EASY,
+    [GameSize.MEDIUM]: Stat.BEST_SCORE_MEDIUM,
+    [GameSize.LARGE]: Stat.BEST_SCORE_HARD,
 };
 
-export const TotalScoreByGameSize = {
-    [HiveSize.SMALL]: Stats.TOTAL_SCORE_EASY,
-    [HiveSize.MEDIUM]: Stats.TOTAL_SCORE_MEDIUM,
-    [HiveSize.LARGE]: Stats.TOTAL_SCORE_HARD,
+export const TotalScoreStatByGameSize = {
+    [GameSize.SMALL]: Stat.TOTAL_SCORE_EASY,
+    [GameSize.MEDIUM]: Stat.TOTAL_SCORE_MEDIUM,
+    [GameSize.LARGE]: Stat.TOTAL_SCORE_HARD,
 };

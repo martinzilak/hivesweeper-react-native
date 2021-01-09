@@ -1,5 +1,5 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
 export const DefaultVolatileSettings = {
-    gameSize: HiveSize.SMALL,
+    gameSize: GameSize.SMALL,
 };

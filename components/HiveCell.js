@@ -63,7 +63,7 @@ HiveCell.propTypes = {
 
 const polygonStyles = {
     stroke: 'orange',
-    strokeWidth: 2,
+    strokeWidth: 2.5,
 };
 
 const getImageStyles = (gameSize, cellSize) => ({

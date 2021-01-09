@@ -10,20 +10,20 @@ import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
 import { BeeCount } from '../constants/BeeCount';
 import { NeighboringBeeCountUpperBound } from '../constants/NeighboringBeeCountUpperBound';
 
-const getCellSize = (hiveSize) => HiveDimension.WIDTH / (1.5 * hiveSize + 2);
+const getCellSize = (gameSize) => HiveDimension.WIDTH / (1.5 * gameSize + 2);
 
-export const useHiveGridFactory = (hiveSize) => {
+export const useHiveGridFactory = (gameSize) => {
     const HexFactory = useMemo(() => extendHex({
-        size: getCellSize(hiveSize),
+        size: getCellSize(gameSize),
         orientation: 'flat',
-    }), [hiveSize]);
+    }), [gameSize]);
     
     const generateGrid = useCallback(() => {
         const GridFactory = defineGrid(HexFactory);
 
         const grid = GridFactory.hexagon({
-            radius: hiveSize / 2,
-            center: [hiveSize / 2, hiveSize / 2],
+            radius: gameSize / 2,
+            center: [gameSize / 2, gameSize / 2],
         });
 
         let beeCount = 0;
@@ -38,12 +38,12 @@ export const useHiveGridFactory = (hiveSize) => {
             mapIndexed((primitiveHex, index) => {
                 const cell = new HiveCellHex(primitiveHex, index);
 
-                if (beeCount < BeeCount[hiveSize] || Math.random() <= ExtraBeeProbability[hiveSize]) {
+                if (beeCount < BeeCount[gameSize] || Math.random() <= ExtraBeeProbability[gameSize]) {
                     cell.setIsBee(true);
                     beeCount += 1;
                 }
 
-                cell.setCellSize(getCellSize(hiveSize));
+                cell.setCellSize(getCellSize(gameSize));
 
                 return cell;
             }),
@@ -54,11 +54,11 @@ export const useHiveGridFactory = (hiveSize) => {
         return R.compose(
             // limit maximum neighboring bee count
             R.forEach((cell) => {
-                if (cell.neighboringBees <= NeighboringBeeCountUpperBound[hiveSize]) {
+                if (cell.neighboringBees <= NeighboringBeeCountUpperBound[gameSize]) {
                     return;
                 }
 
-                const limitExceededBy = cell.neighboringBees - NeighboringBeeCountUpperBound[hiveSize];
+                const limitExceededBy = cell.neighboringBees - NeighboringBeeCountUpperBound[gameSize];
 
                 R.compose(
                     R.forEach((neighbor) => {
@@ -89,7 +89,7 @@ export const useHiveGridFactory = (hiveSize) => {
             }),
             R.values,
         )(hiveCellsById);
-    }, [HexFactory, hiveSize]);
+    }, [HexFactory, gameSize]);
     
     return { generateGrid };
 };

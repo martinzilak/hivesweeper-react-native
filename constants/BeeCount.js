@@ -1,7 +1,7 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
 export const BeeCount = {
-    [HiveSize.SMALL]: 6,
-    [HiveSize.MEDIUM]: 12,
-    [HiveSize.LARGE]: 16,
+    [GameSize.SMALL]: 6,
+    [GameSize.MEDIUM]: 12,
+    [GameSize.LARGE]: 16,
 };

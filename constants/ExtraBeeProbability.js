@@ -1,7 +1,7 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
 export const ExtraBeeProbability = {
-    [HiveSize.SMALL]: 0.05,
-    [HiveSize.MEDIUM]: 0.1,
-    [HiveSize.LARGE]: 0.15,
+    [GameSize.SMALL]: 0.05,
+    [GameSize.MEDIUM]: 0.1,
+    [GameSize.LARGE]: 0.15,
 };

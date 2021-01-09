@@ -1,7 +1,7 @@
-import { HiveSize } from './HiveSize';
+import { GameSize } from './GameSize';
 
 export const HiveVerticalOffset = {
-    [HiveSize.SMALL]: 25,
-    [HiveSize.MEDIUM]: -5,
-    [HiveSize.LARGE]: 20,
+    [GameSize.SMALL]: 25,
+    [GameSize.MEDIUM]: -5,
+    [GameSize.LARGE]: 20,
 };

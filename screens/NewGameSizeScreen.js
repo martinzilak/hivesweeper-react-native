@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
 import { useGameSettings } from '../hooks/useGameSettings';
-import { HiveSize } from '../constants/HiveSize';
+import { GameSize } from '../constants/GameSize';
 import { Screen } from '../constants/Screen';
 import BackgroundScreenWrapper from './BackgroundScreenWrapper';
 
@@ -26,19 +26,19 @@ const NewGameSizeScreen = ({ navigation }) => {
                 <HexagonButton
                     styles={styles.sizeButton}
                     text="EASY"
-                    onPress={() => startGameWithSize(HiveSize.SMALL)}
+                    onPress={() => startGameWithSize(GameSize.SMALL)}
                 />
 
                 <HexagonButton
                     styles={styles.sizeButton}
                     text="NORMAL"
-                    onPress={() => startGameWithSize(HiveSize.MEDIUM)}
+                    onPress={() => startGameWithSize(GameSize.MEDIUM)}
                 />
 
                 <HexagonButton
                     styles={styles.sizeButton}
                     text="HARD"
-                    onPress={() => startGameWithSize(HiveSize.LARGE)}
+                    onPress={() => startGameWithSize(GameSize.LARGE)}
                 />
             </View>
 

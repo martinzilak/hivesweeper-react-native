@@ -86,7 +86,7 @@ const getPolygonStyles = (polygonFill, polygonStroke) => ({
 const getTextStyles = (textFill, buttonHeight) => ({
     fill: textFill,
     fontSize: Math.ceil (0.66 * buttonHeight),
-    fontWeight: '600',
+    fontWeight: '500',
 });
 
 export default HexagonButton;

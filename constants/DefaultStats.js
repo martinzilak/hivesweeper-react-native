@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Stats } from './Stats';
+import { Stat } from './Stat';
 
 export const DefaultStats = R.o(
     R.reduce((stats, nextStat) => ({
@@ -7,4 +7,4 @@ export const DefaultStats = R.o(
         [nextStat.key]: 0,
     }), {}),
     R.values,
-)(Stats);
+)(Stat);
