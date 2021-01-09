@@ -36,6 +36,13 @@ const checkWinCondition = (
     }
 };
 
+const handleUnflagCell = (hiveCell, playSound, setFlagsRemaining, scoreRef) => {
+    hiveCell.setIsFlagged(false);
+    playSound(FLAG);
+    setFlagsRemaining(R.add(1));
+    scoreRef.current = scoreRef.current - ActionScore.FLAG;
+};
+
 const handleRevealCell = (
     hiveCell,
     setHasFirstCellBeenRevealed,
@@ -62,7 +69,7 @@ const handleRevealCell = (
         while (R.length(allNeighbors) > 0) {
             const neighbor = allNeighbors[0];
             allNeighbors = R.drop(1, allNeighbors);
-            const ids = R.pluck('id', allNeighbors);
+            const neighborIds = R.pluck('id', allNeighbors);
 
             const {
                 index: neighborIndex,
@@ -81,7 +88,7 @@ const handleRevealCell = (
                 if (neighborNeighboringBees === 0) {
                     allNeighbors = [
                         ...allNeighbors,
-                        ...R.reject(n => R.includes(n.id, ids))(neighborNeighbors),
+                        ...R.reject(({ id }) => R.includes(id, neighborIds))(neighborNeighbors),
                     ];
                 }
             }
@@ -133,10 +140,7 @@ export const useGameStateControl = (gameSize) => {
         }
 
         if (isFlagged) {
-            hiveCell.setIsFlagged(false);
-            playSound(FLAG);
-            setFlagsRemaining(R.add(1));
-            scoreRef.current = scoreRef.current - ActionScore.FLAG;
+            handleUnflagCell(hiveCell, playSound, setFlagsRemaining, scoreRef);
         } else {
             if (flagsRemaining > 0) {
                 hiveCell.setIsFlagged(true);
@@ -147,17 +151,7 @@ export const useGameStateControl = (gameSize) => {
         }
         
         setGrid(R.update(index, hiveCell));
-
-        checkWinCondition(
-            grid,
-            setIsPlaying,
-            playSound,
-            resetGame,
-            gameSizeRef.current,
-            scoreRef,
-            handleGameScore,
-        );
-    }, [isPlaying, playSound, flagsRemaining, grid, resetGame, handleGameScore]);
+    }, [isPlaying, playSound, flagsRemaining]);
 
     const revealCell = useCallback((hiveCell) => {
         if (!isPlaying) {
@@ -167,10 +161,7 @@ export const useGameStateControl = (gameSize) => {
         const { index, isBee, isRevealed, isFlagged, neighbors } = hiveCell;
 
         if (isFlagged) {
-            hiveCell.setIsFlagged(false);
-            playSound(FLAG);
-            setFlagsRemaining(R.add(1));
-            scoreRef.current = scoreRef.current - ActionScore.FLAG;
+            handleUnflagCell(hiveCell, playSound, setFlagsRemaining, scoreRef);
             setGrid(R.update(index, hiveCell));
             return;
         }
