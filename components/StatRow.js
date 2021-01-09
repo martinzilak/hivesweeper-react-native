@@ -21,7 +21,7 @@ StatRow.propTypes = {
 
 const commonTextStyles = {
     color: 'brown',
-    fontSize: 21,
+    fontSize: 19,
     fontWeight: '500',
 };
 

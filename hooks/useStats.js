@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { DefaultStats } from '../constants/DefaultStats';
 import { BestScoreByGameSize, Stats, TotalScoreByGameSize } from '../constants/Stats';
@@ -8,57 +8,57 @@ export const useStats = () => {
     const [stats, setStats] = useState(DefaultStats);
     const { getItem, setItem } = useAsyncStorage(StorageKey.STATS);
 
-    const readStats = async () => {
+    const readStats = useCallback(async () => {
         const statsJson = await getItem();
         if (statsJson) {
             setStats(JSON.parse(statsJson));
         }
-    };
+    }, [getItem]);
 
-    const getStat = (statObject) => stats[statObject.key] ?? 0;
+    const getStat = useCallback((statObject) => stats[statObject.key] ?? 0, [stats]);
 
-    const writeStats = async (update) => {
+    const writeStats = useCallback(async (update) => {
         const newStats = {
             ...stats,
             ...update,
         }
         await setItem(JSON.stringify(newStats));
         setStats(newStats);
-    };
+    }, [stats, setItem]);
 
-    const buildGameStatPartialUpdate = (statObject, value) => ({
+    const buildGameStatPartialUpdate = useCallback((statObject, value) => ({
         [statObject.key]: value,
-    });
+    }), []);
 
-    const buildIncreasedGameStatPartialUpdate = (statObject, value) => (
+    const buildIncreasedGameStatPartialUpdate = useCallback((statObject, value) => (
         buildGameStatPartialUpdate(statObject, getStat(statObject) + value)
-    );
+    ), [buildGameStatPartialUpdate, getStat]);
 
-    const buildGameCountPartialUpdate = (didWin) => ({
+    const buildGameCountPartialUpdate = useCallback((didWin) => ({
         ...buildIncreasedGameStatPartialUpdate(
             didWin ? Stats.GAMES_WON : Stats.GAMES_LOST,
             1
         ),
         ...buildIncreasedGameStatPartialUpdate(Stats.TOTAL_GAMES, 1),
-    });
+    }), [buildIncreasedGameStatPartialUpdate]);
 
-    const isNewBestScore = (gameSize, score) => (
+    const isNewBestScore = useCallback((gameSize, score) => (
         getStat(BestScoreByGameSize[gameSize]) < score
-    );
+    ), [getStat]);
 
-    const buildBestScorePartialUpdate = (gameSize, score) => ({
+    const buildBestScorePartialUpdate = useCallback((gameSize, score) => ({
         ...(isNewBestScore(gameSize, score) ?
             buildIncreasedGameStatPartialUpdate(BestScoreByGameSize[gameSize], score) :
             {}
         ),
-    });
+    }), [isNewBestScore, buildIncreasedGameStatPartialUpdate]);
 
-    const buildGameScorePartialUpdate = (gameSize, score) => ({
+    const buildGameScorePartialUpdate = useCallback((gameSize, score) => ({
         ...buildIncreasedGameStatPartialUpdate(TotalScoreByGameSize[gameSize], score),
         ...buildBestScorePartialUpdate(gameSize, score),
-    });
+    }), [buildIncreasedGameStatPartialUpdate, buildBestScorePartialUpdate]);
 
-    const handleGameScore = async (gameSize, didWin, score) => {
+    const handleGameScore = useCallback(async (gameSize, didWin, score) => {
         const isNewBest = isNewBestScore(gameSize, score);
 
         await writeStats({
@@ -67,17 +67,12 @@ export const useStats = () => {
         });
 
         return isNewBest;
-    };
-
-    const resetStats = async () => {
-        await setItem(JSON.stringify(DefaultStats));
-        setStats(DefaultStats);
-    };
+    }, [isNewBestScore, writeStats, buildGameCountPartialUpdate, buildGameScorePartialUpdate]);
 
     useEffect(() => {
         readStats();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { stats, handleGameScore, resetStats };
+    return { stats, handleGameScore };
 };
