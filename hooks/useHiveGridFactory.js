@@ -36,7 +36,9 @@ export const useHiveGridFactory = (gameSize) => {
             mapIndexed((primitiveHex, index) => {
                 const cell = new HiveCellHex(primitiveHex, index);
 
-                if (beeCount < BeeCount[gameSize] || Math.random() <= ExtraBeeProbability[gameSize]) {
+                if (beeCount < BeeCount[gameSize].upperBound &&
+                    (beeCount < BeeCount[gameSize].lowerBound || Math.random() <= ExtraBeeProbability[gameSize])
+                ) {
                     cell.setIsBee(true);
                     beeCount += 1;
                 }
@@ -52,11 +54,15 @@ export const useHiveGridFactory = (gameSize) => {
         return R.compose(
             // limit maximum neighboring bee count
             R.forEach((cell) => {
-                if (cell.neighboringBees <= NeighboringBeeCountUpperBound[gameSize]) {
+                const neighborCount = R.length(cell.neighbors);
+
+                if ((neighborCount - cell.neighboringBees) > 0 &&
+                    cell.neighboringBees <= NeighboringBeeCountUpperBound[gameSize]
+                ) {
                     return;
                 }
 
-                const limitExceededBy = cell.neighboringBees - NeighboringBeeCountUpperBound[gameSize];
+                const limitExceededBy = R.max(1, cell.neighboringBees - NeighboringBeeCountUpperBound[gameSize]);
 
                 R.compose(
                     R.forEach((neighbor) => {
