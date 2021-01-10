@@ -4,13 +4,11 @@ import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
 import { Screen } from '../constants/Screen';
-import BackgroundScreenWrapper from './BackgroundScreenWrapper';
+import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
 const MainMenuScreen = ({ navigation }) => (
-    <BackgroundScreenWrapper>
-        <View style={styles.logoWrapper}>
-            <Logo />
-        </View>
+    <SafeAreaScreenWrapper>
+        <Logo />
 
         <View style={styles.optionsWrapper}>
             <HexagonButton
@@ -31,7 +29,7 @@ const MainMenuScreen = ({ navigation }) => (
                 onPress={() => navigation.navigate(Screen.STATS)}
             />
         </View>
-    </BackgroundScreenWrapper>
+    </SafeAreaScreenWrapper>
 );
 
 MainMenuScreen.propTypes = {
@@ -39,14 +37,6 @@ MainMenuScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-    logoWrapper: {
-        width: '100%',
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 40,
-    },
     optionsWrapper: {
         flex: 2,
         justifyContent: 'flex-start',

@@ -7,8 +7,8 @@ import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBack
 import { useGameStateControl } from '../hooks/useGameStateControl';
 import GameSettingsContext from '../contexts/GameSettingsContext';
 import { Screen } from '../constants/Screen';
-import BackgroundScreenWrapper from './BackgroundScreenWrapper';
-import {HiveDimension} from "../constants/HiveDimension";
+import { HiveDimension } from '../constants/HiveDimension';
+import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
 const GameScreen = ({ navigation }) => {
     const { gameSize } = useContext(GameSettingsContext);
@@ -28,7 +28,7 @@ const GameScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <BackgroundScreenWrapper>
+        <SafeAreaScreenWrapper>
             <View style={styles.statsWrapper}>
                 <Text style={styles.statsText}>
                     {`SCORE ${score}`}
@@ -61,7 +61,7 @@ const GameScreen = ({ navigation }) => {
                     text={'MENU'}
                 />
             </View>
-        </BackgroundScreenWrapper>
+        </SafeAreaScreenWrapper>
     );
 };
 

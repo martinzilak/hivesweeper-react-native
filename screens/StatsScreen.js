@@ -9,16 +9,14 @@ import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBack
 import { Screen } from '../constants/Screen';
 import { Stat } from '../constants/Stat';
 import { useStats } from '../hooks/useStats';
-import BackgroundScreenWrapper from './BackgroundScreenWrapper';
+import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
 const StatsScreen = ({ navigation }) => {
     const { stats } = useStats();
 
     return (
-        <BackgroundScreenWrapper>
-            <View style={styles.logoWrapper}>
-                <Logo />
-            </View>
+        <SafeAreaScreenWrapper>
+            <Logo flex={3} />
 
             <View style={styles.statsWrapper}>
                 <ScrollView
@@ -42,7 +40,7 @@ const StatsScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate(Screen.MAIN_MENU)}
                 />
             </View>
-        </BackgroundScreenWrapper>
+        </SafeAreaScreenWrapper>
     );
 };
 
@@ -51,14 +49,6 @@ StatsScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-    logoWrapper: {
-        width: '100%',
-        flex: 3,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 40,
-    },
     statsWrapper: {
         flex: 4,
         justifyContent: 'flex-start',

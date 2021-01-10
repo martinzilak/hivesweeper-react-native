@@ -1,10 +1,10 @@
 import React from 'react';
-import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BACKGROUND } from '../assets/Images';
 import { usePlayMusicLoop } from '../hooks/usePlayMusicLoop';
 
-const BackgroundScreenWrapper = ({ children }) => {
+const BackgroundAppWrapper = ({ children }) => {
     usePlayMusicLoop();
 
     return (
@@ -12,14 +12,12 @@ const BackgroundScreenWrapper = ({ children }) => {
             style={styles.backgroundImage}
             source={BACKGROUND}
         >
-            <SafeAreaView style={styles.appWrapper}>
-                {children}
-            </SafeAreaView>
+            {children}
         </ImageBackground>
     );
 };
 
-BackgroundScreenWrapper.propTypes = {
+BackgroundAppWrapper.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
@@ -40,4 +38,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BackgroundScreenWrapper;
+export default BackgroundAppWrapper;

@@ -6,7 +6,7 @@ import Logo from '../components/Logo';
 import { useGameSettings } from '../hooks/useGameSettings';
 import { GameSize } from '../constants/GameSize';
 import { Screen } from '../constants/Screen';
-import BackgroundScreenWrapper from './BackgroundScreenWrapper';
+import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
 const NewGameSizeScreen = ({ navigation }) => {
     const { setGameSize } = useGameSettings();
@@ -17,10 +17,8 @@ const NewGameSizeScreen = ({ navigation }) => {
     }, [setGameSize, navigation]);
 
     return (
-        <BackgroundScreenWrapper>
-            <View style={styles.logoWrapper}>
-                <Logo />
-            </View>
+        <SafeAreaScreenWrapper>
+            <Logo />
 
             <View style={styles.sizesWrapper}>
                 <HexagonButton
@@ -48,7 +46,7 @@ const NewGameSizeScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate(Screen.MAIN_MENU)}
                 />
             </View>
-        </BackgroundScreenWrapper>
+        </SafeAreaScreenWrapper>
     );
 };
 
@@ -57,14 +55,6 @@ NewGameSizeScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-    logoWrapper: {
-        width: '100%',
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 40,
-    },
     sizesWrapper: {
         flex: 1,
         justifyContent: 'flex-start',
