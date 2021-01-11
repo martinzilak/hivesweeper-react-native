@@ -13,4 +13,4 @@ const shuffle = (list) => {
     return result;
 };
 
-export default R.curry((n, list) => R.slice(0, n)(shuffle(list)));
+export const randomSubset = R.curry((n, list) => R.slice(0, n)(shuffle(list)));

@@ -1,7 +1,7 @@
 import { GameSize } from './GameSize';
 
 export const BeeCount = {
-    [GameSize.SMALL]: { lowerBound: 6, upperBound: 8 },
-    [GameSize.MEDIUM]: { lowerBound: 12, upperBound: 16 },
-    [GameSize.LARGE]: { lowerBound: 16, upperBound: 22 },
+    [GameSize.SMALL]: { lowerBound: 7, upperBound: 8 },
+    [GameSize.MEDIUM]: { lowerBound: 12, upperBound: 14 },
+    [GameSize.LARGE]: { lowerBound: 15, upperBound: 20 },
 };

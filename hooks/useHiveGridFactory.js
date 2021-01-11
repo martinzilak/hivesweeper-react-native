@@ -4,11 +4,12 @@ import * as R from 'ramda';
 import { HiveCellHex } from '../classes/HiveCellHex';
 import { getHexSize } from '../utils/getHexSize';
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
+import { limitMaximumNeighborCount } from '../utils/limitMaximumNeighborCount';
+import { limitBigBeeNeighborhoods } from '../utils/limitBigBeeNeighborhoods';
 import { mapIndexed } from '../utils/mapIndexed';
-import randomSubset from '../utils/randomSubset';
+import { randomSubset } from '../utils/randomSubset';
 import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
 import { BeeCount } from '../constants/BeeCount';
-import { NeighboringBeeCountUpperBound } from '../constants/NeighboringBeeCountUpperBound';
 
 export const useHiveGridFactory = (gameSize) => {
     const HexFactory = useMemo(() => extendHex({
@@ -52,30 +53,8 @@ export const useHiveGridFactory = (gameSize) => {
         )(grid);
 
         return R.compose(
-            // limit maximum neighboring bee count
-            R.forEach((cell) => {
-                const neighborCount = R.length(cell.neighbors);
-
-                if ((neighborCount - cell.neighboringBees) > 0 &&
-                    cell.neighboringBees <= NeighboringBeeCountUpperBound[gameSize]
-                ) {
-                    return;
-                }
-
-                const limitExceededBy = R.max(1, cell.neighboringBees - NeighboringBeeCountUpperBound[gameSize]);
-
-                R.compose(
-                    R.forEach((neighbor) => {
-                        neighbor.setIsBee(false);
-
-                        R.forEach((neighborOfNeighbor) => {
-                            neighborOfNeighbor.setNeighboringBees(neighborOfNeighbor.neighboringBees - 1);
-                        })(neighbor.neighbors);
-                    }),
-                    randomSubset(limitExceededBy),
-                    R.filter(R.prop('isBee')),
-                )(cell.neighbors);
-            }),
+            limitMaximumNeighborCount(gameSize),
+            limitBigBeeNeighborhoods(gameSize),
             // map neighbors
             R.map((cell) => {
                 const neighbors = R.o(
