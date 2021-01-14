@@ -1,55 +1,46 @@
 import * as R from 'ramda';
-import { NeighboringBeeCountUpperBound } from '../constants/NeighboringBeeCountUpperBound';
+import { getNeighboringBeeCountUpperBound } from './getNeighboringBeeCountUpperBound';
+import { getCellCountForWidth } from './getCellCountForWidth';
+import { randomSubset } from './randomSubset';
 import { unsetIsBee } from './unsetIsBee';
 
-export const limitBigBeeNeighborhoods = (gameSize) => (grid) => {
-    const beeCellIdsToRemove = R.compose(
-        R.uniq,
-        R.flatten,
-        R.map((beeNeighborhoodIds) => {
-            const countToRemove = Math.floor(R.length(beeNeighborhoodIds) / NeighboringBeeCountUpperBound[gameSize]);
+const collectNeighbors = (cell, width) => {
+    if (width === 0) {
+        return [cell];
+    }
 
-            return R.slice(
-                Math.floor(R.length(beeNeighborhoodIds) / 2) - Math.floor(countToRemove / 2),
-                countToRemove,
-            )(beeNeighborhoodIds);
-        }),
-        R.filter((beeNeighborhoodIds) => R.length(beeNeighborhoodIds) > NeighboringBeeCountUpperBound[gameSize]),
-        R.sortBy(R.identity),
-        R.map((cell) => {
-            let beeNeighborhoodIds = [cell.id];
-            let processedIds = [];
-            let unprocessedNeighbors = [...cell.neighbors];
-
-            while (R.length(unprocessedNeighbors) > 0) {
-                const neighbor = R.prop(0)(unprocessedNeighbors);
-                processedIds = R.append(neighbor.id)(processedIds);
-                unprocessedNeighbors = R.drop(1)(unprocessedNeighbors);
-
-                if (!R.includes(neighbor.id)(beeNeighborhoodIds)) {
-                    beeNeighborhoodIds = R.append(neighbor.id)(beeNeighborhoodIds);
-                }
-
-                unprocessedNeighbors = [
-                    ...unprocessedNeighbors,
-                    ...R.filter(R.allPass([
-                        R.prop('isBee'),
-                        (neighborNeighbor) => !R.includes(neighborNeighbor.id)(processedIds),
-                    ]))(neighbor.neighbors)
-                ];
-            }
-
-            return beeNeighborhoodIds;
-        }),
-        R.filter(R.propEq('neighboringBees', 1)),
-        R.filter(R.prop('isBee')),
-    )(grid);
-
-    return R.forEach((cell) => {
-        if (!R.includes(cell.id)(beeCellIdsToRemove)) {
-            return;
-        }
-
-        unsetIsBee(cell);
-    })(grid);
+    return [
+        ...R.o(
+            R.flatten,
+            R.map((neighbor) => collectNeighbors(neighbor, width - 1)),
+        )(cell.neighbors),
+    ];
 };
+
+export const limitBigBeeNeighborhoods = (
+    gameSize,
+    width,
+) => R.forEach((cell) => {
+    const neighbors = R.uniqBy(
+        R.prop('id'),
+        collectNeighbors(cell, width),
+    );
+    const bees = R.filter(R.prop('isBee'), neighbors);
+    const beeCount = R.length(bees);
+
+    const adjustedBeeLimit = Math.ceil(
+        getNeighboringBeeCountUpperBound(gameSize, width) *
+        (R.length(neighbors) / getCellCountForWidth(width))
+    );
+
+    if (beeCount <= adjustedBeeLimit) {
+        return;
+    }
+
+    const limitExceededBy = R.max(0, beeCount - adjustedBeeLimit);
+
+    R.o(
+        R.forEach(unsetIsBee),
+        randomSubset(limitExceededBy),
+    )(bees);
+});

@@ -4,8 +4,8 @@ import * as R from 'ramda';
 import { HiveCellHex } from '../classes/HiveCellHex';
 import { getHexSize } from '../utils/getHexSize';
 import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
-import { limitMaximumNeighborCount } from '../utils/limitMaximumNeighborCount';
 import { limitBigBeeNeighborhoods } from '../utils/limitBigBeeNeighborhoods';
+import { guaranteeBeeCountLowerBound } from '../utils/guaranteeBeeCountLowerBound';
 import { mapIndexed } from '../utils/mapIndexed';
 import { randomSubset } from '../utils/randomSubset';
 import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
@@ -53,8 +53,9 @@ export const useHiveGridFactory = (gameSize) => {
         )(grid);
 
         return R.compose(
-            limitMaximumNeighborCount(gameSize),
-            limitBigBeeNeighborhoods(gameSize),
+            guaranteeBeeCountLowerBound(gameSize),
+            limitBigBeeNeighborhoods(gameSize, 2),
+            limitBigBeeNeighborhoods(gameSize, 1),
             // map neighbors
             R.map((cell) => {
                 const neighbors = R.o(
