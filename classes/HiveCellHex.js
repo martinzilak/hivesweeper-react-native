@@ -2,11 +2,10 @@ import { getPrimitiveHexId } from '../utils/getPrimitiveHexId';
 import { getPointsStringFromPrimitiveHex } from '../utils/getPointsStringFromPrimitiveHex';
 
 export class HiveCellHex {
-    constructor(hex, index = 0) {
+    constructor(hex) {
         this.primitiveHex = hex;
 
         this.id = getPrimitiveHexId(hex);
-        this.index = index;
         this.pointsString = getPointsStringFromPrimitiveHex(hex);
 
         const { x, y } = hex.toPoint();
@@ -17,7 +16,7 @@ export class HiveCellHex {
         this.isBee = false;
         this.isFlagged = false;
         this.isRevealed = false;
-        this.neighbors = [];
+        this.neighborIds = [];
         this.neighboringBees = 0;
     };
 
@@ -37,8 +36,8 @@ export class HiveCellHex {
         this.isRevealed = isRevealed;
     };
 
-    setNeighbors(neighbors) {
-        this.neighbors = neighbors;
+    setNeighborIds(neighborIds) {
+        this.neighborIds = neighborIds;
     };
 
     setNeighboringBees(neighboringBees) {

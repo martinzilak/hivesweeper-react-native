@@ -2,45 +2,49 @@ import * as R from 'ramda';
 import { getNeighboringBeeCountUpperBound } from './getNeighboringBeeCountUpperBound';
 import { getCellCountForWidth } from './getCellCountForWidth';
 import { randomSubset } from './randomSubset';
-import { unsetIsBee } from './unsetIsBee';
 
-const collectNeighbors = (cell, width) => {
+const collectNeighbors = (grid, cellId, width) => {
     if (width === 0) {
-        return [cell];
+        return [cellId];
     }
 
     return [
         ...R.o(
             R.flatten,
-            R.map((neighbor) => collectNeighbors(neighbor, width - 1)),
-        )(cell.neighbors),
+            R.map((neighbor) => collectNeighbors(grid, neighbor.id, width - 1)),
+        )(grid.getNeighborsOfCellWithId(cellId)),
     ];
 };
 
 export const limitBigBeeNeighborhoods = (
     gameSize,
     width,
-) => R.forEach((cell) => {
-    const neighbors = R.uniqBy(
-        R.prop('id'),
-        collectNeighbors(cell, width),
-    );
-    const bees = R.filter(R.prop('isBee'), neighbors);
-    const beeCount = R.length(bees);
+) => (hiveGrid) => {
+    const grid = hiveGrid.grid;
 
-    const adjustedBeeLimit = Math.ceil(
-        getNeighboringBeeCountUpperBound(gameSize, width) *
-        (R.length(neighbors) / getCellCountForWidth(width))
-    );
+    R.forEach((cell) => {
+        const neighborIds = R.uniq(
+            collectNeighbors(grid, cell.id, width),
+        );
+        const beeIds = grid.filterCellsWithIdsByBeeStatus(neighborIds, true);
+        const beeCount = R.length(beeIds);
 
-    if (beeCount <= adjustedBeeLimit) {
-        return;
-    }
+        const adjustedBeeLimit = Math.ceil(
+            getNeighboringBeeCountUpperBound(gameSize, width) *
+            (R.length(neighborIds) / getCellCountForWidth(width))
+        );
 
-    const limitExceededBy = R.max(0, beeCount - adjustedBeeLimit);
+        if (beeCount <= adjustedBeeLimit) {
+            return;
+        }
 
-    R.o(
-        R.forEach(unsetIsBee),
-        randomSubset(limitExceededBy),
-    )(bees);
-});
+        const limitExceededBy = R.max(0, beeCount - adjustedBeeLimit);
+
+        R.o(
+            (filteredBeeIds) => grid.changeBeeStatusForCellsWithIds(filteredBeeIds, false),
+            randomSubset(limitExceededBy),
+        )(beeIds);
+    })(grid.getPrimitiveGrid());
+
+    return hiveGrid;
+};
