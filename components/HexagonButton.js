@@ -9,7 +9,7 @@ import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners'
 import { CLICK } from '../assets/Sounds';
 import { HiveDimension } from '../constants/HiveDimension';
 
-const HexagonButton = ({
+const HexagonButton = React.memo(({
     styles,
     width = HiveDimension.WIDTH,
     height = 60,
@@ -64,7 +64,7 @@ const HexagonButton = ({
             </TouchableOpacity>
         </View>
     );
-};
+});
 
 HexagonButton.propTypes = {
     styles: PropTypes.object,

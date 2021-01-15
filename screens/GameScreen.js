@@ -10,7 +10,7 @@ import { Screen } from '../constants/Screen';
 import { HiveDimension } from '../constants/HiveDimension';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
-const GameScreen = ({ navigation }) => {
+const GameScreen = React.memo(({ navigation }) => {
     const { gameSize } = useContext(GameSettingsContext);
 
     const {
@@ -63,7 +63,7 @@ const GameScreen = ({ navigation }) => {
             </View>
         </SafeAreaScreenWrapper>
     );
-};
+});
 
 GameScreen.propTypes = {
     navigation: PropTypes.object,

@@ -7,7 +7,7 @@ import { Screen } from '../constants/Screen';
 import { useGameSettings } from '../hooks/useGameSettings';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = React.memo(({ navigation }) => {
     const {
         isSoundEnabled,
         setIsSoundEnabled,
@@ -54,7 +54,7 @@ const SettingsScreen = ({ navigation }) => {
             </View>
         </SafeAreaScreenWrapper>
     );
-};
+});
 
 SettingsScreen.propTypes = {
     navigation: PropTypes.object,

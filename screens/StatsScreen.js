@@ -11,7 +11,7 @@ import { Stat } from '../constants/Stat';
 import { useStats } from '../hooks/useStats';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
-const StatsScreen = ({ navigation }) => {
+const StatsScreen = React.memo(({ navigation }) => {
     const { stats } = useStats();
 
     return (
@@ -42,7 +42,7 @@ const StatsScreen = ({ navigation }) => {
             </View>
         </SafeAreaScreenWrapper>
     );
-};
+});
 
 StatsScreen.propTypes = {
     navigation: PropTypes.object,

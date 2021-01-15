@@ -8,7 +8,7 @@ import { HiveDimension } from '../constants/HiveDimension';
 import { getHiveVerticalOffset } from '../utils/getHiveVerticalOffset';
 import HiveCell from './HiveCell';
 
-const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
+const Hive = React.memo(({ grid, gameSize, revealCell, flagCell }) => (
     <View style={styles.view}>
         <Svg
             width={HiveDimension.WIDTH}
@@ -17,11 +17,11 @@ const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
             <G
                 y={getHiveVerticalOffset(gameSize)}
             >
-                {R.map((hex) => (
+                {R.map((cell) => (
                     <HiveCell
-                        key={hex.id}
+                        key={cell.id}
                         gameSize={gameSize}
-                        hex={hex}
+                        cell={cell}
                         revealCell={revealCell}
                         flagCell={flagCell}
                     />
@@ -29,7 +29,7 @@ const Hive = ({ grid, gameSize, revealCell, flagCell }) => (
             </G>
         </Svg>
     </View>
-);
+));
 
 Hive.propTypes = {
     grid: PropTypes.arrayOf(PropTypes.object),

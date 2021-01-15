@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-const StatRow = ({ label, value }) => (
+const StatRow = React.memo(({ label, value }) => (
     <View style={styles.statWrapper}>
         <Text style={styles.labelText}>
             {label}
@@ -12,7 +12,7 @@ const StatRow = ({ label, value }) => (
             {value}
         </Text>
     </View>
-);
+));
 
 StatRow.propTypes = {
     label: PropTypes.string,

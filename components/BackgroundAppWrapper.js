@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { BACKGROUND } from '../assets/Images';
 import { usePlayMusicLoop } from '../hooks/usePlayMusicLoop';
 
-const BackgroundAppWrapper = ({ children }) => {
+const BackgroundAppWrapper = React.memo(({ children }) => {
     usePlayMusicLoop();
 
     return (
@@ -15,7 +15,7 @@ const BackgroundAppWrapper = ({ children }) => {
             {children}
         </ImageBackground>
     );
-};
+});
 
 BackgroundAppWrapper.propTypes = {
     children: PropTypes.oneOfType([

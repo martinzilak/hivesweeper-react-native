@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 
-const SafeAreaScreenWrapper = ({ children }) => (
+const SafeAreaScreenWrapper = React.memo(({ children }) => (
     <SafeAreaView style={styles.appWrapper}>
         {children}
     </SafeAreaView>
-);
+));
 
 SafeAreaScreenWrapper.propTypes = {
     children: PropTypes.oneOfType([

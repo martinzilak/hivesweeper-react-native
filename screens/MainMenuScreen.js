@@ -6,7 +6,7 @@ import Logo from '../components/Logo';
 import { Screen } from '../constants/Screen';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
-const MainMenuScreen = ({ navigation }) => (
+const MainMenuScreen = React.memo(({ navigation }) => (
     <SafeAreaScreenWrapper>
         <Logo />
 
@@ -30,7 +30,7 @@ const MainMenuScreen = ({ navigation }) => (
             />
         </View>
     </SafeAreaScreenWrapper>
-);
+));
 
 MainMenuScreen.propTypes = {
     navigation: PropTypes.object,

@@ -5,8 +5,8 @@ import { BEE, FLAG } from '../assets/Images';
 import { BeeHorizontalOffset } from '../constants/BeeHorizontalOffset';
 import { useVibrate } from '../hooks/useVibrate';
 
-const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
-    const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = hex;
+const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
+    const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = cell;
     const { vibrate } = useVibrate();
 
     return (
@@ -14,11 +14,11 @@ const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
             x={x}
             y={y}
             onPress={() => {
-                revealCell(hex);
+                revealCell(cell);
                 vibrate();
             }}
             onLongPress={() => {
-                flagCell(hex);
+                flagCell(cell);
                 vibrate();
             }}
         >
@@ -30,8 +30,8 @@ const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
             {isRevealed && (
                 isBee ? (
                     <Image
-                        {...getImageStyles(gameSize, cellSize)}
                         href={BEE}
+                        {...getImageStyles(gameSize, cellSize)}
                     />
                 ) : (
                     <Text
@@ -46,17 +46,17 @@ const HiveCell = ({ gameSize, hex, revealCell, flagCell }) => {
             )}
             {isFlagged && (
                 <Image
-                    {...getImageStyles(gameSize, cellSize)}
                     href={FLAG}
+                    {...getImageStyles(gameSize, cellSize)}
                 />
             )}
         </G>
     );
-};
+});
 
 HiveCell.propTypes = {
     gameSize: PropTypes.number,
-    hex: PropTypes.object,
+    cell: PropTypes.object,
     revealCell: PropTypes.func,
     flagCell: PropTypes.func,
 };

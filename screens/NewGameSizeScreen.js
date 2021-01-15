@@ -8,7 +8,7 @@ import { GameSize } from '../constants/GameSize';
 import { Screen } from '../constants/Screen';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
-const NewGameSizeScreen = ({ navigation }) => {
+const NewGameSizeScreen = React.memo(({ navigation }) => {
     const { setGameSize } = useGameSettings();
 
     const startGameWithSize = useCallback((gameSize) => {
@@ -48,7 +48,7 @@ const NewGameSizeScreen = ({ navigation }) => {
             </View>
         </SafeAreaScreenWrapper>
     );
-};
+});
 
 NewGameSizeScreen.propTypes = {
     navigation: PropTypes.object,

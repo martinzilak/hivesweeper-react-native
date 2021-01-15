@@ -3,14 +3,14 @@ import { Image, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { LOGO } from '../assets/Images';
 
-const Logo = ({ flex = 1}) => (
+const Logo = React.memo(({ flex = 1}) => (
     <View style={getLogoWrapperStyles(flex)}>
         <Image
             style={styles.logo}
             source={LOGO}
         />
     </View>
-);
+));
 
 Logo.propTypes = {
     flex: PropTypes.number,
