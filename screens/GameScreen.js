@@ -14,7 +14,7 @@ const GameScreen = React.memo(({ navigation }) => {
     const { gameSize } = useContext(GameSettingsContext);
 
     const {
-        grid,
+        hiveGrid,
         flagsRemaining,
         score,
         resetGame,
@@ -41,7 +41,7 @@ const GameScreen = React.memo(({ navigation }) => {
 
             <View style={styles.hiveWrapper}>
                 <Hive
-                    grid={grid}
+                    hiveGrid={hiveGrid}
                     gameSize={gameSize}
                     revealCell={revealCell}
                     flagCell={flagCell}

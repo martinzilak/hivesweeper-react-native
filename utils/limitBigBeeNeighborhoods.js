@@ -3,7 +3,7 @@ import { getNeighboringBeeCountUpperBound } from './getNeighboringBeeCountUpperB
 import { getCellCountForWidth } from './getCellCountForWidth';
 import { randomSubset } from './randomSubset';
 
-const collectNeighbors = (grid, cellId, width) => {
+const collectNeighbors = (hiveGrid, cellId, width) => {
     if (width === 0) {
         return [cellId];
     }
@@ -11,8 +11,8 @@ const collectNeighbors = (grid, cellId, width) => {
     return [
         ...R.o(
             R.flatten,
-            R.map((neighbor) => collectNeighbors(grid, neighbor.id, width - 1)),
-        )(grid.getNeighborsOfCellWithId(cellId)),
+            R.map((neighbor) => collectNeighbors(hiveGrid, neighbor.id, width - 1)),
+        )(hiveGrid.getNeighborsOfCellWithId(cellId)),
     ];
 };
 
@@ -20,13 +20,11 @@ export const limitBigBeeNeighborhoods = (
     gameSize,
     width,
 ) => (hiveGrid) => {
-    const grid = hiveGrid.grid;
-
     R.forEach((cell) => {
         const neighborIds = R.uniq(
-            collectNeighbors(grid, cell.id, width),
+            collectNeighbors(hiveGrid, cell.id, width),
         );
-        const beeIds = grid.filterCellsWithIdsByBeeStatus(neighborIds, true);
+        const beeIds = hiveGrid.filterCellsWithIdsByBeeStatus(neighborIds, true);
         const beeCount = R.length(beeIds);
 
         const adjustedBeeLimit = Math.ceil(
@@ -41,10 +39,10 @@ export const limitBigBeeNeighborhoods = (
         const limitExceededBy = R.max(0, beeCount - adjustedBeeLimit);
 
         R.o(
-            (filteredBeeIds) => grid.changeBeeStatusForCellsWithIds(filteredBeeIds, false),
+            (filteredBeeIds) => hiveGrid.changeBeeStatusForCellsWithIds(filteredBeeIds, false),
             randomSubset(limitExceededBy),
         )(beeIds);
-    })(grid.getPrimitiveGrid());
+    })(hiveGrid.getPrimitiveGrid());
 
     return hiveGrid;
 };

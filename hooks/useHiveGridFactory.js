@@ -9,10 +9,10 @@ import { guaranteeBeeCountLowerBound } from '../utils/guaranteeBeeCountLowerBoun
 import { randomSubset } from '../utils/randomSubset';
 import { GridFactory } from '../constants/GridFactory';
 import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
-import { BeeCount } from '../constants/BeeCount';
+import { TotalBeeCount } from '../constants/TotalBeeCount';
 
 export const useHiveGridFactory = (gameSize) => {
-    const generateGrid = useCallback(() => {
+    const generateHiveGrid = useCallback(() => {
         const primitiveGrid = GridFactory[gameSize]();
 
         const cellSize = getHexSize(gameSize);
@@ -42,8 +42,8 @@ export const useHiveGridFactory = (gameSize) => {
             R.map((primitiveHex) => {
                 const cell = new HiveCellHex(primitiveHex);
 
-                if (beeCount < BeeCount[gameSize].upperBound &&
-                    (beeCount < BeeCount[gameSize].lowerBound || Math.random() <= ExtraBeeProbability[gameSize])
+                if (beeCount < TotalBeeCount[gameSize].upperBound &&
+                    (beeCount < TotalBeeCount[gameSize].lowerBound || Math.random() <= ExtraBeeProbability[gameSize])
                 ) {
                     cell.setIsBee(true);
                     beeCount += 1;
@@ -58,5 +58,5 @@ export const useHiveGridFactory = (gameSize) => {
         )(primitiveGrid);
     }, [gameSize]);
     
-    return { generateGrid };
+    return { generateHiveGrid };
 };

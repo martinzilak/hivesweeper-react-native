@@ -33,7 +33,7 @@ export class HiveGrid {
     };
 
     getCellsWithIds(ids) {
-        return R.map((id) => this.grid[id])(ids);
+        return R.map((id) => this.getCellWithId(id))(ids);
     };
 
     filterCellsWithIdsByBeeStatus(ids, isBee = true) {
@@ -51,7 +51,8 @@ export class HiveGrid {
     };
 
     getNeighborsOfCellWithId(id) {
-        return R.map(this.getCellWithId)(this.getCellWithId(id).neighborIds);
+        const neighborIds = this.getCellWithId(id).neighborIds;
+        return R.map((neighborId) => this.getCellWithId(neighborId))(neighborIds);
     };
 
     getPrimitiveGrid() {
@@ -64,12 +65,12 @@ export class HiveGrid {
 
     updateCell(cell) {
         this.grid[cell.id] = cell;
-        return this.grid;
+        return this;
     };
 
     updateCells(cells) {
         R.forEach((cell) => this.updateCell(cell))(cells);
-        return this.grid;
+        return this;
     };
 
     changeBeeStatusForCellWithId(id, setIsBee = true) {
@@ -84,7 +85,7 @@ export class HiveGrid {
             })(this.getNeighborsOfCellWithId(cell.id));
         }
 
-        return this.grid;
+        return this;
     };
 
     changeBeeStatusForCellsWithIds(ids, setIsBee = true) {
@@ -92,7 +93,7 @@ export class HiveGrid {
             this.changeBeeStatusForCellWithId(cell.id, setIsBee)
         ))(this.getCellsWithIds(ids));
 
-        return this.grid;
+        return this;
     };
 
     revealAllBees() {
@@ -103,6 +104,6 @@ export class HiveGrid {
             }
         })(this.getPrimitiveGrid());
 
-        return this.grid;
+        return this;
     };
 };
