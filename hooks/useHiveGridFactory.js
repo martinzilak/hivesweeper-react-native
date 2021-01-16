@@ -1,5 +1,4 @@
-import { useMemo, useCallback } from 'react';
-import { defineGrid, extendHex } from 'honeycomb-grid';
+import { useCallback } from 'react';
 import * as R from 'ramda';
 import { HiveCellHex } from '../classes/HiveCellHex';
 import { getHexSize } from '../utils/getHexSize';
@@ -8,26 +7,41 @@ import { limitBigBeeNeighborhoods } from '../utils/limitBigBeeNeighborhoods';
 import { guaranteeBeeCountLowerBound } from '../utils/guaranteeBeeCountLowerBound';
 import { mapIndexed } from '../utils/mapIndexed';
 import { randomSubset } from '../utils/randomSubset';
+import { GridFactory } from '../constants/GridFactory';
 import { ExtraBeeProbability } from '../constants/ExtraBeeProbability';
-import { BeeCount } from '../constants/BeeCount';
+import { TotalBeeCount } from '../constants/TotalBeeCount';
 
 export const useHiveGridFactory = (gameSize) => {
-    const HexFactory = useMemo(() => extendHex({
-        size: getHexSize(gameSize),
-        orientation: 'flat',
-    }), [gameSize]);
-    
     const generateGrid = useCallback(() => {
-        const GridFactory = defineGrid(HexFactory);
-
-        const grid = GridFactory.hexagon({
-            radius: gameSize / 2,
-            center: [gameSize / 2, gameSize / 2],
-        });
+        const grid = GridFactory[gameSize]();
 
         let beeCount = 0;
+        const cellSize = getHexSize(gameSize);
 
-        const hiveCellsById = R.compose(
+        return R.compose(
+            guaranteeBeeCountLowerBound(gameSize),
+            limitBigBeeNeighborhoods(gameSize, 2),
+            limitBigBeeNeighborhoods(gameSize, 1),
+            // map neighbors
+            (hiveCellsById) => {
+                return R.o(
+                    R.map((cell) => {
+                        const neighbors = R.o(
+                            R.map((neighbor) => hiveCellsById[getPrimitiveHexId(neighbor)]),
+                            R.filter((neighbor) => !R.isNil(neighbor)),
+                        )(grid.neighborsOf(cell.primitiveHex));
+
+                        cell.setNeighbors(neighbors);
+                        cell.setNeighboringBees(R.o(
+                            R.length,
+                            R.filter(R.prop('isBee')),
+                        )(neighbors));
+
+                        return cell;
+                    }),
+                    R.values,
+                )(hiveCellsById);
+            },
             // map by hex ID to allow neighbor mapping
             R.reduce((accumulatedHiveCellsById, cell) => ({
                 ...accumulatedHiveCellsById,
@@ -37,43 +51,21 @@ export const useHiveGridFactory = (gameSize) => {
             mapIndexed((primitiveHex, index) => {
                 const cell = new HiveCellHex(primitiveHex, index);
 
-                if (beeCount < BeeCount[gameSize].upperBound &&
-                    (beeCount < BeeCount[gameSize].lowerBound || Math.random() <= ExtraBeeProbability[gameSize])
+                if (beeCount < TotalBeeCount[gameSize].upperBound &&
+                    (beeCount < TotalBeeCount[gameSize].lowerBound || Math.random() <= ExtraBeeProbability[gameSize])
                 ) {
                     cell.setIsBee(true);
                     beeCount += 1;
                 }
 
-                cell.setCellSize(getHexSize(gameSize));
+                cell.setCellSize(cellSize);
 
                 return cell;
             }),
             // shuffle the grid
             randomSubset(grid.length),
         )(grid);
-
-        return R.compose(
-            guaranteeBeeCountLowerBound(gameSize),
-            limitBigBeeNeighborhoods(gameSize, 2),
-            limitBigBeeNeighborhoods(gameSize, 1),
-            // map neighbors
-            R.map((cell) => {
-                const neighbors = R.o(
-                    R.map((neighbor) => hiveCellsById[getPrimitiveHexId(neighbor)]),
-                    R.filter((neighbor) => !R.isNil(neighbor)),
-                )(grid.neighborsOf(cell.primitiveHex));
-
-                cell.setNeighbors(neighbors);
-                cell.setNeighboringBees(R.o(
-                    R.length,
-                    R.filter(R.prop('isBee')),
-                )(neighbors));
-
-                return cell;
-            }),
-            R.values,
-        )(hiveCellsById);
-    }, [HexFactory, gameSize]);
+    }, [gameSize]);
     
     return { generateGrid };
 };

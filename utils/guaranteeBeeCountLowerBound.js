@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { BeeCount } from '../constants/BeeCount';
+import { TotalBeeCount } from '../constants/TotalBeeCount';
 import { randomSubset } from './randomSubset';
 import { setIsBee } from './setIsBee';
 
@@ -9,11 +9,11 @@ export const guaranteeBeeCountLowerBound = (gameSize) => (grid) => {
         R.filter(R.prop('isBee')),
     )(grid);
 
-    if (beeCount >= BeeCount[gameSize].lowerBound) {
+    if (beeCount >= TotalBeeCount[gameSize].lowerBound) {
         return grid;
     }
 
-    const limitUndercutBy = BeeCount[gameSize].lowerBound - beeCount;
+    const limitUndercutBy = TotalBeeCount[gameSize].lowerBound - beeCount;
 
     R.compose(
         R.forEach(setIsBee),
