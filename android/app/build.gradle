@@ -133,8 +133,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", true);
 
-def keystorePass = getPassword("mroz","android-upload-keystore")
-def aliasPass = getPassword("mroz","android-upload-keystore-alias")
+def keystorePass = getPassword("upload","android-upload-keystore")
+def aliasPass = getPassword("upload","android-upload-keystore-alias")
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
