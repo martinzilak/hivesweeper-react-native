@@ -6,7 +6,6 @@ import * as R from 'ramda';
 import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
 import { HiveDimension } from '../constants/HiveDimension';
 import { getHiveVerticalOffset } from '../utils/getHiveVerticalOffset';
-import { getPrimitiveGridNullSafe } from '../utils/getPrimitiveGridNullSafe';
 import HiveCell from './HiveCell';
 
 const Hive = React.memo(({ hiveGrid, gameSize, revealCell, flagCell }) => (
@@ -26,7 +25,7 @@ const Hive = React.memo(({ hiveGrid, gameSize, revealCell, flagCell }) => (
                         revealCell={revealCell}
                         flagCell={flagCell}
                     />
-                ))(getPrimitiveGridNullSafe(hiveGrid))}
+                ))(R.values(hiveGrid))}
             </G>
         </Svg>
     </View>

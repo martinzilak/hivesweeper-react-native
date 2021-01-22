@@ -1,9 +1,12 @@
 import * as R from 'ramda';
+import { setBeeStatus } from './gridUtils/setBeeStatus';
+import { getIdsOfCellsWithBeeStatus } from './gridUtils/getIdsOfCellsWithBeeStatus';
+import { getNeighborsOfCellWithId } from './gridUtils/getNeighborsOfCellWithId';
 import { getNeighboringBeeCountUpperBound } from './getNeighboringBeeCountUpperBound';
 import { getCellCountForWidth } from './getCellCountForWidth';
 import { randomSubset } from './randomSubset';
 
-const collectNeighbors = (hiveGrid, cellId, width) => {
+const collectNeighbors = (grid, cellId, width) => {
     if (width === 0) {
         return [cellId];
     }
@@ -11,20 +14,20 @@ const collectNeighbors = (hiveGrid, cellId, width) => {
     return [
         ...R.o(
             R.flatten,
-            R.map((neighbor) => collectNeighbors(hiveGrid, neighbor.id, width - 1)),
-        )(hiveGrid.getNeighborsOfCellWithId(cellId)),
+            R.map((neighbor) => collectNeighbors(grid, neighbor.id, width - 1)),
+        )(getNeighborsOfCellWithId(grid, cellId)),
     ];
 };
 
 export const limitBigBeeNeighborhoods = (
     gameSize,
     width,
-) => (hiveGrid) => {
+) => (grid) => {
     R.forEach((cell) => {
         const neighborIds = R.uniq(
-            collectNeighbors(hiveGrid, cell.id, width),
+            collectNeighbors(grid, cell.id, width),
         );
-        const beeIds = hiveGrid.filterCellsWithIdsByBeeStatus(neighborIds, true);
+        const beeIds = R.intersection(neighborIds, getIdsOfCellsWithBeeStatus(grid, true));
         const beeCount = R.length(beeIds);
 
         const adjustedBeeLimit = Math.ceil(
@@ -39,10 +42,10 @@ export const limitBigBeeNeighborhoods = (
         const limitExceededBy = R.max(0, beeCount - adjustedBeeLimit);
 
         R.o(
-            (filteredBeeIds) => hiveGrid.changeBeeStatusForCellsWithIds(filteredBeeIds, false),
+            R.forEach((cellId) => setBeeStatus(grid, cellId, false)),
             randomSubset(limitExceededBy),
         )(beeIds);
-    })(hiveGrid.getPrimitiveGrid());
+    })(R.values(grid));
 
-    return hiveGrid;
+    return grid;
 };
