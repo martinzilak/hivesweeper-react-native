@@ -1,4 +1,4 @@
-package com.hivesweeper;
+package sk.zilak.hivesweeper;
 
 import android.content.Intent;
 import android.os.Bundle;
