@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 
 const SafeAreaScreenWrapper = React.memo(({ children }) => (
     <SafeAreaView style={styles.appWrapper}>

@@ -3,9 +3,9 @@ import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
-import { useGameSettings } from '../hooks/useGameSettings';
 import { GameSize } from '../constants/GameSize';
 import { Screen } from '../constants/Screen';
+import { useGameSettings } from '../hooks/useGameSettings';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
 const NewGameSizeScreen = React.memo(({ navigation }) => {

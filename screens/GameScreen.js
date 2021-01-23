@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import Hive from '../components/Hive';
 import HexagonButton from '../components/HexagonButton';
 import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
-import { useGameStateControl } from '../hooks/useGameStateControl';
-import GameSettingsContext from '../contexts/GameSettingsContext';
 import { Screen } from '../constants/Screen';
 import { HiveDimension } from '../constants/HiveDimension';
+import GameSettingsContext from '../contexts/GameSettingsContext';
+import { useGameStateControl } from '../hooks/useGameStateControl';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
 const GameScreen = React.memo(({ navigation }) => {

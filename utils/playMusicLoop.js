@@ -6,4 +6,8 @@ const onSuccessfullyPlayed = (sound) => (success) => {
     }
 };
 
-export const playMusicLoop = () => MUSIC_LOOP.play(onSuccessfullyPlayed(MUSIC_LOOP));
+export const playMusicLoop = () => {
+    if (!MUSIC_LOOP.isPlaying()) {
+        MUSIC_LOOP.play(onSuccessfullyPlayed(MUSIC_LOOP));
+    }
+};

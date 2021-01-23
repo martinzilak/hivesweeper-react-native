@@ -32,13 +32,9 @@ export const usePlayMusicLoop = () => {
         isMusicEnabledRef.current = isMusicEnabled;
 
         if (isMusicEnabled) {
-            if (!MUSIC_LOOP.isPlaying()) {
-                playMusicLoop();
-            }
+            playMusicLoop();
         } else {
-            if (MUSIC_LOOP.isPlaying()) {
-                MUSIC_LOOP.stop();
-            }
+            MUSIC_LOOP.stop();
         }
     }, [isMusicEnabled]);
 };
