@@ -1,23 +1,34 @@
 import * as R from 'ramda';
-import { updateCells } from './updateCells';
-import { getNeighborsOfCellWithId } from './getNeighborsOfCellWithId';
 
-export const setBeeStatus = (grid, cellId, isBee = true) => {
-    const summand = isBee ? +1 : -1;
-    const cell = grid[cellId];
-
-    if (cell.isBee !== isBee) {
-        cell.isBee = isBee;
-
-        const updatedCells = [
-            cell,
-            ...R.forEach((neighbor) => {
-                neighbor.neighboringBees += summand;
-            })(getNeighborsOfCellWithId(grid, cellId)),
-        ];
-
-        return updateCells(grid, updatedCells);
+export const setBeeStatus = (grid, cellIds = [], isBee = true) => {
+    if (R.length(cellIds) === 0) {
+        return grid;
     }
 
-    return grid;
+    const summand = isBee ? +1 : -1;
+
+    return {
+        ...grid,
+        ...R.reduce((accumulatedGrid, cellId) => {
+            const cell = accumulatedGrid[cellId] ?? grid[cellId];
+            if (cell.isBee === isBee) {
+                return accumulatedGrid;
+            }
+
+            cell.isBee = isBee;
+            return {
+                ...accumulatedGrid,
+                [cellId]: cell,
+                ...R.reduce((accumulatedNeighbors, neigborId) => {
+                    const neighbor = accumulatedGrid[neigborId] ?? grid[neigborId];
+                    neighbor.neighboringBees += summand;
+
+                    return {
+                        ...accumulatedNeighbors,
+                        [neigborId]: neighbor,
+                    };
+                }, {})(cell.neighborIds),
+            };
+        }, {})(cellIds),
+    };
 };

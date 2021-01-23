@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import { setBeeStatus } from './gridUtils/setBeeStatus';
 import { getIdsOfCellsWithBeeStatus } from './gridUtils/getIdsOfCellsWithBeeStatus';
 import { getNeighborsOfCellWithId } from './gridUtils/getNeighborsOfCellWithId';
-import { getNeighboringBeeCountUpperBound } from './getNeighboringBeeCountUpperBound';
+import { getAdjustedNeighboringBeeCountUpperBound } from './getAdjustedNeighboringBeeCountUpperBound';
 import { getCellCountForWidth } from './getCellCountForWidth';
 import { randomSubset } from './randomSubset';
 
@@ -11,41 +11,38 @@ const collectNeighbors = (grid, cellId, width) => {
         return [cellId];
     }
 
-    return [
-        ...R.o(
-            R.flatten,
-            R.map((neighbor) => collectNeighbors(grid, neighbor.id, width - 1)),
-        )(getNeighborsOfCellWithId(grid, cellId)),
-    ];
+    return R.compose(
+        R.uniq,
+        R.flatten,
+        R.map((neighbor) => collectNeighbors(grid, neighbor.id, width - 1)),
+    )(getNeighborsOfCellWithId(grid, cellId));
 };
 
 export const limitBigBeeNeighborhoods = (
     gameSize,
     width,
 ) => (grid) => {
-    R.forEach((cell) => {
-        const neighborIds = R.uniq(
-            collectNeighbors(grid, cell.id, width),
-        );
+    const beeIdsToUnset = R.reduce((accumulatedCellIds, cell) => {
+        const neighborIds = collectNeighbors(grid, cell.id, width);
         const beeIds = R.intersection(neighborIds, getIdsOfCellsWithBeeStatus(grid, true));
         const beeCount = R.length(beeIds);
 
         const adjustedBeeLimit = Math.ceil(
-            getNeighboringBeeCountUpperBound(gameSize, width) *
+            getAdjustedNeighboringBeeCountUpperBound(gameSize, width) *
             (R.length(neighborIds) / getCellCountForWidth(width))
         );
 
         if (beeCount <= adjustedBeeLimit) {
-            return;
+            return accumulatedCellIds;
         }
 
         const limitExceededBy = R.max(0, beeCount - adjustedBeeLimit);
 
-        R.o(
-            R.forEach((cellId) => setBeeStatus(grid, cellId, false)),
-            randomSubset(limitExceededBy),
-        )(beeIds);
-    })(R.values(grid));
+        return R.uniq([
+            ...accumulatedCellIds,
+            ...randomSubset(limitExceededBy, beeIds),
+        ]);
+    }, [])(R.values(grid));
 
-    return grid;
+    return setBeeStatus(grid, beeIdsToUnset, false);
 };

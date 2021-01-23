@@ -14,10 +14,8 @@ export const guaranteeBeeCountLowerBound = (gameSize) => (grid) => {
 
     const limitUndercutBy = TotalBeeCount[gameSize].lowerBound - beeCount;
 
-    R.o(
-        R.forEach((cellId) => setBeeStatus(grid, cellId, true)),
+    return R.o(
+        (cellIds) => setBeeStatus(grid, cellIds, true),
         randomSubset(limitUndercutBy),
     )(notBeeIds);
-
-    return grid;
 };

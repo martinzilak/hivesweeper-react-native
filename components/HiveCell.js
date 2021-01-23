@@ -27,7 +27,7 @@ const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
                 fill={getFillColor(isBee, isRevealed, isFlagged)}
                 {...polygonStyles}
             />
-            {true && (
+            {isRevealed && (
                 isBee ? (
                     <Image
                         href={BEE}
