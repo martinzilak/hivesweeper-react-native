@@ -5,6 +5,7 @@ import { StorageKey } from '../constants/StorageKey';
 
 export const usePersistentGameSettings = () => {
     const [settings, setSettings] = useState(DefaultPersistentSettings);
+    const [initiallyLoaded, setInitiallyLoaded] = useState(false);
     const { getItem, setItem } = useAsyncStorage(StorageKey.SETTINGS);
 
     const readSettings = async () => {
@@ -24,9 +25,9 @@ export const usePersistentGameSettings = () => {
     };
 
     useEffect(() => {
-        readSettings();
+        readSettings().then(() => setInitiallyLoaded(true));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { settings, writeSingleSetting };
+    return { settings, writeSingleSetting, initiallyLoaded };
 };

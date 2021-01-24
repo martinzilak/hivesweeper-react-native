@@ -5,7 +5,7 @@ import { playMusicLoop } from '../utils/playMusicLoop';
 import { useGameSettings } from './useGameSettings';
 
 export const usePlayMusicLoop = () => {
-    const { isMusicEnabled } = useGameSettings();
+    const { isMusicEnabled, initiallyLoaded } = useGameSettings();
     const isMusicEnabledRef = useRef(isMusicEnabled);
 
     const handleAppStateChange = useCallback((nextAppState) => {
@@ -31,10 +31,12 @@ export const usePlayMusicLoop = () => {
     useEffect(() => {
         isMusicEnabledRef.current = isMusicEnabled;
 
-        if (isMusicEnabled) {
-            playMusicLoop();
-        } else {
-            MUSIC_LOOP.stop();
+        if (initiallyLoaded) {
+            if (isMusicEnabled) {
+                playMusicLoop();
+            } else {
+                MUSIC_LOOP.stop();
+            }
         }
-    }, [isMusicEnabled]);
+    }, [isMusicEnabled, initiallyLoaded]);
 };
