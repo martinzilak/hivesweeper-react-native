@@ -8,6 +8,7 @@ export const GameSettingsProvider = ({ children }) => {
     const {
         settings: persistentGameSettings,
         writeSingleSetting: setPersistentGameSetting,
+        initiallyLoaded,
     } = usePersistentGameSettings();
 
     const [volatileGameSettings, setVolatileGameSettings] = useState(DefaultVolatileSettings);
@@ -34,6 +35,7 @@ export const GameSettingsProvider = ({ children }) => {
                 setIsMusicEnabled,
                 isVibrationEnabled: persistentGameSettings.isVibrationEnabled,
                 setIsVibrationEnabled,
+                initiallyLoaded,
             }}
         >
             {children}

@@ -6,7 +6,7 @@ import { usePlaySound } from '../hooks/usePlaySound';
 import { useVibrate } from '../hooks/useVibrate';
 import { getFlatHexagonPoints } from '../utils/getFlatHexagonPoints';
 import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners';
-import { CLICK } from '../assets/Sounds';
+import { PRESS, LONG_PRESS } from '../assets/Sounds';
 import { HiveDimension } from '../constants/HiveDimension';
 
 const HexagonButton = React.memo(({
@@ -15,9 +15,9 @@ const HexagonButton = React.memo(({
     height = 60,
     text,
     onPress,
-    onPressSound = CLICK,
+    onPressSound = PRESS,
     onLongPress = () => {},
-    onLongPressSound,
+    onLongPressSound = LONG_PRESS,
     polygonFill = 'gold',
     polygonStroke = 'orange',
     textFill = 'brown',

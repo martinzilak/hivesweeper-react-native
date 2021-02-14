@@ -1,12 +1,14 @@
 import React from 'react';
+import { G } from 'react-native-svg';
 import PropTypes from 'prop-types';
-import { G, Polygon, Image, Text } from 'react-native-svg';
-import { BEE, FLAG } from '../assets/Images';
-import { BeeHorizontalOffset } from '../constants/BeeHorizontalOffset';
+import { PRESS, LONG_PRESS } from '../assets/Sounds';
+import { usePlaySound } from '../hooks/usePlaySound';
 import { useVibrate } from '../hooks/useVibrate';
+import HiveCellHex from './HiveCellHex';
 
 const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
     const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = cell;
+    const { playSound } = usePlaySound();
     const { vibrate } = useVibrate();
 
     return (
@@ -14,42 +16,25 @@ const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
             x={x}
             y={y}
             onPress={() => {
-                revealCell(cell);
+                playSound(PRESS);
                 vibrate();
+                revealCell(cell);
             }}
             onLongPress={() => {
-                flagCell(cell);
+                playSound(LONG_PRESS);
                 vibrate();
+                flagCell(cell);
             }}
         >
-            <Polygon
-                points={pointsString}
-                fill={getFillColor(isBee, isRevealed, isFlagged)}
-                {...polygonStyles}
+            <HiveCellHex
+                gameSize={gameSize}
+                cellSize={cellSize}
+                pointsString={pointsString}
+                isBee={isBee}
+                isFlagged={isFlagged}
+                isRevealed={isRevealed}
+                neighboringBees={neighboringBees}
             />
-            {isRevealed && (
-                isBee ? (
-                    <Image
-                        href={BEE}
-                        {...getImageStyles(gameSize, cellSize)}
-                    />
-                ) : (
-                    <Text
-                        x={cellSize}
-                        y={1.2 * cellSize}
-                        textAnchor="middle"
-                        {...getTextStyles(cellSize)}
-                    >
-                        {neighboringBees}
-                    </Text>
-                )
-            )}
-            {isFlagged && (
-                <Image
-                    href={FLAG}
-                    {...getImageStyles(gameSize, cellSize)}
-                />
-            )}
         </G>
     );
 });
@@ -59,41 +44,6 @@ HiveCell.propTypes = {
     cell: PropTypes.object,
     revealCell: PropTypes.func,
     flagCell: PropTypes.func,
-};
-
-const polygonStyles = {
-    stroke: 'orange',
-    strokeWidth: 2.5,
-};
-
-const getImageStyles = (gameSize, cellSize) => ({
-    x: `${BeeHorizontalOffset[gameSize]}%`,
-    y: '1%',
-    width: 1.5 * cellSize,
-    height: 1.5 * cellSize,
-});
-
-const getTextStyles = (cellSize) => ({
-    fill: 'brown',
-    fontSize: cellSize,
-    fontWeight: 'bold',
-});
-
-const fillColors = {
-    normal: 'yellow',
-    revealed: 'gold',
-    bee: 'firebrick',
-    flagged: 'goldenrod',
-};
-
-const getFillColor = (isBee, isRevealed, isFlagged) => {
-    if (isRevealed) {
-        return isBee ? fillColors.bee : fillColors.revealed;
-    }
-    if (isFlagged) {
-        return fillColors.flagged;
-    }
-    return fillColors.normal;
 };
 
 export default HiveCell;
