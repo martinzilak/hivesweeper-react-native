@@ -1,19 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { DefaultStats } from '../constants/DefaultStats';
 import { BestScoreStatByGameSize, Stat, TotalScoreStatByGameSize } from '../constants/Stat';
-import { StorageKey } from '../constants/StorageKey';
+import { getStatsItem, setStatsItem } from '../utils/AsyncStorage';
 
 export const useStats = () => {
     const [stats, setStats] = useState(DefaultStats);
-    const { getItem, setItem } = useAsyncStorage(StorageKey.STATS);
 
     const readStats = useCallback(async () => {
-        const statsJson = await getItem();
-        if (statsJson) {
-            setStats(JSON.parse(statsJson));
+        const loadedStats = await getStatsItem();
+        if (loadedStats) {
+            setStats(loadedStats);
         }
-    }, [getItem]);
+    }, []);
 
     const getStat = useCallback((statObject) => stats[statObject.key] ?? 0, [stats]);
 
@@ -22,9 +20,9 @@ export const useStats = () => {
             ...stats,
             ...update,
         }
-        await setItem(JSON.stringify(newStats));
+        await setStatsItem(newStats);
         setStats(newStats);
-    }, [stats, setItem]);
+    }, [stats]);
 
     const buildGameStatPartialUpdate = useCallback((statObject, value) => ({
         [statObject.key]: value,

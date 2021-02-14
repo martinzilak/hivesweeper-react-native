@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
+        bottom: 10,
     },
 });
 

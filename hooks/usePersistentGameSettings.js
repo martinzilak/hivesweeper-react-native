@@ -1,33 +1,30 @@
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DefaultPersistentSettings } from '../constants/DefaultPersistentSettings';
-import { StorageKey } from '../constants/StorageKey';
+import { getSettingsItem, setSettingsItem } from '../utils/AsyncStorage';
 
 export const usePersistentGameSettings = () => {
     const [settings, setSettings] = useState(DefaultPersistentSettings);
     const [initiallyLoaded, setInitiallyLoaded] = useState(false);
-    const { getItem, setItem } = useAsyncStorage(StorageKey.SETTINGS);
 
-    const readSettings = async () => {
-        const settingsJson = await getItem();
-        if (settingsJson) {
-            setSettings(JSON.parse(settingsJson));
+    const readSettings = useCallback(async () => {
+        const settingsValue = await getSettingsItem();
+        if (settingsValue) {
+            setSettings(settingsValue);
         }
-    };
+    }, []);
 
-    const writeSingleSetting = async (newSetting) => {
-        const settingsValue = {
+    const writeSingleSetting = useCallback(async (newSetting) => {
+        const newSettings = {
             ...settings,
             ...newSetting,
-        }
-        await setItem(JSON.stringify(settingsValue));
-        setSettings(settingsValue);
-    };
+        };
+        await setSettingsItem(newSettings);
+        setSettings(newSettings);
+    }, [settings]);
 
     useEffect(() => {
         readSettings().then(() => setInitiallyLoaded(true));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [readSettings]);
 
     return { settings, writeSingleSetting, initiallyLoaded };
 };

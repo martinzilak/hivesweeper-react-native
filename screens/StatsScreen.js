@@ -16,29 +16,31 @@ const StatsScreen = React.memo(({ navigation }) => {
 
     return (
         <SafeAreaScreenWrapper>
-            <Logo flex={3} />
+            <Logo />
 
-            <View style={styles.statsWrapper}>
-                <ScrollView
-                    style={styles.scrollView}
-                    horizontal={false}
-                    alwaysBounceVertical={false}
-                >
-                    {R.map((stat) => (
-                        <StatRow
-                            key={stat.key}
-                            label={stat.label}
-                            value={stats[stat.key]}
-                        />
-                    ))(R.values(Stat))}
-                </ScrollView>
-            </View>
+            <View style={styles.contentWrapper}>
+                <View style={styles.statsWrapper}>
+                    <ScrollView
+                        style={styles.scrollView}
+                        horizontal={false}
+                        alwaysBounceVertical={false}
+                    >
+                        {R.map((stat) => (
+                            <StatRow
+                                key={stat.key}
+                                label={stat.label}
+                                value={stats[stat.key]}
+                            />
+                        ))(R.values(Stat))}
+                    </ScrollView>
+                </View>
 
-            <View style={styles.backWrapper}>
-                <HexagonButton
-                    text="BACK"
-                    onPress={() => navigation.navigate(Screen.MAIN_MENU)}
-                />
+                <View style={styles.backWrapper}>
+                    <HexagonButton
+                        text="BACK"
+                        onPress={() => navigation.navigate(Screen.MAIN_MENU)}
+                    />
+                </View>
             </View>
         </SafeAreaScreenWrapper>
     );
@@ -49,6 +51,11 @@ StatsScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+    contentWrapper: {
+        flex: 2,
+        width: '100%',
+        alignItems: 'center',
+    },
     statsWrapper: {
         flex: 4,
         justifyContent: 'flex-start',
@@ -63,6 +70,7 @@ const styles = StyleSheet.create({
         flex: 2,
         justifyContent: 'flex-end',
         alignItems: 'center',
+        bottom: 10,
     },
 });
 

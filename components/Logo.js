@@ -1,10 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { LOGO } from '../assets/Images';
 
-const Logo = React.memo(({ flex = 1}) => (
-    <View style={getLogoWrapperStyles(flex)}>
+const Logo = React.memo(() => (
+    <View style={styles.wrapper}>
         <Image
             style={styles.logo}
             source={LOGO}
@@ -12,20 +11,15 @@ const Logo = React.memo(({ flex = 1}) => (
     </View>
 ));
 
-Logo.propTypes = {
-    flex: PropTypes.number,
-};
-
-const getLogoWrapperStyles = (flex) => ({
-    width: '100%',
-    flex,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 40,
-});
-
 const styles = StyleSheet.create({
+    wrapper: {
+        width: '100%',
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 40,
+    },
     logo: {
         width: '100%',
         height: '80%',
