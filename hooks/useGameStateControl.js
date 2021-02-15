@@ -175,7 +175,7 @@ export const useGameStateControl = (gameSize) => {
 
                     setFlagsRemaining(R.add(-1));
 
-                    handleRevealCell(
+                    return handleRevealCell(
                         hiveCell.id,
                         updatedGrid,
                         setHasFirstCellBeenRevealed,
@@ -186,8 +186,6 @@ export const useGameStateControl = (gameSize) => {
                         scoreRef,
                         updateStats,
                     );
-
-                    return updatedGrid;
                 });
             } else {
                 setHiveGrid((previousHiveGrid) => revealAllBees(previousHiveGrid));
@@ -227,7 +225,7 @@ export const useGameStateControl = (gameSize) => {
             gameSizeRef.current,
             scoreRef,
             updateStats,
-        ))
+        ));
     }, [isPlaying, playSound, hasFirstCellBeenRevealed, flagsRemaining, resetGame, updateStats]);
     
     return {
