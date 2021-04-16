@@ -10,7 +10,7 @@ import GameSettingsContext from '../contexts/GameSettingsContext';
 import { useGameStateControl } from '../hooks/useGameStateControl';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 
-const GameScreen = React.memo(({ navigation }) => {
+const GameScreen = ({ navigation }) => {
     const { gameSize } = useContext(GameSettingsContext);
 
     const {
@@ -63,7 +63,7 @@ const GameScreen = React.memo(({ navigation }) => {
             </View>
         </SafeAreaScreenWrapper>
     );
-});
+};
 
 GameScreen.propTypes = {
     navigation: PropTypes.object,

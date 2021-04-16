@@ -8,7 +8,7 @@ import { HiveDimension } from '../constants/HiveDimension';
 import { getHiveVerticalOffset } from '../utils/getHiveVerticalOffset';
 import HiveCell from './HiveCell';
 
-const Hive = React.memo(({ hiveGrid, gameSize, revealCell, flagCell }) => (
+const Hive = ({ hiveGrid, gameSize, revealCell, flagCell }) => (
     <View style={styles.view}>
         <Svg
             width={HiveDimension.WIDTH}
@@ -29,7 +29,7 @@ const Hive = React.memo(({ hiveGrid, gameSize, revealCell, flagCell }) => (
             </G>
         </Svg>
     </View>
-));
+);
 
 Hive.propTypes = {
     hiveGrid: PropTypes.object,

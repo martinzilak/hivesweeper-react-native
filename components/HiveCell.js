@@ -2,16 +2,14 @@ import React from 'react';
 import { G } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import { PRESS, LONG_PRESS } from '../assets/Sounds';
-import { useForceUpdate } from '../hooks/useForceUpdate';
 import { usePlaySound } from '../hooks/usePlaySound';
 import { useVibrate } from '../hooks/useVibrate';
 import HiveCellHex from './HiveCellHex';
 
-const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
+const HiveCell = ({ gameSize, cell, revealCell, flagCell }) => {
     const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = cell;
     const { playSound } = usePlaySound();
     const { vibrate } = useVibrate();
-    const { forceUpdate } = useForceUpdate();
 
     return (
         <G
@@ -21,13 +19,11 @@ const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
                 playSound(PRESS);
                 vibrate();
                 revealCell(cell);
-                forceUpdate();
             }}
             onLongPress={() => {
                 playSound(LONG_PRESS);
                 vibrate();
                 flagCell(cell);
-                forceUpdate();
             }}
         >
             <HiveCellHex
@@ -41,7 +37,7 @@ const HiveCell = React.memo(({ gameSize, cell, revealCell, flagCell }) => {
             />
         </G>
     );
-});
+};
 
 HiveCell.propTypes = {
     gameSize: PropTypes.number,
