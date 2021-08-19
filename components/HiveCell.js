@@ -17,7 +17,6 @@ const HiveCell = ({ gameSize, cell, revealCell, flagCell }) => {
             y={y}
             onPress={() => {
                 playSound(PRESS);
-                vibrate();
                 revealCell(cell);
             }}
             onLongPress={() => {

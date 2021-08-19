@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
@@ -36,14 +36,12 @@ const SettingsScreen = React.memo(({ navigation }) => {
                     {...getExtraOptionButtonStyles(isSoundEnabled)}
                 />
 
-                {Platform.OS !== 'ios' && (
-                    <HexagonButton
-                        styles={styles.settingButton}
-                        text="VIBRATION"
-                        onPress={() => setIsVibrationEnabled(!isVibrationEnabled)}
-                        {...getExtraOptionButtonStyles(isVibrationEnabled)}
-                    />
-                )}
+                <HexagonButton
+                    styles={styles.settingButton}
+                    text="VIBRATION"
+                    onPress={() => setIsVibrationEnabled(!isVibrationEnabled)}
+                    {...getExtraOptionButtonStyles(isVibrationEnabled)}
+                />
             </View>
 
             <View style={styles.backWrapper}>

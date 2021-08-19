@@ -10,11 +10,14 @@ import { updateCells } from '../utils/gridUtils/updateCells';
 import { useHiveGridFactory } from './useHiveGridFactory';
 import { usePlaySound } from './usePlaySound';
 import { useStats } from './useStats';
+import { useVibrate } from './useVibrate';
 
 const checkWinCondition = (
     hiveGrid,
     setIsPlaying,
     playSound,
+    vibrate,
+    onPopupButtonPress,
     resetGame,
     gameSize,
     scoreRef,
@@ -22,6 +25,7 @@ const checkWinCondition = (
 ) => {
     if (R.all((cell) => cell.isRevealed || cell.isBee)(R.values(hiveGrid))) {
         playSound(WIN);
+        vibrate();
         setIsPlaying(false);
 
         updateStats(gameSize, true, scoreRef.current).then((isNewBest) => {
@@ -30,10 +34,7 @@ const checkWinCondition = (
                 isNewBest ? 'New best score, congratulations!' : null,
                 [{
                     text: 'Play again',
-                    onPress: () => {
-                        playSound(PRESS);
-                        resetGame();
-                    },
+                    onPress: onPopupButtonPress,
                 }],
             );
         });
@@ -52,6 +53,8 @@ const handleRevealCell = (
     setHasFirstCellBeenRevealed,
     setIsPlaying,
     playSound,
+    vibrate,
+    onPopupButtonPress,
     resetGame,
     gameSize,
     scoreRef,
@@ -95,13 +98,24 @@ const handleRevealCell = (
         updatedGrid = updateCells(updatedGrid, updatedCells);
     }
 
-    checkWinCondition(updatedGrid, setIsPlaying, playSound, resetGame, gameSize, scoreRef, updateStats);
+    checkWinCondition(
+        updatedGrid,
+        setIsPlaying,
+        playSound,
+        vibrate,
+        onPopupButtonPress,
+        resetGame,
+        gameSize,
+        scoreRef,
+        updateStats,
+    );
     return updatedGrid;
 };
 
 export const useGameStateControl = (gameSize) => {
     const { generateHiveGrid } = useHiveGridFactory(gameSize);
     const { playSound } = usePlaySound();
+    const { vibrate } = useVibrate();
     const { updateStats } = useStats();
 
     const gameSizeRef = useRef(gameSize);
@@ -130,6 +144,12 @@ export const useGameStateControl = (gameSize) => {
             R.values,
         )(grid));
     }, [generateHiveGrid]);
+
+    const onPopupButtonPress = useCallback(() => {
+        playSound(PRESS);
+        vibrate();
+        resetGame();
+    }, [playSound, vibrate, resetGame]);
 
     const flagCell = useCallback((hiveCell) => {
         if (!isPlaying) {
@@ -181,6 +201,8 @@ export const useGameStateControl = (gameSize) => {
                         setHasFirstCellBeenRevealed,
                         setIsPlaying,
                         playSound,
+                        vibrate,
+                        onPopupButtonPress,
                         resetGame,
                         gameSizeRef.current,
                         scoreRef,
@@ -191,6 +213,7 @@ export const useGameStateControl = (gameSize) => {
                 setHiveGrid((previousHiveGrid) => revealAllBees(previousHiveGrid));
 
                 playSound(LOSE);
+                vibrate();
                 setIsPlaying(false);
 
                 updateStats(gameSizeRef.current, false, scoreRef.current).then(() => {
@@ -199,10 +222,7 @@ export const useGameStateControl = (gameSize) => {
                         'Hint: Long press to flag cells you suspect are hiding a bee inside.',
                         [{
                             text: 'Try again',
-                            onPress: () => {
-                                playSound(PRESS);
-                                resetGame();
-                            },
+                            onPress: onPopupButtonPress,
                         }],
                     );
                 });
@@ -221,12 +241,23 @@ export const useGameStateControl = (gameSize) => {
             setHasFirstCellBeenRevealed,
             setIsPlaying,
             playSound,
+            vibrate,
+            onPopupButtonPress,
             resetGame,
             gameSizeRef.current,
             scoreRef,
             updateStats,
         ));
-    }, [isPlaying, playSound, hasFirstCellBeenRevealed, flagsRemaining, resetGame, updateStats]);
+    }, [
+        isPlaying,
+        playSound,
+        vibrate,
+        onPopupButtonPress,
+        hasFirstCellBeenRevealed,
+        flagsRemaining,
+        resetGame,
+        updateStats,
+    ]);
     
     return {
         hiveGrid,

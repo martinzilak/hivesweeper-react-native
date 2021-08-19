@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { Vibration } from 'react-native';
-import { VibrationDurationMs } from '../constants/VibrationDurationMs';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import * as R from 'ramda';
+import { VibrationOptions } from '../constants/VibrationOptions';
 import { useGameSettings } from './useGameSettings';
 
 export const useVibrate = () => {
@@ -8,7 +9,7 @@ export const useVibrate = () => {
 
     const vibrate = useCallback(() => {
         if (isVibrationEnabled) {
-            Vibration.vibrate(VibrationDurationMs);
+            R.apply(ReactNativeHapticFeedback.trigger, VibrationOptions);
         }
     }, [isVibrationEnabled]);
 
