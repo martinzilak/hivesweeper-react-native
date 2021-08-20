@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
+import { IsIpad } from '../constants/IsIpad';
 import { Screen } from '../constants/Screen';
 import { useGameSettings } from '../hooks/useGameSettings';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
@@ -36,12 +37,14 @@ const SettingsScreen = React.memo(({ navigation }) => {
                     {...getExtraOptionButtonStyles(isSoundEnabled)}
                 />
 
-                <HexagonButton
-                    styles={styles.settingButton}
-                    text="VIBRATION"
-                    onPress={() => setIsVibrationEnabled(!isVibrationEnabled)}
-                    {...getExtraOptionButtonStyles(isVibrationEnabled)}
-                />
+                {!IsIpad && (
+                    <HexagonButton
+                        styles={styles.settingButton}
+                        text="VIBRATION"
+                        onPress={() => setIsVibrationEnabled(!isVibrationEnabled)}
+                        {...getExtraOptionButtonStyles(isVibrationEnabled)}
+                    />
+                )}
             </View>
 
             <View style={styles.backWrapper}>

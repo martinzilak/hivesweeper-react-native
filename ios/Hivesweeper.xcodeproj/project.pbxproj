@@ -664,7 +664,7 @@
 				INFOPLIST_FILE = Hivesweeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -690,7 +690,7 @@
 				INFOPLIST_FILE = Hivesweeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
