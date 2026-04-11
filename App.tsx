@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Screen } from './constants/Screen';
 import { cardStyleInterpolator } from './utils/cardStyleInterpolator';
 import BackgroundAppWrapper from './components/BackgroundAppWrapper';
@@ -22,6 +23,7 @@ const App = () => {
   }, []);
 
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
       <BackgroundAppWrapper>
         <Stack.Navigator
@@ -45,6 +47,7 @@ const App = () => {
         </Stack.Navigator>
       </BackgroundAppWrapper>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

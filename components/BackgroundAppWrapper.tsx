@@ -7,7 +7,7 @@ const BackgroundAppWrapper = React.memo(({ children }: { children: React.ReactNo
   usePlayMusicLoop();
 
   return (
-    <ImageBackground style={styles.backgroundImage} source={BACKGROUND}>
+    <ImageBackground style={styles.backgroundImage} source={BACKGROUND} resizeMode="cover">
       {children}
     </ImageBackground>
   );
@@ -16,7 +16,6 @@ const BackgroundAppWrapper = React.memo(({ children }: { children: React.ReactNo
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover',
   },
 });
 
