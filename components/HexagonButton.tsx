@@ -7,17 +7,15 @@ import { getFlatHexagonPoints } from '../utils/getFlatHexagonPoints';
 import { getPointsStringFromCorners } from '../utils/getPointsStringFromCorners';
 import { PRESS, LONG_PRESS } from '../assets/Sounds';
 import { HiveDimension } from '../constants/HiveDimension';
-import { AVPlaybackSource } from 'expo-av';
-
 type Props = {
   styles?: ViewStyle;
   width?: number;
   height?: number;
   text?: string;
   onPress: () => void;
-  onPressSound?: AVPlaybackSource;
+  onPressSound?: number;
   onLongPress?: () => void;
-  onLongPressSound?: AVPlaybackSource;
+  onLongPressSound?: number;
   polygonFill?: string;
   polygonStroke?: string;
   textFill?: string;

@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "sk.zilak.hivesweeper",
+      "bundleIdentifier": "sk.zilak.hivesweeper2",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -26,14 +26,15 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "sk.zilak.hivesweeper"
+      "package": "sk.zilak.hivesweeper2"
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
-      "expo-dev-client"
+      "expo-dev-client",
+      "expo-audio"
     ]
   }
 }

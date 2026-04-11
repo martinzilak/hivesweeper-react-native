@@ -10,13 +10,12 @@ import { useHiveGridFactory } from './useHiveGridFactory';
 import { usePlaySound } from './usePlaySound';
 import { useVibrate } from './useVibrate';
 import { useStatsStore } from '../stores/statsStore';
-import type { AVPlaybackSource } from 'expo-av';
 import type { GameSizeValue, HiveCell, HiveGrid } from '../types/game';
 
 type WinCheckParams = {
   hiveGrid: HiveGrid;
   setIsPlaying: (v: boolean) => void;
-  playSound: (source: AVPlaybackSource) => void;
+  playSound: (source: number) => void;
   vibrate: () => void;
   onPopupButtonPress: () => void;
   gameSize: GameSizeValue;
