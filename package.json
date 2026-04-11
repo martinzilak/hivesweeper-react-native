@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "start": "expo start",
-    "ios": "expo start --ios",
-    "android": "expo start --android",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
     "web": "expo start --web",
     "test": "jest",
     "lint": "eslint ."
@@ -17,6 +17,7 @@
     "@react-navigation/stack": "^6.4.1",
     "expo": "~55.0.0",
     "expo-av": "~16.0.8",
+    "expo-dev-client": "~55.0.26",
     "expo-haptics": "~55.0.14",
     "expo-splash-screen": "~55.0.17",
     "expo-status-bar": "~55.0.5",
