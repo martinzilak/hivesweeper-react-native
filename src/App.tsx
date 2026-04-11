@@ -7,11 +7,13 @@ import {
   Screen,
   cardStyleInterpolator,
   BackgroundAppWrapper,
-  MainMenuScreen,
-  NewGameSizeScreen,
   type RootStackParamList,
 } from 'hivesweeper/shared';
-import { GameScreen } from 'hivesweeper/board';
+import {
+  GameScreen,
+  MainMenuScreen,
+  NewGameSizeScreen,
+} from 'hivesweeper/board';
 import { SettingsScreen } from 'hivesweeper/settings';
 import { StatsScreen } from 'hivesweeper/stats';
 

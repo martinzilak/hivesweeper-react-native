@@ -28,7 +28,7 @@ export type Stats = Record<string, number>;
 export type RootStackParamList = {
   MainMenuScreen: undefined;
   NewGameSizeScreen: undefined;
-  GameScreen: undefined;
+  GameScreen: { resume?: boolean } | undefined;
   SettingsScreen: undefined;
   StatsScreen: undefined;
 };

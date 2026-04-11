@@ -1,13 +1,16 @@
 import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import HexagonButton from '../components/HexagonButton';
-import Logo from '../components/Logo';
-import { GameSize } from '../constants/GameSize';
-import { Screen } from '../constants/Screen';
+import {
+  HexagonButton,
+  Logo,
+  GameSize,
+  Screen,
+  SafeAreaScreenWrapper,
+  type GameSizeValue,
+  type RootStackParamList,
+} from 'hivesweeper/shared';
 import { useSettingsStore } from 'hivesweeper/settings';
-import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
-import type { GameSizeValue, RootStackParamList } from '../types/game';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList>;

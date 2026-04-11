@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import Hive from '../components/Hive';
 import {
   HexagonButton,
@@ -16,12 +17,12 @@ import { useGameEffects } from '../hooks/useGameEffects';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList>;
+  route: RouteProp<RootStackParamList, 'GameScreen'>;
 };
 
-const GameScreen = ({ navigation }: Props) => {
+const GameScreen = ({ navigation, route }: Props) => {
   const gameSize = useSettingsStore((s) => s.gameSize);
 
-  const gameStatus = useGameStore((s) => s.gameStatus);
   const hiveGrid = useGameStore((s) => s.grid);
   const flagsRemaining = useGameStore((s) => s.flagsRemaining);
   const score = useGameStore((s) => s.score);
@@ -35,7 +36,7 @@ const GameScreen = ({ navigation }: Props) => {
   );
 
   useEffect(() => {
-    if (gameStatus === 'idle') storeResetGame(gameSize);
+    if (!route.params?.resume) storeResetGame(gameSize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
