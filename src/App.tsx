@@ -34,9 +34,6 @@ const App = () => {
               cardStyle: {
                 backgroundColor: 'transparent',
               },
-              contentStyle: {
-                backgroundColor: 'transparent',
-              },
               detachPreviousScreen: true,
               gestureEnabled: false,
               cardStyleInterpolator,

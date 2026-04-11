@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Hive from '../components/Hive';
-import { HexagonButton, BorderedBoxWithBackgroundStyle, Screen, HiveDimension, SafeAreaScreenWrapper, type RootStackParamList, type HiveCell } from 'hivesweeper/shared';
+import { HexagonButton, BorderedBoxWithBackgroundStyle, Screen, HiveDimension, SafeAreaScreenWrapper, type RootStackParamList } from 'hivesweeper/shared';
 import { useSettingsStore } from 'hivesweeper/settings';
 import { useGameStore } from 'hivesweeper/game';
 import { useGameEffects } from '../hooks/useGameEffects';
@@ -19,14 +19,10 @@ const GameScreen = ({ navigation }: Props) => {
   const flagsRemaining = useGameStore((s) => s.flagsRemaining);
   const score = useGameStore((s) => s.score);
   const storeResetGame = useGameStore((s) => s.resetGame);
-  const storeRevealCell = useGameStore((s) => s.revealCell);
-  const storeFlagCell = useGameStore((s) => s.flagCell);
 
   useGameEffects();
 
   const resetGame = useCallback(() => storeResetGame(gameSize), [storeResetGame, gameSize]);
-  const revealCell = useCallback((cell: HiveCell) => storeRevealCell(cell.id), [storeRevealCell]);
-  const flagCell = useCallback((cell: HiveCell) => storeFlagCell(cell.id), [storeFlagCell]);
 
   useEffect(() => {
     if (gameStatus === 'idle') storeResetGame(gameSize);
@@ -45,8 +41,6 @@ const GameScreen = ({ navigation }: Props) => {
           <Hive
             hiveGrid={hiveGrid}
             gameSize={gameSize}
-            revealCell={revealCell}
-            flagCell={flagCell}
           />
         )}
       </View>
