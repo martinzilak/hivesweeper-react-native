@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { Audio, AVPlaybackSource } from 'expo-av';
-import { useGameSettings } from './useGameSettings';
+import { useSettingsStore } from '../stores/settingsStore';
 
 export const usePlaySound = () => {
-  const { isSoundEnabled } = useGameSettings();
+  const isSoundEnabled = useSettingsStore((s) => s.isSoundEnabled);
 
   const playSound = useCallback(
     async (source: AVPlaybackSource) => {

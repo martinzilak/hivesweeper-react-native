@@ -7,7 +7,7 @@ import StatRow from '../components/StatRow';
 import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
 import { Screen } from '../constants/Screen';
 import { Stat } from '../constants/Stat';
-import { useStats } from '../hooks/useStats';
+import { useStatsStore } from '../stores/statsStore';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 import type { RootStackParamList } from '../types/game';
 import type { StatEntry } from '../constants/Stat';
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const StatsScreen = React.memo(({ navigation }: Props) => {
-  const { stats } = useStats();
+  const stats = useStatsStore((s) => s.stats);
 
   return (
     <SafeAreaScreenWrapper>

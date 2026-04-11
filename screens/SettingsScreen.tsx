@@ -5,7 +5,7 @@ import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
 import { IsIpad } from '../constants/IsIpad';
 import { Screen } from '../constants/Screen';
-import { useGameSettings } from '../hooks/useGameSettings';
+import { useSettingsStore } from '../stores/settingsStore';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 import type { RootStackParamList } from '../types/game';
 
@@ -17,11 +17,12 @@ const getToggleStyles = (isEnabled: boolean) =>
   isEnabled ? {} : { polygonFill: 'silver', polygonStroke: 'grey', textFill: 'dimgrey' };
 
 const SettingsScreen = React.memo(({ navigation }: Props) => {
-  const {
-    isSoundEnabled, setIsSoundEnabled,
-    isMusicEnabled, setIsMusicEnabled,
-    isVibrationEnabled, setIsVibrationEnabled,
-  } = useGameSettings();
+  const isSoundEnabled = useSettingsStore((s) => s.isSoundEnabled);
+  const isMusicEnabled = useSettingsStore((s) => s.isMusicEnabled);
+  const isVibrationEnabled = useSettingsStore((s) => s.isVibrationEnabled);
+  const setIsSoundEnabled = useSettingsStore((s) => s.setIsSoundEnabled);
+  const setIsMusicEnabled = useSettingsStore((s) => s.setIsMusicEnabled);
+  const setIsVibrationEnabled = useSettingsStore((s) => s.setIsVibrationEnabled);
 
   return (
     <SafeAreaScreenWrapper>

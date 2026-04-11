@@ -8,8 +8,8 @@ import { updateCell } from '../utils/gridUtils/updateCell';
 import { updateCells } from '../utils/gridUtils/updateCells';
 import { useHiveGridFactory } from './useHiveGridFactory';
 import { usePlaySound } from './usePlaySound';
-import { useStats } from './useStats';
 import { useVibrate } from './useVibrate';
+import { useStatsStore } from '../stores/statsStore';
 import type { AVPlaybackSource } from 'expo-av';
 import type { GameSizeValue, HiveCell, HiveGrid } from '../types/game';
 
@@ -94,7 +94,7 @@ export const useGameStateControl = (gameSize: GameSizeValue) => {
   const { generateHiveGrid } = useHiveGridFactory(gameSize);
   const { playSound } = usePlaySound();
   const { vibrate } = useVibrate();
-  const { updateStats } = useStats();
+  const updateStats = useStatsStore((s) => s.updateStats);
 
   const gameSizeRef = useRef(gameSize);
   useEffect(() => { gameSizeRef.current = gameSize; }, [gameSize]);

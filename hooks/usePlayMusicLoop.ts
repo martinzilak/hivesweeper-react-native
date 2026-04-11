@@ -2,14 +2,15 @@ import { useEffect, useRef } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { Audio } from 'expo-av';
 import { MUSIC_LOOP } from '../assets/Sounds';
-import { useGameSettings } from './useGameSettings';
+import { useSettingsStore } from '../stores/settingsStore';
 
 export const usePlayMusicLoop = () => {
-  const { isMusicEnabled, initiallyLoaded } = useGameSettings();
+  const isMusicEnabled = useSettingsStore((s) => s.isMusicEnabled);
+  const hasHydrated = useSettingsStore((s) => s._hasHydrated);
   const soundRef = useRef<Audio.Sound | null>(null);
 
   useEffect(() => {
-    if (!initiallyLoaded) return;
+    if (!hasHydrated) return;
 
     let mounted = true;
 
@@ -37,7 +38,7 @@ export const usePlayMusicLoop = () => {
       soundRef.current?.unloadAsync();
       soundRef.current = null;
     };
-  }, [isMusicEnabled, initiallyLoaded]);
+  }, [isMusicEnabled, hasHydrated]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener(

@@ -23,16 +23,6 @@ export type HiveCell = {
 
 export type HiveGrid = Record<string, HiveCell>;
 
-export type PersistentSettings = {
-  isSoundEnabled: boolean;
-  isMusicEnabled: boolean;
-  isVibrationEnabled: boolean;
-};
-
-export type VolatileSettings = {
-  gameSize: GameSizeValue;
-};
-
 export type Stats = Record<string, number>;
 
 export type RootStackParamList = {

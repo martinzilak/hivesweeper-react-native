@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Hive from '../components/Hive';
@@ -6,7 +6,7 @@ import HexagonButton from '../components/HexagonButton';
 import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
 import { Screen } from '../constants/Screen';
 import { HiveDimension } from '../constants/HiveDimension';
-import GameSettingsContext from '../contexts/GameSettingsContext';
+import { useSettingsStore } from '../stores/settingsStore';
 import { useGameStateControl } from '../hooks/useGameStateControl';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 import type { RootStackParamList } from '../types/game';
@@ -16,8 +16,7 @@ type Props = {
 };
 
 const GameScreen = ({ navigation }: Props) => {
-  const context = useContext(GameSettingsContext);
-  const gameSize = context!.gameSize;
+  const gameSize = useSettingsStore((s) => s.gameSize);
 
   const { hiveGrid, flagsRemaining, score, resetGame, flagCell, revealCell } =
     useGameStateControl(gameSize);

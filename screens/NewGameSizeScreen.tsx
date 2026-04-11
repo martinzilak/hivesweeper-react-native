@@ -5,7 +5,7 @@ import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
 import { GameSize } from '../constants/GameSize';
 import { Screen } from '../constants/Screen';
-import { useGameSettings } from '../hooks/useGameSettings';
+import { useSettingsStore } from '../stores/settingsStore';
 import SafeAreaScreenWrapper from './SafeAreaScreenWrapper';
 import type { GameSizeValue, RootStackParamList } from '../types/game';
 
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const NewGameSizeScreen = React.memo(({ navigation }: Props) => {
-  const { setGameSize } = useGameSettings();
+  const setGameSize = useSettingsStore((s) => s.setGameSize);
 
   const startGameWithSize = useCallback(
     (gameSize: GameSizeValue) => {

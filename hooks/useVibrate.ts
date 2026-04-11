@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import * as Haptics from 'expo-haptics';
 import { IsIpad } from '../constants/IsIpad';
-import { useGameSettings } from './useGameSettings';
+import { useSettingsStore } from '../stores/settingsStore';
 
 export const useVibrate = () => {
-  const { isVibrationEnabled } = useGameSettings();
+  const isVibrationEnabled = useSettingsStore((s) => s.isVibrationEnabled);
 
   const vibrate = useCallback(() => {
     if (isVibrationEnabled && !IsIpad) {
