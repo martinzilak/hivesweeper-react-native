@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { useAudioPlayer } from 'expo-audio';
 import { MUSIC_LOOP } from '../assets/Sounds';
-import { useSettingsStore } from 'hivesweeper/settings';
+// Direct import to avoid shared ↔ settings circular dependency
+import { useSettingsStore } from '../../settings/store';
 
 export const usePlayMusicLoop = () => {
   const isMusicEnabled = useSettingsStore((s) => s.isMusicEnabled);

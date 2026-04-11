@@ -15,14 +15,16 @@ type Props = {
 };
 
 const MainMenuScreen = React.memo(({ navigation }: Props) => {
-  const gameStatus = useGameStore((s) => s.gameStatus);
+  const canResume = useGameStore(
+    (s) => s.gameStatus === 'playing' && s.hasFirstCellBeenRevealed,
+  );
 
   return (
     <SafeAreaScreenWrapper>
       <Logo />
 
       <View style={styles.optionsWrapper}>
-        {gameStatus === 'playing' && (
+        {canResume && (
           <HexagonButton
             styles={styles.optionButton}
             text="RESUME"
