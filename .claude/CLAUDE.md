@@ -53,3 +53,8 @@ Sound files are loaded in `assets/Sounds.js` and played via `usePlaySound` (one-
 ### Code Style
 
 ESLint extends `@react-native-community` + Prettier. Config in `.eslintrc.js` and `.prettierrc.js` (single quotes, trailing commas, bracket spacing).
+
+## Conventions
+
+- **Commits**: short plain messages (e.g. `Added .claude docs`). No body, no co-author trailer.
+- **Design docs**: live in `.claude/` — `CLAUDE.md` (this file) and `GAME_DESIGN.md`.
