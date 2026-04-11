@@ -11,5 +11,7 @@ export const getAdjustedNeighboringBeeCountUpperBound = (
 
   const wholePart = width - 1;
   const decimalPart = width / (width + 1);
-  return Math.ceil((wholePart + decimalPart) * NeighboringBeeCountUpperBound[gameSize]);
+  return Math.ceil(
+    (wholePart + decimalPart) * NeighboringBeeCountUpperBound[gameSize],
+  );
 };

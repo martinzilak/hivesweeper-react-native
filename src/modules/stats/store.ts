@@ -2,12 +2,20 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DefaultStats } from './constants/DefaultStats';
-import { BestScoreStatByGameSize, Stat, TotalScoreStatByGameSize } from './constants/Stat';
+import {
+  BestScoreStatByGameSize,
+  Stat,
+  TotalScoreStatByGameSize,
+} from './constants/Stat';
 import type { GameSizeValue, Stats } from 'hivesweeper/shared';
 
 type StatsState = {
   stats: Stats;
-  updateStats: (gameSize: GameSizeValue, didWin: boolean, score: number) => Promise<boolean>;
+  updateStats: (
+    gameSize: GameSizeValue,
+    didWin: boolean,
+    score: number,
+  ) => Promise<boolean>;
 };
 
 export const useStatsStore = create<StatsState>()(
@@ -16,7 +24,8 @@ export const useStatsStore = create<StatsState>()(
       stats: DefaultStats,
       updateStats: async (gameSize, didWin, score) => {
         const { stats } = get();
-        const getStat = (statObject: { key: string }) => stats[statObject.key] ?? 0;
+        const getStat = (statObject: { key: string }) =>
+          stats[statObject.key] ?? 0;
 
         const bestScoreStat = BestScoreStatByGameSize[gameSize];
         const totalScoreStat = TotalScoreStatByGameSize[gameSize];

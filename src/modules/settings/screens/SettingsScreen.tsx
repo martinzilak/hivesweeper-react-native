@@ -1,7 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { HexagonButton , Logo , IsIpad , Screen , SafeAreaScreenWrapper ,type  RootStackParamList } from 'hivesweeper/shared';
+import {
+  HexagonButton,
+  Logo,
+  IsIpad,
+  Screen,
+  SafeAreaScreenWrapper,
+  type RootStackParamList,
+} from 'hivesweeper/shared';
 import { useSettingsStore } from '../store';
 
 type Props = {
@@ -9,7 +16,9 @@ type Props = {
 };
 
 const getToggleStyles = (isEnabled: boolean) =>
-  isEnabled ? {} : { polygonFill: 'silver', polygonStroke: 'grey', textFill: 'dimgrey' };
+  isEnabled
+    ? {}
+    : { polygonFill: 'silver', polygonStroke: 'grey', textFill: 'dimgrey' };
 
 const SettingsScreen = React.memo(({ navigation }: Props) => {
   const isSoundEnabled = useSettingsStore((s) => s.isSoundEnabled);
@@ -17,7 +26,9 @@ const SettingsScreen = React.memo(({ navigation }: Props) => {
   const isVibrationEnabled = useSettingsStore((s) => s.isVibrationEnabled);
   const setIsSoundEnabled = useSettingsStore((s) => s.setIsSoundEnabled);
   const setIsMusicEnabled = useSettingsStore((s) => s.setIsMusicEnabled);
-  const setIsVibrationEnabled = useSettingsStore((s) => s.setIsVibrationEnabled);
+  const setIsVibrationEnabled = useSettingsStore(
+    (s) => s.setIsVibrationEnabled,
+  );
 
   return (
     <SafeAreaScreenWrapper>
@@ -47,7 +58,10 @@ const SettingsScreen = React.memo(({ navigation }: Props) => {
       </View>
 
       <View style={styles.backWrapper}>
-        <HexagonButton text="BACK" onPress={() => navigation.navigate(Screen.MAIN_MENU)} />
+        <HexagonButton
+          text="BACK"
+          onPress={() => navigation.navigate(Screen.MAIN_MENU)}
+        />
       </View>
     </SafeAreaScreenWrapper>
   );

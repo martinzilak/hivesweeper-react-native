@@ -7,6 +7,7 @@ const shuffle = <T>(list: T[]): T[] => {
   return result;
 };
 
-export const randomSubset = (n: number) =>
+export const randomSubset =
+  (n: number) =>
   <T>(list: T[]): T[] =>
     shuffle(list).slice(0, n);

@@ -1,8 +1,16 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { HexagonButton , Logo , StatRow , BorderedBoxWithBackgroundStyle , Screen , SafeAreaScreenWrapper ,type  RootStackParamList } from 'hivesweeper/shared';
-import { Stat ,type  StatEntry } from '../constants/Stat';
+import {
+  HexagonButton,
+  Logo,
+  StatRow,
+  BorderedBoxWithBackgroundStyle,
+  Screen,
+  SafeAreaScreenWrapper,
+  type RootStackParamList,
+} from 'hivesweeper/shared';
+import { Stat, type StatEntry } from '../constants/Stat';
 import { useStatsStore } from '../store';
 
 type Props = {
@@ -18,15 +26,26 @@ const StatsScreen = React.memo(({ navigation }: Props) => {
 
       <View style={styles.contentWrapper}>
         <View style={styles.statsWrapper}>
-          <ScrollView style={styles.scrollView} horizontal={false} alwaysBounceVertical={false}>
+          <ScrollView
+            style={styles.scrollView}
+            horizontal={false}
+            alwaysBounceVertical={false}
+          >
             {Object.values(Stat).map((stat: StatEntry) => (
-              <StatRow key={stat.key} label={stat.label} value={stats[stat.key]} />
+              <StatRow
+                key={stat.key}
+                label={stat.label}
+                value={stats[stat.key]}
+              />
             ))}
           </ScrollView>
         </View>
 
         <View style={styles.backWrapper}>
-          <HexagonButton text="BACK" onPress={() => navigation.navigate(Screen.MAIN_MENU)} />
+          <HexagonButton
+            text="BACK"
+            onPress={() => navigation.navigate(Screen.MAIN_MENU)}
+          />
         </View>
       </View>
     </SafeAreaScreenWrapper>

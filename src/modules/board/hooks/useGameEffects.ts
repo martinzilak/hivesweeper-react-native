@@ -21,7 +21,13 @@ export const useGameEffects = () => {
       );
     };
 
-    const handleStatsResolved = ({ isNewBest, status }: { isNewBest: boolean; status: 'won' | 'lost' }) => {
+    const handleStatsResolved = ({
+      isNewBest,
+      status,
+    }: {
+      isNewBest: boolean;
+      status: 'won' | 'lost';
+    }) => {
       if (status === 'won') {
         playSound(WIN);
         vibrate();

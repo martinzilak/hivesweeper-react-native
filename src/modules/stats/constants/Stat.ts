@@ -1,4 +1,4 @@
-import { GameSize ,type  GameSizeValue } from 'hivesweeper/shared';
+import { GameSize, type GameSizeValue } from 'hivesweeper/shared';
 
 export type StatEntry = {
   key: string;
@@ -12,7 +12,10 @@ export const Stat: Record<string, StatEntry> = {
   BEST_SCORE_EASY: { key: 'bestScoreEasy', label: 'BEST SCORE (EASY)' },
   TOTAL_SCORE_EASY: { key: 'totalScoreEasy', label: 'TOTAL SCORE (EASY)' },
   BEST_SCORE_MEDIUM: { key: 'bestScoreMedium', label: 'BEST SCORE (MEDIUM)' },
-  TOTAL_SCORE_MEDIUM: { key: 'totalScoreMedium', label: 'TOTAL SCORE (MEDIUM)' },
+  TOTAL_SCORE_MEDIUM: {
+    key: 'totalScoreMedium',
+    label: 'TOTAL SCORE (MEDIUM)',
+  },
   BEST_SCORE_HARD: { key: 'bestScoreHard', label: 'BEST SCORE (HARD)' },
   TOTAL_SCORE_HARD: { key: 'totalScoreHard', label: 'TOTAL SCORE (HARD)' },
 };

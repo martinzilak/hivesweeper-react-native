@@ -6,10 +6,15 @@ import { getCellCountForWidth } from '../geometry/getCellCountForWidth';
 import { randomSubset } from './randomSubset';
 import type { GameSizeValue, HiveGrid } from 'hivesweeper/shared';
 
-const collectNeighbors = (grid: HiveGrid, cellId: string, width: number): string[] => {
+const collectNeighbors = (
+  grid: HiveGrid,
+  cellId: string,
+  width: number,
+): string[] => {
   if (width === 0) return [cellId];
-  const nested = getNeighborsOfCellWithId(grid, cellId)
-    .map((neighbor) => collectNeighbors(grid, neighbor.id, width - 1));
+  const nested = getNeighborsOfCellWithId(grid, cellId).map((neighbor) =>
+    collectNeighbors(grid, neighbor.id, width - 1),
+  );
   return [...new Set(nested.flat())];
 };
 
@@ -31,7 +36,9 @@ export const limitBigBeeNeighborhoods =
       if (beeCount <= adjustedBeeLimit) return acc;
 
       const limitExceededBy = Math.max(0, beeCount - adjustedBeeLimit);
-      return [...new Set([...acc, ...randomSubset(limitExceededBy)(localBeeIds)])];
+      return [
+        ...new Set([...acc, ...randomSubset(limitExceededBy)(localBeeIds)]),
+      ];
     }, []);
 
     return setBeeStatus(grid, beeIdsToUnset, false);

@@ -2,7 +2,11 @@ import { getPointsStringFromPrimitiveHex } from '../geometry/getPointsStringFrom
 import { getPrimitiveHexId } from '../geometry/getPrimitiveHexId';
 import type { HiveCell, PrimitiveHex } from 'hivesweeper/shared';
 
-export const getNewCell = (hex: PrimitiveHex, isBee: boolean, cellSize: number): HiveCell => {
+export const getNewCell = (
+  hex: PrimitiveHex,
+  isBee: boolean,
+  cellSize: number,
+): HiveCell => {
   const { x, y } = hex.toPoint();
 
   return {

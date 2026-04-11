@@ -2,7 +2,14 @@ import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Hive from '../components/Hive';
-import { HexagonButton, BorderedBoxWithBackgroundStyle, Screen, HiveDimension, SafeAreaScreenWrapper, type RootStackParamList } from 'hivesweeper/shared';
+import {
+  HexagonButton,
+  BorderedBoxWithBackgroundStyle,
+  Screen,
+  HiveDimension,
+  SafeAreaScreenWrapper,
+  type RootStackParamList,
+} from 'hivesweeper/shared';
 import { useSettingsStore } from 'hivesweeper/settings';
 import { useGameStore } from 'hivesweeper/game';
 import { useGameEffects } from '../hooks/useGameEffects';
@@ -22,7 +29,10 @@ const GameScreen = ({ navigation }: Props) => {
 
   useGameEffects();
 
-  const resetGame = useCallback(() => storeResetGame(gameSize), [storeResetGame, gameSize]);
+  const resetGame = useCallback(
+    () => storeResetGame(gameSize),
+    [storeResetGame, gameSize],
+  );
 
   useEffect(() => {
     if (gameStatus === 'idle') storeResetGame(gameSize);
@@ -37,12 +47,7 @@ const GameScreen = ({ navigation }: Props) => {
       </View>
 
       <View style={styles.hiveWrapper}>
-        {hiveGrid && (
-          <Hive
-            hiveGrid={hiveGrid}
-            gameSize={gameSize}
-          />
-        )}
+        {hiveGrid && <Hive hiveGrid={hiveGrid} gameSize={gameSize} />}
       </View>
 
       <View style={styles.buttonsWrapper}>

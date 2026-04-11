@@ -1,8 +1,13 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GameSize ,type  GameSizeValue } from 'hivesweeper/shared';
-import { createGame, flagCell as engineFlagCell, revealCell as engineRevealCell ,type  GameState } from 'hivesweeper/engine';
+import { GameSize, type GameSizeValue } from 'hivesweeper/shared';
+import {
+  createGame,
+  flagCell as engineFlagCell,
+  revealCell as engineRevealCell,
+  type GameState,
+} from 'hivesweeper/engine';
 import { useStatsStore } from 'hivesweeper/stats';
 import { gameEmitter } from './emitter';
 
@@ -35,12 +40,16 @@ export const useGameStore = create<GameStore>()(
         if (next.gameStatus === 'won' || next.gameStatus === 'lost') {
           const terminalStatus = next.gameStatus;
           gameEmitter.emit(terminalStatus, next);
-          useStatsStore.getState()
+          useStatsStore
+            .getState()
             .updateStats(next.gameSize, next.gameStatus === 'won', next.score)
             .then((isNewBest) => {
               if (get().gameStatus === next.gameStatus) {
                 set({ isNewBestScore: isNewBest });
-                gameEmitter.emit('statsResolved', { isNewBest, status: terminalStatus });
+                gameEmitter.emit('statsResolved', {
+                  isNewBest,
+                  status: terminalStatus,
+                });
               }
             });
         }
@@ -51,9 +60,23 @@ export const useGameStore = create<GameStore>()(
     {
       name: '@hivesweeper_game',
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: ({ grid, gameSize, gameStatus, score, flagsRemaining, hasFirstCellBeenRevealed }) =>
+      partialize: ({
+        grid,
+        gameSize,
+        gameStatus,
+        score,
+        flagsRemaining,
+        hasFirstCellBeenRevealed,
+      }) =>
         gameStatus === 'playing'
-          ? { grid, gameSize, gameStatus, score, flagsRemaining, hasFirstCellBeenRevealed }
+          ? {
+              grid,
+              gameSize,
+              gameStatus,
+              score,
+              flagsRemaining,
+              hasFirstCellBeenRevealed,
+            }
           : {},
     },
   ),

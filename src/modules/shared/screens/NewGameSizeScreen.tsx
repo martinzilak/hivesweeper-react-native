@@ -29,13 +29,28 @@ const NewGameSizeScreen = React.memo(({ navigation }: Props) => {
       <Logo />
 
       <View style={styles.sizesWrapper}>
-        <HexagonButton styles={styles.sizeButton} text="EASY" onPress={() => startGameWithSize(GameSize.SMALL)} />
-        <HexagonButton styles={styles.sizeButton} text="NORMAL" onPress={() => startGameWithSize(GameSize.MEDIUM)} />
-        <HexagonButton styles={styles.sizeButton} text="HARD" onPress={() => startGameWithSize(GameSize.LARGE)} />
+        <HexagonButton
+          styles={styles.sizeButton}
+          text="EASY"
+          onPress={() => startGameWithSize(GameSize.SMALL)}
+        />
+        <HexagonButton
+          styles={styles.sizeButton}
+          text="NORMAL"
+          onPress={() => startGameWithSize(GameSize.MEDIUM)}
+        />
+        <HexagonButton
+          styles={styles.sizeButton}
+          text="HARD"
+          onPress={() => startGameWithSize(GameSize.LARGE)}
+        />
       </View>
 
       <View style={styles.backWrapper}>
-        <HexagonButton text="BACK" onPress={() => navigation.navigate(Screen.MAIN_MENU)} />
+        <HexagonButton
+          text="BACK"
+          onPress={() => navigation.navigate(Screen.MAIN_MENU)}
+        />
       </View>
     </SafeAreaScreenWrapper>
   );

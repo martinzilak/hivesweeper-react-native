@@ -8,7 +8,9 @@ export const usePlayMusicLoop = () => {
   const isMusicEnabled = useSettingsStore((s) => s.isMusicEnabled);
   const hasHydrated = useSettingsStore((s) => s._hasHydrated);
 
-  const player = useAudioPlayer(isMusicEnabled && hasHydrated ? MUSIC_LOOP : null);
+  const player = useAudioPlayer(
+    isMusicEnabled && hasHydrated ? MUSIC_LOOP : null,
+  );
 
   useEffect(() => {
     if (!hasHydrated) return;

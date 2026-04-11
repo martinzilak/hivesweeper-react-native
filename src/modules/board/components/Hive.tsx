@@ -1,7 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { G } from 'react-native-svg';
-import { BorderedBoxWithBackgroundStyle, HiveDimension, type GameSizeValue, type HiveGrid } from 'hivesweeper/shared';
+import {
+  BorderedBoxWithBackgroundStyle,
+  HiveDimension,
+  type GameSizeValue,
+  type HiveGrid,
+} from 'hivesweeper/shared';
 import { getHiveVerticalOffset } from '../utils/getHiveVerticalOffset';
 import HiveCell from './HiveCell';
 
@@ -15,11 +20,7 @@ const Hive = ({ hiveGrid, gameSize }: Props) => (
     <Svg width={HiveDimension.WIDTH} height={HiveDimension.HEIGHT}>
       <G y={getHiveVerticalOffset(gameSize)}>
         {Object.values(hiveGrid).map((cell) => (
-          <HiveCell
-            key={cell.id}
-            gameSize={gameSize}
-            cell={cell}
-          />
+          <HiveCell key={cell.id} gameSize={gameSize} cell={cell} />
         ))}
       </G>
     </Svg>

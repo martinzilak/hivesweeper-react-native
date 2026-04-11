@@ -6,7 +6,12 @@ import { getHexSize } from '../geometry/getHexSize';
 import { getPrimitiveHexId } from '../geometry/getPrimitiveHexId';
 import { randomSubset } from './randomSubset';
 import { getNeighborsOfCellWithId } from '../queries/getNeighborsOfCellWithId';
-import type { GameSizeValue, HiveCell, HiveGrid, PrimitiveHex } from 'hivesweeper/shared';
+import type {
+  GameSizeValue,
+  HiveCell,
+  HiveGrid,
+  PrimitiveHex,
+} from 'hivesweeper/shared';
 
 export const getNewGrid = (gameSize: GameSizeValue): HiveGrid => {
   const primitiveGrid = GridFactory[gameSize]();

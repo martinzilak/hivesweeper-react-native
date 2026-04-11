@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GameSize ,type  GameSizeValue } from 'hivesweeper/shared';
+// Direct imports to avoid shared ↔ settings circular dependency
+import { GameSize } from '../shared/constants/GameSize';
+import type { GameSizeValue } from '../shared/types/game';
 
 type SettingsState = {
   isSoundEnabled: boolean;

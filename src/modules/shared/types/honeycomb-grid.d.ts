@@ -15,6 +15,9 @@ declare module 'honeycomb-grid' {
     hexagon(options: { radius: number; center: [number, number] }): Grid;
   };
 
-  function extendHex(options: { size: number; orientation?: string }): HexFactory;
+  function extendHex(options: {
+    size: number;
+    orientation?: string;
+  }): HexFactory;
   function defineGrid(hexFactory: HexFactory): GridFactory;
 }

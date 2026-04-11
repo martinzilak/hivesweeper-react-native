@@ -1,5 +1,10 @@
 import { ActionScore, type HiveCell } from 'hivesweeper/shared';
-import { setBeeStatus, revealAllBees, updateCell, updateCells } from 'hivesweeper/grid';
+import {
+  setBeeStatus,
+  revealAllBees,
+  updateCell,
+  updateCells,
+} from 'hivesweeper/grid';
 import type { GameState } from './types';
 
 export const revealCell = (state: GameState, cellId: string): GameState => {
@@ -19,7 +24,11 @@ export const revealCell = (state: GameState, cellId: string): GameState => {
     if (!state.hasFirstCellBeenRevealed) {
       const gridWithoutBee = setBeeStatus(state.grid!, [cellId], false);
       return floodReveal(
-        { ...state, grid: gridWithoutBee, flagsRemaining: state.flagsRemaining - 1 },
+        {
+          ...state,
+          grid: gridWithoutBee,
+          flagsRemaining: state.flagsRemaining - 1,
+        },
         cellId,
       );
     }
@@ -47,13 +56,21 @@ const floodReveal = (state: GameState, cellId: string): GameState => {
       visited.add(neighborId);
 
       const neighbor = grid[neighborId];
-      if (!neighbor || neighbor.isRevealed || neighbor.isBee || neighbor.isFlagged) continue;
+      if (
+        !neighbor ||
+        neighbor.isRevealed ||
+        neighbor.isBee ||
+        neighbor.isFlagged
+      )
+        continue;
 
       revealed.push({ ...neighbor, isRevealed: true });
       score += ActionScore.REVEAL_AUTOMATIC;
 
       if (neighbor.neighboringBees === 0) {
-        neighbor.neighborIds.forEach((id) => { if (!visited.has(id)) queue.push(id); });
+        neighbor.neighborIds.forEach((id) => {
+          if (!visited.has(id)) queue.push(id);
+        });
       }
     }
   }

@@ -3,7 +3,7 @@ export const getFlatHexagonPoints = (
   height: number,
 ): { x: number; y: number }[] => {
   const halfHeight = height / 2;
-  const sideOffset = (halfHeight / Math.sin(60 * (Math.PI / 180))) / 2;
+  const sideOffset = halfHeight / Math.sin(60 * (Math.PI / 180)) / 2;
 
   return [
     { x: 0, y: halfHeight },

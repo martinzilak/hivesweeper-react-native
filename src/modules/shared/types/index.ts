@@ -1,1 +1,8 @@
-export type { GameSizeValue, PrimitiveHex, HiveCell, HiveGrid, Stats, RootStackParamList } from './game';
+export type {
+  GameSizeValue,
+  PrimitiveHex,
+  HiveCell,
+  HiveGrid,
+  Stats,
+  RootStackParamList,
+} from './game';

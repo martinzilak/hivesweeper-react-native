@@ -3,7 +3,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Screen , cardStyleInterpolator , BackgroundAppWrapper , MainMenuScreen , NewGameSizeScreen ,type  RootStackParamList } from 'hivesweeper/shared';
+import {
+  Screen,
+  cardStyleInterpolator,
+  BackgroundAppWrapper,
+  MainMenuScreen,
+  NewGameSizeScreen,
+  type RootStackParamList,
+} from 'hivesweeper/shared';
 import { GameScreen } from 'hivesweeper/board';
 import { SettingsScreen } from 'hivesweeper/settings';
 import { StatsScreen } from 'hivesweeper/stats';
@@ -40,7 +47,10 @@ const App = () => {
             }}
           >
             <Stack.Screen name={Screen.MAIN_MENU} component={MainMenuScreen} />
-            <Stack.Screen name={Screen.NEW_GAME_SIZE} component={NewGameSizeScreen} />
+            <Stack.Screen
+              name={Screen.NEW_GAME_SIZE}
+              component={NewGameSizeScreen}
+            />
             <Stack.Screen name={Screen.GAME} component={GameScreen} />
             <Stack.Screen name={Screen.SETTINGS} component={SettingsScreen} />
             <Stack.Screen name={Screen.STATS} component={StatsScreen} />

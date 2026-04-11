@@ -1,6 +1,13 @@
 import React from 'react';
 import { G } from 'react-native-svg';
-import { PRESS, LONG_PRESS, usePlaySound, useVibrate, type GameSizeValue, type HiveCell as HiveCellType } from 'hivesweeper/shared';
+import {
+  PRESS,
+  LONG_PRESS,
+  usePlaySound,
+  useVibrate,
+  type GameSizeValue,
+  type HiveCell as HiveCellType,
+} from 'hivesweeper/shared';
 import { useGameStore } from 'hivesweeper/game';
 import HiveCellHex from './HiveCellHex';
 
@@ -10,7 +17,16 @@ type Props = {
 };
 
 const HiveCell = ({ gameSize, cell }: Props) => {
-  const { x, y, cellSize, pointsString, isBee, isFlagged, isRevealed, neighboringBees } = cell;
+  const {
+    x,
+    y,
+    cellSize,
+    pointsString,
+    isBee,
+    isFlagged,
+    isRevealed,
+    neighboringBees,
+  } = cell;
   const { playSound } = usePlaySound();
   const { vibrate } = useVibrate();
   const revealCell = useGameStore((s) => s.revealCell);
@@ -20,8 +36,15 @@ const HiveCell = ({ gameSize, cell }: Props) => {
     <G
       x={x}
       y={y}
-      onPress={() => { playSound(PRESS); revealCell(cell.id); }}
-      onLongPress={() => { playSound(LONG_PRESS); vibrate(); flagCell(cell.id); }}
+      onPress={() => {
+        playSound(PRESS);
+        revealCell(cell.id);
+      }}
+      onLongPress={() => {
+        playSound(LONG_PRESS);
+        vibrate();
+        flagCell(cell.id);
+      }}
     >
       <HiveCellHex
         gameSize={gameSize}

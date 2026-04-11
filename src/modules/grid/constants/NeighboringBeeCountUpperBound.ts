@@ -1,4 +1,4 @@
-import { GameSize ,type  GameSizeValue } from 'hivesweeper/shared';
+import { GameSize, type GameSizeValue } from 'hivesweeper/shared';
 
 export const NeighboringBeeCountUpperBound: Record<GameSizeValue, number> = {
   [GameSize.SMALL]: 2,

@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SafeAreaScreenWrapper = React.memo(({ children }: { children: React.ReactNode }) => (
-  <SafeAreaView style={styles.appWrapper}>{children}</SafeAreaView>
-));
+const SafeAreaScreenWrapper = React.memo(
+  ({ children }: { children: React.ReactNode }) => (
+    <SafeAreaView style={styles.appWrapper}>{children}</SafeAreaView>
+  ),
+);
 
 const styles = StyleSheet.create({
   appWrapper: {

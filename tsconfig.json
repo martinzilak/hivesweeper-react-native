@@ -4,7 +4,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "hivesweeper/*": ["src/modules/*"]
+      "hivesweeper/*": ["src/modules/*"],
+      "hivesweeper/assets/*": ["assets/*"]
     }
   }
 }
