@@ -1,9 +1,6 @@
-import * as R from 'ramda';
-import type { HiveCell, HiveGrid } from '../../types/game';
+import type { HiveGrid } from '../../types/game';
 
 export const getIdsOfCellsWithBeeStatus = (grid: HiveGrid, isBee = true): string[] =>
-  R.compose(
-    R.pluck('id'),
-    R.filter((cell: HiveCell) => cell.isBee === isBee),
-    R.values,
-  )(grid) as string[];
+  Object.values(grid)
+    .filter((cell) => cell.isBee === isBee)
+    .map((cell) => cell.id);

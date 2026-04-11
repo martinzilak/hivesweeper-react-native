@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
-import * as R from 'ramda';
 import { PRESS, WIN, LOSE } from '../assets/Sounds';
 import { ActionScore } from '../constants/ActionScore';
 import { revealAllBees } from '../utils/gridUtils/revealAllBees';
@@ -35,7 +34,7 @@ const checkWinCondition = ({
   scoreRef,
   updateStats,
 }: WinCheckParams) => {
-  if (R.all((cell: HiveCell) => cell.isRevealed || cell.isBee)(R.values(hiveGrid))) {
+  if (Object.values(hiveGrid).every((cell) => cell.isRevealed || cell.isBee)) {
     playSound(WIN);
     vibrate();
     setIsPlaying(false);
@@ -69,17 +68,17 @@ const handleRevealCell = (
     let allNeighborIds = [...neighborIds];
     let updatedCells: HiveCell[] = [];
 
-    while (R.length(allNeighborIds) > 0) {
+    while (allNeighborIds.length > 0) {
       const neighbor = hiveGrid[allNeighborIds[0]];
-      allNeighborIds = R.drop(1, allNeighborIds);
+      allNeighborIds = allNeighborIds.slice(1);
 
       if (!neighbor.isRevealed && !neighbor.isBee && !neighbor.isFlagged) {
         neighbor.isRevealed = true;
-        updatedCells = R.append(neighbor, updatedCells);
+        updatedCells = [...updatedCells, neighbor];
         scoreRef.current += ActionScore.REVEAL_AUTOMATIC;
 
         if (neighbor.neighboringBees === 0) {
-          allNeighborIds = R.union(allNeighborIds, neighbor.neighborIds);
+          allNeighborIds = [...new Set([...allNeighborIds, ...neighbor.neighborIds])];
         }
       }
     }

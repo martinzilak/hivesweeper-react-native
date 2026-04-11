@@ -1,14 +1,13 @@
-import * as R from 'ramda';
 import type { HiveGrid } from '../../types/game';
 
 export const setBeeStatus = (grid: HiveGrid, cellIds: string[] = [], isBee = true): HiveGrid => {
-  if (R.length(cellIds) === 0) return grid;
+  if (cellIds.length === 0) return grid;
 
   const summand = isBee ? +1 : -1;
 
   return {
     ...grid,
-    ...R.reduce((accumulatedGrid: HiveGrid, cellId: string) => {
+    ...cellIds.reduce<HiveGrid>((accumulatedGrid, cellId) => {
       const cell = { ...(accumulatedGrid[cellId] ?? grid[cellId]) };
       if (cell.isBee === isBee) return accumulatedGrid;
 
@@ -16,12 +15,12 @@ export const setBeeStatus = (grid: HiveGrid, cellIds: string[] = [], isBee = tru
       return {
         ...accumulatedGrid,
         [cellId]: cell,
-        ...R.reduce((accumulatedNeighbors: HiveGrid, neighborId: string) => {
+        ...cell.neighborIds.reduce<HiveGrid>((accumulatedNeighbors, neighborId) => {
           const neighbor = { ...(accumulatedGrid[neighborId] ?? grid[neighborId]) };
           neighbor.neighboringBees += summand;
           return { ...accumulatedNeighbors, [neighborId]: neighbor };
-        }, {})(cell.neighborIds),
+        }, {}),
       };
-    }, {})(cellIds),
+    }, {}),
   };
 };

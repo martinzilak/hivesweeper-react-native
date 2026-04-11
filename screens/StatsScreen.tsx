@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import * as R from 'ramda';
 import HexagonButton from '../components/HexagonButton';
 import Logo from '../components/Logo';
 import StatRow from '../components/StatRow';
@@ -27,9 +26,9 @@ const StatsScreen = React.memo(({ navigation }: Props) => {
       <View style={styles.contentWrapper}>
         <View style={styles.statsWrapper}>
           <ScrollView style={styles.scrollView} horizontal={false} alwaysBounceVertical={false}>
-            {R.map((stat: StatEntry) => (
+            {Object.values(Stat).map((stat: StatEntry) => (
               <StatRow key={stat.key} label={stat.label} value={stats[stat.key]} />
-            ))(R.values(Stat))}
+            ))}
           </ScrollView>
         </View>
 
