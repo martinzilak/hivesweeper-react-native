@@ -1,0 +1,44 @@
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import Svg, { G } from 'react-native-svg';
+import * as R from 'ramda';
+import { BorderedBoxWithBackgroundStyle } from '../constants/BorderedBoxWithBackgroundStyle';
+import { HiveDimension } from '../constants/HiveDimension';
+import { getHiveVerticalOffset } from '../utils/getHiveVerticalOffset';
+import HiveCell from './HiveCell';
+import type { GameSizeValue, HiveCell as HiveCellType, HiveGrid } from '../types/game';
+
+type Props = {
+  hiveGrid: HiveGrid;
+  gameSize: GameSizeValue;
+  revealCell: (cell: HiveCellType) => void;
+  flagCell: (cell: HiveCellType) => void;
+};
+
+const Hive = ({ hiveGrid, gameSize, revealCell, flagCell }: Props) => (
+  <View style={styles.view}>
+    <Svg width={HiveDimension.WIDTH} height={HiveDimension.HEIGHT}>
+      <G y={getHiveVerticalOffset(gameSize)}>
+        {R.map((cell: HiveCellType) => (
+          <HiveCell
+            key={cell.id}
+            gameSize={gameSize}
+            cell={cell}
+            revealCell={revealCell}
+            flagCell={flagCell}
+          />
+        ))(R.values(hiveGrid))}
+      </G>
+    </Svg>
+  </View>
+);
+
+const styles = StyleSheet.create({
+  view: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    ...BorderedBoxWithBackgroundStyle,
+  },
+});
+
+export default Hive;
