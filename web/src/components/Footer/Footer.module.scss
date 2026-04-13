@@ -1,0 +1,118 @@
+@import 'src/styles/common';
+
+.footer {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'createdBy contactMe downloadAt'
+    'createdBy contactMe downloadAt';
+  width: 100%;
+  background-color: #ffaa00;
+  color: #671919;
+  border: 3px solid brown;
+  border-left: none;
+  border-right: none;
+}
+
+.createdBy {
+  grid-area: createdBy;
+}
+
+.contactMe {
+  grid-area: contactMe;
+}
+
+.downloadAt {
+  grid-area: downloadAt;
+}
+
+.footerItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 10px 0;
+  font-weight: bolder;
+  font-variant: all-small-caps;
+  font-size: 1.5rem;
+}
+
+.mailLink {
+  @include link;
+}
+
+.downloadButton {
+  align-self: center;
+  display: inline-block;
+  background: url('../../assets/images/app_store.png') center center no-repeat;
+  background-size: contain;
+  height: 80%;
+  width: 100%;
+}
+
+@media (max-width: 768px) or (max-height: 884px) {
+  .footer {
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'createdBy createdBy downloadAt'
+      'contactMe contactMe downloadAt';
+  }
+
+  .footerItem {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: unset;
+    margin: 5px 0 5px 10%;
+    font-size: 1.2rem;
+    gap: 0.25em;
+    white-space: nowrap;
+  }
+
+  .createdBy,
+  .contactMe {
+    &:before {
+      content: '✔️';
+    }
+  }
+
+  .downloadButton {
+    height: 80%;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 530px) {
+  .footer {
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+      'createdBy'
+      'contactMe'
+      'downloadAt';
+    padding-top: 10px;
+  }
+
+  .footerItem {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .downloadButton {
+    background: none;
+    @include link;
+    &:before {
+      content: 'App Store';
+    }
+  }
+
+  .downloadAt {
+    &:before {
+      content: '✔️ Download at the ';
+    }
+  }
+}

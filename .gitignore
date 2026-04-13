@@ -15,3 +15,7 @@ ios/
 # local env
 .env
 .env.local
+
+# web subproject build artifacts
+web/node_modules/
+web/dist/
