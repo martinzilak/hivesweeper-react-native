@@ -1,24 +1,21 @@
 import { useEffect } from 'react';
-import { Alert } from 'react-native';
 import { LOSE, WIN, usePlaySound, useVibrate } from 'hivesweeper/shared';
-import { useSettingsStore } from 'hivesweeper/settings';
-import { useGameStore, gameEmitter } from 'hivesweeper/game';
+import { gameEmitter } from 'hivesweeper/game';
 
-export const useGameEffects = () => {
+type Props = {
+  onWin: (isNewBest: boolean) => void;
+  onLost: () => void;
+};
+
+export const useGameEffects = ({ onWin, onLost }: Props) => {
   const { playSound } = usePlaySound();
   const { vibrate } = useVibrate();
-  const resetGame = useGameStore((s) => s.resetGame);
-  const gameSize = useSettingsStore((s) => s.gameSize);
 
   useEffect(() => {
     const handleLost = () => {
       playSound(LOSE);
       vibrate();
-      Alert.alert(
-        'You lost!',
-        'Hint: Use the flag button to mark cells you suspect hide a hornet.',
-        [{ text: 'Try again', onPress: () => resetGame(gameSize) }],
-      );
+      onLost();
     };
 
     const handleStatsResolved = ({
@@ -31,11 +28,7 @@ export const useGameEffects = () => {
       if (status === 'won') {
         playSound(WIN);
         vibrate();
-        Alert.alert(
-          'You won!',
-          isNewBest ? 'New best score, congratulations!' : undefined,
-          [{ text: 'Play again', onPress: () => resetGame(gameSize) }],
-        );
+        onWin(isNewBest);
       }
     };
 
@@ -45,5 +38,5 @@ export const useGameEffects = () => {
       gameEmitter.off('lost', handleLost);
       gameEmitter.off('statsResolved', handleStatsResolved);
     };
-  }, [playSound, vibrate, resetGame, gameSize]);
+  }, [playSound, vibrate, onWin, onLost]);
 };

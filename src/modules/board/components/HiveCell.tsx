@@ -14,9 +14,10 @@ import HiveCellHex from './HiveCellHex';
 type Props = {
   gameSize: GameSizeValue;
   cell: HiveCellType;
+  flagMode?: boolean;
 };
 
-const HiveCell = ({ gameSize, cell }: Props) => {
+const HiveCell = ({ gameSize, cell, flagMode = false }: Props) => {
   const {
     x,
     y,
@@ -31,20 +32,26 @@ const HiveCell = ({ gameSize, cell }: Props) => {
   const { vibrate } = useVibrate();
   const revealCell = useGameStore((s) => s.revealCell);
   const flagCell = useGameStore((s) => s.flagCell);
+  
+  const handleFlagCell = () => {
+      playSound(LONG_PRESS);
+      vibrate();
+      flagCell(cell.id);
+  };
 
   return (
     <G
       x={x}
       y={y}
       onPress={() => {
-        playSound(PRESS);
-        revealCell(cell.id);
+        if (flagMode) {
+            handleFlagCell();
+        } else {
+          playSound(PRESS);
+          revealCell(cell.id);
+        }
       }}
-      onLongPress={() => {
-        playSound(LONG_PRESS);
-        vibrate();
-        flagCell(cell.id);
-      }}
+      onLongPress={handleFlagCell}
     >
       <HiveCellHex
         gameSize={gameSize}
