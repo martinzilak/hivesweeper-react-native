@@ -42,6 +42,10 @@ jobs:
         run: npm install
       - name: Export game for web
         run: npx expo export --platform web --output-dir web/dist/play
+      - name: Patch game HTML for PWA
+        run: |
+          sed -i 's|<meta name="viewport"[^>]*>|<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">|' web/dist/play/index.html
+          sed -i 's|</head>|<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><style>html,body{background:#87CEEB;}</style></head>|' web/dist/play/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
