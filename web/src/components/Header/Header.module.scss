@@ -1,4 +1,4 @@
-@import 'src/styles/common';
+@use 'src/styles/common' as *;
 
 .logo {
   display: flex;
