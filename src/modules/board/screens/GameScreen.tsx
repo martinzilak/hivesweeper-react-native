@@ -10,6 +10,7 @@ import {
   Screen,
   HiveDimension,
   SafeAreaScreenWrapper,
+  useIsPointerDevice,
   type RootStackParamList,
 } from 'hivesweeper/shared';
 import { useSettingsStore } from 'hivesweeper/settings';
@@ -31,6 +32,7 @@ const GameScreen = ({ navigation, route }: Props) => {
 
   const [dialog, setDialog] = useState<DialogConfig | null>(null);
   const [flagMode, setFlagMode] = useState(false);
+  const isPointerDevice = useIsPointerDevice();
 
   const resetGame = useCallback(
     () => storeResetGame(gameSize),
@@ -75,7 +77,7 @@ const GameScreen = ({ navigation, route }: Props) => {
       </View>
 
       <View style={styles.buttonsWrapper}>
-        {Platform.OS === 'web' ? (
+        {isPointerDevice ? (
           <>
             <HexagonButton
               onPress={() => setFlagMode((prev) => !prev)}
@@ -101,19 +103,12 @@ const GameScreen = ({ navigation, route }: Props) => {
           <>
             <HexagonButton
               onPress={resetGame}
-              width={Math.ceil(0.3 * HiveDimension.WIDTH)}
+              width={Math.ceil(0.45 * HiveDimension.WIDTH)}
               text="RESET"
             />
             <HexagonButton
-              onPress={() => setFlagMode((prev) => !prev)}
-              width={Math.ceil(0.3 * HiveDimension.WIDTH)}
-              text="FLAG"
-              polygonFill={flagMode ? 'orange' : 'gold'}
-              polygonStroke={flagMode ? 'brown' : 'orange'}
-            />
-            <HexagonButton
               onPress={() => navigation.navigate(Screen.MAIN_MENU)}
-              width={Math.ceil(0.3 * HiveDimension.WIDTH)}
+              width={Math.ceil(0.45 * HiveDimension.WIDTH)}
               text="MENU"
             />
           </>

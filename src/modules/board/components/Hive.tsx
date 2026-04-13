@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Svg, { G } from 'react-native-svg';
 import {
   BorderedBoxWithBackgroundStyle,
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     ...BorderedBoxWithBackgroundStyle,
+    ...(Platform.OS === 'web' && { userSelect: 'none' } as object),
   },
 });
 

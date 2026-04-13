@@ -34,10 +34,11 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <BackgroundAppWrapper>
-        <NavigationContainer theme={transparentTheme}>
+        <NavigationContainer
+          theme={transparentTheme}
+          documentTitle={{ formatter: () => 'Hivesweeper' }}>
           <Stack.Navigator
             initialRouteName={Screen.MAIN_MENU}
-            detachInactiveScreens={true}
             screenOptions={{
               headerShown: false,
               cardStyle: {
@@ -46,8 +47,7 @@ const App = () => {
               detachPreviousScreen: true,
               gestureEnabled: false,
               cardStyleInterpolator,
-            }}
-          >
+            }}>
             <Stack.Screen name={Screen.MAIN_MENU} component={MainMenuScreen} />
             <Stack.Screen
               name={Screen.NEW_GAME_SIZE}
