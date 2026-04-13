@@ -1,0 +1,70 @@
+.layout {
+  min-width: 400px;
+  min-height: 400px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  background: linear-gradient(transparent 75%, #3cb31e), linear-gradient(transparent 95%, #2bb305),
+    linear-gradient(lightskyblue 80%, #a3ff80);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.content {
+  width: calc(100% - 80px);
+  max-width: 1440px;
+  background: rgba(255, 255, 255, 0.65) url('../../assets/images/bee.png') bottom 5px right 15px no-repeat;
+  background-size: 25%;
+  height: 100%;
+  border: 3px solid brown;
+  overflow-y: auto;
+  padding: 20px;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) or (max-height: 884px) {
+  .layout {
+    gap: 10px;
+  }
+
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 10vh;
+    max-height: 15vh;
+    margin-top: 10px;
+  }
+
+  .content {
+    width: 95%;
+    background: rgba(255, 255, 255, 0.65);
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+  }
+}

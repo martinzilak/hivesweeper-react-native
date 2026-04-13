@@ -9,7 +9,9 @@
     "android": "expo run:android",
     "web": "expo start --web",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dev:web": "cd web && npm run dev",
+    "build:web": "cd web && npm run build"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",

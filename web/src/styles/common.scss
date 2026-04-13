@@ -1,0 +1,17 @@
+@mixin link {
+  color: white;
+  text-shadow:
+    1px 1px 10px rgba(255, 235, 0, 0.25),
+    1px -1px 10px rgba(255, 235, 0, 0.25),
+    -1px 1px 10px rgba(255, 235, 0, 0.25),
+    -1px -1px 10px rgba(255, 235, 0, 0.25);
+
+  &:hover {
+    color: lightyellow;
+    text-shadow:
+      2px 2px 20px rgba(255, 235, 0, 0.5),
+      2px -2px 20px rgba(255, 235, 0, 0.5),
+      -2px 2px 20px rgba(255, 235, 0, 0.5),
+      -2px -2px 20px rgba(255, 235, 0, 0.5);
+  }
+}

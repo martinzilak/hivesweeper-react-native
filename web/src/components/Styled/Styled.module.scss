@@ -1,0 +1,29 @@
+@import 'src/styles/common';
+
+.strong {
+  color: black;
+  font-weight: bolder;
+  font-size: 1.8rem;
+}
+
+.ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.li {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 10px;
+
+  &:before {
+    content: '✔️';
+    position: absolute;
+    left: 0;
+  }
+}
+
+.a {
+  @include link;
+  color: black;
+}

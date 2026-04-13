@@ -1,0 +1,24 @@
+@import 'normalize.css/normalize.css';
+
+:root {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
+  font-weight: lighter;
+  font-stretch: normal;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+}
