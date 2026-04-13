@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
+import { ImageBackground, Platform, StyleSheet } from 'react-native';
 import { BACKGROUND } from '../assets/Images';
 import { usePlayMusicLoop } from '../hooks/usePlayMusicLoop';
 
@@ -22,6 +22,10 @@ const BackgroundAppWrapper = React.memo(
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+    }),
   },
 });
 

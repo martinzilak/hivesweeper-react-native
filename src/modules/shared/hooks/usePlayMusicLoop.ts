@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
+import { AppState, AppStateStatus, Platform } from 'react-native';
 import { useAudioPlayer } from 'expo-audio';
 import { MUSIC_LOOP } from '../assets/Sounds';
 // Direct import to avoid shared ↔ settings circular dependency
@@ -18,6 +18,13 @@ export const usePlayMusicLoop = () => {
     player.loop = true;
     if (isMusicEnabled) {
       player.play();
+      if (Platform.OS === 'web') {
+        // Browsers block autoplay until a user interaction has occurred.
+        // If play() was silently blocked, retry on the first pointer event.
+        const retryOnInteraction = () => player.play();
+        document.addEventListener('pointerdown', retryOnInteraction, { once: true });
+        return () => document.removeEventListener('pointerdown', retryOnInteraction);
+      }
     } else {
       player.pause();
     }

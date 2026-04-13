@@ -3,7 +3,7 @@ name: Deploy website to GitHub Pages
 on:
   push:
     branches: ['main']
-    paths: ['web/**']
+    paths: ['web/**', 'src/**', 'assets/**', 'app.json', 'package.json', 'package-lock.json']
   workflow_dispatch:
 
 permissions:
@@ -29,13 +29,19 @@ jobs:
         with:
           node-version-file: 'web/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'web/package-lock.json'
-      - name: Install dependencies
+          cache-dependency-path: |
+            web/package-lock.json
+            package-lock.json
+      - name: Install web dependencies
         working-directory: ./web
         run: npm install
-      - name: Build
+      - name: Build marketing site
         working-directory: ./web
         run: npm run build
+      - name: Install app dependencies
+        run: npm install
+      - name: Export game for web
+        run: npx expo export --platform web --output-dir web/dist/play
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

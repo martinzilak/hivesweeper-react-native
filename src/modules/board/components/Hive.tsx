@@ -13,14 +13,15 @@ import HiveCell from './HiveCell';
 type Props = {
   hiveGrid: HiveGrid;
   gameSize: GameSizeValue;
+  flagMode?: boolean;
 };
 
-const Hive = ({ hiveGrid, gameSize }: Props) => (
+const Hive = ({ hiveGrid, gameSize, flagMode }: Props) => (
   <View style={styles.view}>
     <Svg width={HiveDimension.WIDTH} height={HiveDimension.HEIGHT}>
       <G y={getHiveVerticalOffset(gameSize)}>
         {Object.values(hiveGrid).map((cell) => (
-          <HiveCell key={cell.id} gameSize={gameSize} cell={cell} />
+          <HiveCell key={cell.id} gameSize={gameSize} cell={cell} flagMode={flagMode} />
         ))}
       </G>
     </Svg>

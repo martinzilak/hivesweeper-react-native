@@ -6,6 +6,7 @@ import {
   Logo,
   Screen,
   SafeAreaScreenWrapper,
+  useInstallPrompt,
   type RootStackParamList,
 } from 'hivesweeper/shared';
 import { useGameStore } from 'hivesweeper/game';
@@ -18,6 +19,7 @@ const MainMenuScreen = React.memo(({ navigation }: Props) => {
   const canResume = useGameStore(
     (s) => s.gameStatus === 'playing' && s.hasFirstCellBeenRevealed,
   );
+  const { canInstall, install } = useInstallPrompt();
 
   return (
     <SafeAreaScreenWrapper>
@@ -46,6 +48,13 @@ const MainMenuScreen = React.memo(({ navigation }: Props) => {
           text="STATS"
           onPress={() => navigation.navigate(Screen.STATS)}
         />
+        {canInstall && (
+          <HexagonButton
+            styles={styles.optionButton}
+            text="INSTALL APP"
+            onPress={install}
+          />
+        )}
       </View>
     </SafeAreaScreenWrapper>
   );

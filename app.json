@@ -30,7 +30,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "name": "Hivesweeper",
+      "shortName": "Hivesweeper",
+      "description": "Bee-themed Minesweeper on a hexagonal grid",
+      "themeColor": "#DAA520",
+      "backgroundColor": "#FFF8DC",
+      "display": "standalone",
+      "orientation": "portrait"
+    },
+    "experiments": {
+      "baseUrl": "/play"
     },
     "plugins": [
       "expo-audio"

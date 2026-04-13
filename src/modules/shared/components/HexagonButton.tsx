@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, ViewStyle } from 'react-native';
+import { View, TouchableOpacity, ViewStyle, Platform } from 'react-native';
 import Svg, { Polygon, Text } from 'react-native-svg';
 import { usePlaySound } from '../hooks/usePlaySound';
 import { useVibrate } from '../hooks/useVibrate';
@@ -72,6 +72,10 @@ const HexagonButton = React.memo(
                 fill={textFill}
                 fontSize={Math.ceil(0.66 * height)}
                 fontWeight="500"
+                {...(Platform.OS === 'web' && {
+                  fontFamily:
+                    'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+                })}
               >
                 {text}
               </Text>

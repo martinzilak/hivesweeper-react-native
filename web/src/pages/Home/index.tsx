@@ -32,10 +32,17 @@ const Home: FC = () => (
 
     <StyledStrong>What are you waiting for?</StyledStrong>
 
-    <StyledP>
-      <StyledA href="https://apps.apple.com/us/app/hivesweeper/id1581731994">Download</StyledA> Hivesweeper from the App
-      Store.
-    </StyledP>
+    <StyledUl>
+      <StyledLi>
+        🌐 <StyledA href="/play">Play on web</StyledA> — open in your browser, no download needed.
+      </StyledLi>
+      <StyledLi>
+        📲 <StyledA href="/play">Save as app</StyledA> — visit the game and tap "Add to Home Screen" in your browser.
+      </StyledLi>
+      <StyledLi>
+        🍎 <StyledA href="https://apps.apple.com/us/app/hivesweeper/id1581731994">Download from the App Store</StyledA> for the full native experience.
+      </StyledLi>
+    </StyledUl>
   </>
 );
 
